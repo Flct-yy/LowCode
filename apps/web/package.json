@@ -1,0 +1,40 @@
+{
+  "name": "@wect/web",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "yarn@4.9.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "echo '运行Web测试...'",
+    "clean": "rm -rf dist",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,md,yml}' --ignore-path ../../.prettierignore",
+    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,md,yml}' --ignore-path ../../.prettierignore"
+  },
+  "devDependencies": {
+    "@types/eslint-plugin-jsx-a11y": "^6",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "dependencies": {
+    "@wect/components": "workspace:*",
+    "@wect/config": "workspace:*",
+    "@wect/utils": "workspace:*",
+    "react": "^19.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.2.0"
+  }
+}
