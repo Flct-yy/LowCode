@@ -1,3 +1,4 @@
+import Lists from '@pages/Lists/Lists.tsx';
 import React from 'react';
 
 // 可以导入我们的工作区包
@@ -10,6 +11,7 @@ function App(): React.ReactNode {
     <div className="App">
       <h1>欢迎使用低代码平台</h1>
       <p>这是使用Vite构建的React应用</p>
+      <Lists></Lists>
     </div>
   );
 }
