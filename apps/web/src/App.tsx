@@ -9,8 +9,6 @@ import React from 'react';
 function App(): React.ReactNode {
   return (
     <div className="App">
-      <h1>欢迎使用低代码平台</h1>
-      <p>这是使用Vite构建的React应用</p>
       <Lists></Lists>
     </div>
   );
