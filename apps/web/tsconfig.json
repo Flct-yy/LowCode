@@ -21,6 +21,7 @@
       "@components/*": ["src/components/*"],
       "@scss/*": ["src/scss/*"],
       "@pages/*": ["src/pages/*"],
+      "@router/*": ["src/router/*"],
     },
     "strict": true,
     "noUnusedLocals": true,
