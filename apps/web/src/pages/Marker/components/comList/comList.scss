@@ -1,0 +1,31 @@
+.com-item {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  font-size: 0.75rem;
+  cursor: move;
+  .com-item__icon {
+    display: inline-block;
+    margin-top: 0.5rem;
+    background-position: 0 0;
+    width:  2.25rem;
+    height: 2.25rem;
+    background-size: cover;
+  } 
+
+  &:hover {
+    background: #155bd4;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    color: white;
+
+    .com-item__icon {
+      background-position: 0 2.25rem;
+    }
+  }
+}
