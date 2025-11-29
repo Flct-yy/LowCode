@@ -19,7 +19,7 @@
       "@type/*": ["src/type/*"],
       "@context/*": ["src/context/*"],
       "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"],
+      "@scss/*": ["src/scss/*"],
       "@pages/*": ["src/pages/*"],
     },
     "strict": true,
