@@ -1,4 +1,4 @@
-import CardsContext from './CardsContext.ts';
+import CardsContext from './ComsContext.ts';
 import { useContext } from 'react';
 
 export default function useCardsContext() {

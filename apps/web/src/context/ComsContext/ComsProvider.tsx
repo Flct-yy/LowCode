@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
-import CardsContext from './CardsContext';
-import Card from '@type/card';
+import CardsContext from './ComsContext';
+import Card from '@type/component';
 
 const initialState: { cards: Card[] } = {
   cards: []

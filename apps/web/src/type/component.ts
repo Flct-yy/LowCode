@@ -1,4 +1,4 @@
-export default interface Card {
+export default interface component {
   id: number  // 组件区中组件的id
   text: string  // 组件区中组件的名称
   name: string  // 组件区中组件的的key
