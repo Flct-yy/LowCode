@@ -1,14 +1,14 @@
 import React from 'react';
 import componentType from '@/type/componentType';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
-import { ItemTypes } from '@type/DnD';
+import { DnDTypes } from '@/type/DnDTypes';
 
 const ComItem: React.FC<componentType & { itemWidth: number }> = ({ id, type, text, icon, itemWidth }) => {
 
   const [{ isDragging }, drag]: any = useDrag(
     {
       item: { comp: { id: id }, originalIndex: -1 },
-      type: ItemTypes.COMITEM,
+      type: DnDTypes.COMITEM,
       end: (i: any, monitor: DragSourceMonitor) => {
         if (monitor.didDrop()) {
           i.originalIndex = -1

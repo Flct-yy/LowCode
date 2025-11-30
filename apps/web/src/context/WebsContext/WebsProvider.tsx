@@ -9,6 +9,8 @@ const initialState: PageModel = {
   compActiveIndex: -1,
   aspectRatio: 16 / 9,
   zoomRatio: 1,
+  previewScrollTop: 0,
+  previewScrollLeft: 0,
 }
 
 interface ActionType {
@@ -20,6 +22,7 @@ interface ActionType {
   EDIT_SELECT_COM: string,
   EDIT_ASPECT_RATIO: string,
   EDIT_ZOOM_RATIO: string,
+  EDIT_PREVIEW_SCROLL: string,
 }
 
 const Actions: ActionType = {
@@ -38,13 +41,18 @@ const Actions: ActionType = {
   EDIT_ASPECT_RATIO: 'EDIT_ASPECT_RATIO',
   // 编辑缩放比例
   EDIT_ZOOM_RATIO: 'EDIT_ZOOM_RATIO',
+  // 编辑预览区域滚动位置
+  EDIT_PREVIEW_SCROLL: 'EDIT_PREVIEW_SCROLL',
 }
 
 
 
 function WebsReducer(state: PageModel, action: {
   type: string; payload: {
-    id?: number, component?: ComponentInstance, showIframe?: boolean, compActiveIndex?: number, aspectRatio?: number, zoomRatio?: number
+    id?: number, component?: ComponentInstance, 
+    showIframe?: boolean, compActiveIndex?: number, 
+    aspectRatio?: number, zoomRatio?: number,
+    previewScrollTop?: number, previewScrollLeft?: number,
   }
 }) {
   switch (action.type) {
@@ -83,6 +91,12 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         zoomRatio: action.payload.zoomRatio!,
       }
+    case Actions.EDIT_PREVIEW_SCROLL:
+      return {
+        ...state,
+        previewScrollTop: action.payload.previewScrollTop!,
+        previewScrollLeft: action.payload.previewScrollLeft!,
+      }
     default:
       return state;
   }
@@ -99,6 +113,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_select_com: (compActiveIndex: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { compActiveIndex } }),
     edit_aspect_ratio: (aspectRatio: number) => dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } }),
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
+    edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
   }
 
   const contextValue: WebsContextType = {

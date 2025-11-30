@@ -8,6 +8,7 @@ import Preview from "./components/preview/preview";
 const { Header, Content } = Layout;
 
 const Marker: React.FC = () => {
+  
   return (
     <WebsProvider>
       <Layout>
@@ -21,7 +22,7 @@ const Marker: React.FC = () => {
               <Splitter.Panel collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="12%">
                 <ComList />
               </Splitter.Panel>
-              <Splitter.Panel collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="60%" min="40%">
+              <Splitter.Panel style={{ scrollbarWidth: 'auto' }} collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="60%" min="40%">
                 <Preview />
               </Splitter.Panel>
               <Splitter.Panel collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="28%">

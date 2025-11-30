@@ -10,5 +10,7 @@ export default interface PageModel {
   aspectRatio: number;
   // 缩放比例
   zoomRatio: number;
-
+  // 预览区域滚动位置
+  previewScrollTop: number;
+  previewScrollLeft: number;
 }

@@ -13,6 +13,7 @@ export interface WebsContextType {
     edit_select_com: (compActiveIndex: number) => void;
     edit_aspect_ratio: (aspectRatio: number) => void;
     edit_zoom_ratio: (zoomRatio: number) => void;
+    edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
   };
 }
 
