@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import { routes } from '@router/router';
 import '@scss/app.scss';
 

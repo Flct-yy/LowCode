@@ -1,9 +1,14 @@
-import { ComponentInstance } from './componentInstance';
+import ComponentInstance from './componentInstance';
 
-export interface PageModel {
+export default interface PageModel {
   components: ComponentInstance[];
+  // 是否显示Iframe
   showIframe: boolean;
+  // 选中的组件索引
   compActiveIndex: number;
-  
-  // 其他页面级配置，如背景、尺寸等
+  // 宽高比
+  aspectRatio: number;
+  // 缩放比例
+  zoomRatio: number;
+
 }
