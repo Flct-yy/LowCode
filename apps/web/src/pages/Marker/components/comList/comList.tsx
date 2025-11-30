@@ -68,8 +68,8 @@ const ComList: React.FC = () => {
       {/* 使用动态计算的colSpan渲染componentList */}
       <Row gutter={[16, 16]} style={{ marginInline: 'auto', padding: '12px' }}>
         {componentList.map(item => (
-          <Col key={item.id} span={colSpan} style={{ paddingInline: '0px' }}>
-            <ComItem {...item} itemWidth={itemWidth} />
+          <Col key={item.type.id} span={colSpan} style={{ paddingInline: '0px' }}>
+            <ComItem {...item.type} itemWidth={itemWidth} />
           </Col>
         ))}
       </Row>

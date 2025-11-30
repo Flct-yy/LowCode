@@ -1,46 +1,46 @@
 import React, { useReducer } from 'react';
-import CardsContext from './ComsContext';
-import Card from '@type/component';
+import ComsContext from './ComsContext';
+import ComponentInstance from '@type/componentInstance';
 
-const initialState: { cards: Card[] } = {
-  cards: []
+const initialState: { Coms: ComponentInstance[] } = {
+  Coms: []
 }
 
 interface ActionType {
-  ADD_CARD:string,
-  REMOVE_CARD:string
+  ADD_COM: string,
+  REMOVE_COM: string
 }
 
-const Actions:ActionType = {
+const Actions: ActionType = {
   // 添加组件
-  ADD_CARD: 'ADD_CARD',
+  ADD_COM: 'ADD_COM',
   // 删除组件
-  REMOVE_CARD: 'REMOVE_CARD',
+  REMOVE_COM: 'REMOVE_COM',
 }
 
-function cardsReducer(state: typeof initialState, action: { type: string; payload: { card?: Card; id?: number } }) {
+function ComsReducer(state: { Coms: ComponentInstance[] }, action: { type: string; payload: { Com?: ComponentInstance; id?: number } }) {
   switch (action.type) {
-    case Actions.ADD_CARD:
+    case Actions.ADD_COM:
       return {
         ...state,
-        cards: [...state.cards, action.payload.card!]
+        Coms: [...state.Coms, action.payload.Com!]
       }
-    case Actions.REMOVE_CARD:
+    case Actions.REMOVE_COM:
       return {
         ...state,
-        cards: state.cards.filter(card => card.id !== action.payload.id)
+        Coms: state.Coms.filter(Com => Com.type.id !== action.payload.id)
       }
     default:
       return state;
   }
 }
 
-export default function CardsProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(cardsReducer, initialState);
+export default function ComsProvider({ children }: { children: React.ReactNode }) {
+  const [state, dispatch] = useReducer(ComsReducer, initialState);
 
   const actions = {
-    addCard: (card: Card) => dispatch({ type: Actions.ADD_CARD, payload: { card } }),
-    removeCard: (id: number) => dispatch({ type: Actions.REMOVE_CARD, payload: { id } }),
+    addCom: (Com: ComponentInstance) => dispatch({ type: Actions.ADD_COM, payload: { Com } }),
+    removeCom: (id: number) => dispatch({ type: Actions.REMOVE_COM, payload: { id } }),
   }
 
   const contextValue = {
@@ -48,8 +48,8 @@ export default function CardsProvider({ children }: { children: React.ReactNode 
     actions,
   }
   return (
-    <CardsContext.Provider value={contextValue}>
+    <ComsContext.Provider value={contextValue}>
       {children}
-    </CardsContext.Provider>
+    </ComsContext.Provider>
   )
 }

@@ -1,3 +1,3 @@
 import { createContext } from 'react';
-const CardsContext = createContext({});
-export default CardsContext;
+const ComsContext = createContext({});
+export default ComsContext;

@@ -2,8 +2,8 @@ import React from 'react';
 
 const Preview: React.FC = () => {
   return (
-    <div>
-      <h1>Preview</h1>
+    <div style={{ width: '100%', height: '100%' }}>
+      
     </div>
   );
 }

@@ -1,10 +1,10 @@
-import CardsContext from './ComsContext.ts';
+import ComsContext from './ComsContext.ts';
 import { useContext } from 'react';
 
-export default function useCardsContext() {
-  const cardsContext = useContext(CardsContext);
-  if (!cardsContext) {
-    throw new Error('useCardsContext必须在CardsProvider中使用');
+export default function useComsContext() {
+  const context = useContext(ComsContext);
+  if (!context) {
+    throw new Error('useComsContext必须在ComsProvider中使用');
   }
-  return cardsContext;
+  return context;
 }
