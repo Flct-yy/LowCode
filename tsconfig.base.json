@@ -9,14 +9,6 @@
     "strict": true,
     "skipLibCheck": true,
     "composite": true,
-    
-    /* 路径映射 - 关键配置 */
-    "baseUrl": ".",
-    "paths": {
-      "@wect/utils": ["packages/utils/src/index"],
-      "@wect/components": ["packages/components/src/index"],
-      "@wect/config": ["packages/config/src/index"]
-    }
   },
   /* 排除 node_modules 和构建输出目录 */
   "exclude": ["node_modules", "dist", "build"]

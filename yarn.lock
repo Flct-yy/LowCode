@@ -683,7 +683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.1":
+"@eslint/js@npm:9.39.1, @eslint/js@npm:^9.39.1":
   version: 9.39.1
   resolution: "@eslint/js@npm:9.39.1"
   checksum: 10c0/6f7f26f8cdb7ad6327bbf9741973b6278eb946f18f70e35406e88194b0d5c522d0547a34a02f2a208eec95c5d1388cdf7ccb20039efd2e4cb6655615247a50f1
@@ -2377,7 +2377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.6":
+"@types/react@npm:^19.2.5, @types/react@npm:^19.2.6":
   version: 19.2.7
   resolution: "@types/react@npm:19.2.7"
   dependencies:
@@ -2386,7 +2386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^8.47.0":
+"@typescript-eslint/eslint-plugin@npm:8.48.0, @typescript-eslint/eslint-plugin@npm:^8.47.0":
   version: 8.48.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.48.0"
   dependencies:
@@ -2407,7 +2407,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^8.47.0":
+"@typescript-eslint/parser@npm:8.48.0, @typescript-eslint/parser@npm:^8.47.0":
   version: 8.48.0
   resolution: "@typescript-eslint/parser@npm:8.48.0"
   dependencies:
@@ -2841,21 +2841,44 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wect/components@workspace:*, @wect/components@workspace:packages/components":
+"@wect/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@wect/components@workspace:packages/components"
   languageName: unknown
   linkType: soft
 
-"@wect/config@workspace:*, @wect/config@workspace:packages/config":
+"@wect/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@wect/config@workspace:packages/config"
+  languageName: unknown
+  linkType: soft
+
+"@wect/pre_iframe@workspace:apps/preIframe":
+  version: 0.0.0-use.local
+  resolution: "@wect/pre_iframe@workspace:apps/preIframe"
+  dependencies:
+    "@eslint/js": "npm:^9.39.1"
+    "@types/node": "npm:^24.10.1"
+    "@types/react": "npm:^19.2.5"
+    "@types/react-dom": "npm:^19.2.3"
+    "@vitejs/plugin-react": "npm:^5.1.1"
+    eslint: "npm:^9.39.1"
+    eslint-plugin-react-hooks: "npm:^7.0.1"
+    eslint-plugin-react-refresh: "npm:^0.4.24"
+    globals: "npm:^16.5.0"
+    react: "npm:^19.2.0"
+    react-dom: "npm:^19.2.0"
+    typescript: "npm:~5.9.3"
+    typescript-eslint: "npm:^8.46.4"
+    vite: "npm:^7.2.4"
   languageName: unknown
   linkType: soft
 
 "@wect/utils@workspace:*, @wect/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@wect/utils@workspace:packages/utils"
+  dependencies:
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -2868,8 +2891,6 @@ __metadata:
     "@types/react": "npm:^19.2.6"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:^5.1.1"
-    "@wect/components": "workspace:*"
-    "@wect/config": "workspace:*"
     "@wect/utils": "workspace:*"
     antd: "npm:^6.0.0"
     eslint: "npm:^9.39.1"
@@ -2881,7 +2902,7 @@ __metadata:
     react-dnd-html5-backend: "npm:^16.0.1"
     react-dom: "npm:^19.2.0"
     react-router-dom: "npm:^7.9.6"
-    sass: "npm:^1.80.4"
+    sass: "npm:^1.94.2"
     typescript: "npm:^5.9.3"
     vite: "npm:^7.2.4"
     vite-tsconfig-paths: "npm:^5.1.4"
@@ -4535,6 +4556,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-react-refresh@npm:^0.4.24":
+  version: 0.4.24
+  resolution: "eslint-plugin-react-refresh@npm:0.4.24"
+  peerDependencies:
+    eslint: ">=8.40"
+  checksum: 10c0/7471a25663cdec2886b5aec53cff6319475a6704616f96db4eef7ada3cba1236abeb71b4c2db6396e48a3a8a3a416a0266b2eac06bb6ef77d8b5674604ece7fb
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-react@npm:^7.37.5":
   version: 7.37.5
   resolution: "eslint-plugin-react@npm:7.37.5"
@@ -5143,6 +5173,13 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: 10c0/b96ff42620c9231ad468d4c58ff42afee7777ee1c963013ff8aabe095a451d0ceeb8dcd8ef4cbd64d2538cef45f787a78ba3a9574f4a634438963e334471302d
+  languageName: node
+  linkType: hard
+
+"globals@npm:^16.5.0":
+  version: 16.5.0
+  resolution: "globals@npm:16.5.0"
+  checksum: 10c0/615241dae7851c8012f5aa0223005b1ed6607713d6813de0741768bd4ddc39353117648f1a7086b4b0fa45eae733f1c0a0fe369aa4e543bb63f8de8990178ea9
   languageName: node
   linkType: hard
 
@@ -7421,7 +7458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.80.4":
+"sass@npm:^1.94.2":
   version: 1.94.2
   resolution: "sass@npm:1.94.2"
   dependencies:
@@ -8356,7 +8393,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.9.3, typescript@npm:^5.6.2, typescript@npm:^5.9.3":
+"typescript-eslint@npm:^8.46.4":
+  version: 8.48.0
+  resolution: "typescript-eslint@npm:8.48.0"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": "npm:8.48.0"
+    "@typescript-eslint/parser": "npm:8.48.0"
+    "@typescript-eslint/typescript-estree": "npm:8.48.0"
+    "@typescript-eslint/utils": "npm:8.48.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+    typescript: ">=4.8.4 <6.0.0"
+  checksum: 10c0/bd1a8691148c2424a92458e1f67f0b78b4ee8698a561ec53412874fb1333cf475d604c71a5832ce5140dbda76420dfd299d3cd39dd18ca7101476f86d3cd67af
+  languageName: node
+  linkType: hard
+
+"typescript@npm:5.9.3, typescript@npm:^5.6.2, typescript@npm:^5.9.3, typescript@npm:~5.9.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -8366,7 +8418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.9.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:

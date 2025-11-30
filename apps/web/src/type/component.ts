@@ -1,8 +1,7 @@
+import componentType from "./componentType";
+
 export default interface component {
-  id: number  // 组件区中组件的id
-  text: string  // 组件区中组件的名称
-  name: string  // 组件区中组件的的key
-  icon: string  // 组件区中组件的icon地址
+  type: componentType  // 组件区中组件的类型
   config: {
     label: string   // 配置区中title名称
     type: string  // 配置区组件类型
