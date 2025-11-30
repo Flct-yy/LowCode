@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Splitter, Layout,Divider } from 'antd';
+import { Flex, Splitter, Layout, Divider } from 'antd';
 import TopBar from "./components/topBar/topBar";
 import ComList from "./components/comList/comList";
 import Editor from "./components/editor/editor";
@@ -20,10 +20,10 @@ const Marker: React.FC = () => {
               <ComList />
             </Splitter.Panel>
             <Splitter.Panel collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="60%" min="40%">
-              <Editor />
+              <Preview />
             </Splitter.Panel>
             <Splitter.Panel collapsible={{ start: true, end: true, showCollapsibleIcon: 'auto' }} defaultSize="28%">
-              <Preview />
+              <Editor />
             </Splitter.Panel>
           </Splitter>
         </Flex>
