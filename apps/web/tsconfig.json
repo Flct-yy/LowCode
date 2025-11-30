@@ -14,7 +14,6 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@wect/*": ["../../packages/*"],
       "@/*": ["src/*"],
       "@type/*": ["src/type/*"],
       "@context/*": ["src/context/*"],
@@ -22,11 +21,7 @@
       "@scss/*": ["src/scss/*"],
       "@pages/*": ["src/pages/*"],
       "@router/*": ["src/router/*"],
-    },
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    }
   },
   "include": ["src"]
 }

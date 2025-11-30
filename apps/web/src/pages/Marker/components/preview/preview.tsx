@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Slider, InputNumber, Dropdown, Space, Button, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
-import ComponentInstance from '@type/componentInstance';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
+import { handleWheel } from '@wect/utils';
 import './preview.scss';
 
 
@@ -14,21 +14,10 @@ const Preview: React.FC = () => {
   const previewRef = useRef<HTMLDivElement>(null);
 
   // 鼠标滚轮缩放事件处理
-  const handleWheel = (e: React.WheelEvent) => {
-
-    // 定义缩放步长和范围限制
-    const zoomStep = 0.1;
-    const minZoom = 0.1;
-    const maxZoom = 3.0;
-
-
-    // 根据滚轮方向计算新的缩放比例
-    const delta = e.deltaY > 0 ? -zoomStep : zoomStep;
-    const newZoomRatio = Math.max(minZoom, Math.min(maxZoom, Number((zoomRatio + delta).toFixed(1))));
-    // 更新缩放比例
+  const handleWheelZoom = (e: React.WheelEvent) => {
+    const newZoomRatio = handleWheel(e, zoomRatio);
     actions.edit_zoom_ratio(newZoomRatio);
   };
-
 
   // 使用 react-dnd 实现画布拖拽
   const [, drag] = useDrag({
@@ -42,7 +31,7 @@ const Preview: React.FC = () => {
         startY: clientOffset?.y
       };
     },
-    
+
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
@@ -172,7 +161,7 @@ const Preview: React.FC = () => {
           transformOrigin: 'center center',
           translate: `${previewScrollLeft}px ${previewScrollTop}px`
         }}
-        onWheelCapture={handleWheel}
+        onWheelCapture={handleWheelZoom}
       >
         {/* 画布背景网格 */}
         <div className="preview__bg" />

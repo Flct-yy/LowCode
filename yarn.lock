@@ -2841,13 +2841,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wect/components@workspace:*, @wect/components@workspace:packages/components":
+"@wect/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@wect/components@workspace:packages/components"
   languageName: unknown
   linkType: soft
 
-"@wect/config@workspace:*, @wect/config@workspace:packages/config":
+"@wect/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@wect/config@workspace:packages/config"
   languageName: unknown
@@ -2877,6 +2877,8 @@ __metadata:
 "@wect/utils@workspace:*, @wect/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@wect/utils@workspace:packages/utils"
+  dependencies:
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -2889,8 +2891,6 @@ __metadata:
     "@types/react": "npm:^19.2.6"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:^5.1.1"
-    "@wect/components": "workspace:*"
-    "@wect/config": "workspace:*"
     "@wect/utils": "workspace:*"
     antd: "npm:^6.0.0"
     eslint: "npm:^9.39.1"
