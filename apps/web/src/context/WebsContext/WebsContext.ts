@@ -22,7 +22,7 @@ export interface WebsContextType {
     edit_zoom_ratio: (zoomRatio: number) => void;
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
 
-    edit_background: (background: Partial<'Background'>) => void;
+    edit_background: (background: PageModel['background']) => void;
   };
 }
 

@@ -26,6 +26,7 @@ export default defineConfig({
       '@components': resolve(__dirname, './src/components'),
       '@scss': resolve(__dirname, './src/scss'),
       '@pages': resolve(__dirname, './src/pages'),
+      '@utils': resolve(__dirname, './src/utils'),
       '@router': resolve(__dirname, './src/router'),
     }
   },

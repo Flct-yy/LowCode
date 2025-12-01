@@ -46,7 +46,7 @@ interface BaseConfigItem {
   // 配置项的标签名，用于在配置界面显示
   label: string;
   // 配置项的UI类型，用于渲染对应的组件
-  uiType: string;
+  uiType: UiTypeEnum;
   // 配置项的默认值
   defaultValue?: any;
   // 配置项的占位符，用于输入框等组件

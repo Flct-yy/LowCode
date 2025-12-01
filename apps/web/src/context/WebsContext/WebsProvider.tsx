@@ -86,7 +86,7 @@ function WebsReducer(state: PageModel, action: {
     showIframe?: boolean, compActiveIndex?: number,
     aspectRatio?: number, zoomRatio?: number,
     previewScrollTop?: number, previewScrollLeft?: number,
-    background?: Partial<'Background'>,
+    background?: PageModel['background'],
   }
 }) {
   switch (action.type) {
@@ -151,6 +151,14 @@ function WebsReducer(state: PageModel, action: {
         previewScrollTop: action.payload.previewScrollTop!,
         previewScrollLeft: action.payload.previewScrollLeft!,
       }
+    case Actions.EDIT_BACKGROUND:
+      return {
+        ...state,
+        background: {
+          ...state.background,
+          ...action.payload.background!,
+        }
+      }
     default:
       return state;
   }
@@ -174,7 +182,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_aspect_ratio: (aspectRatio: number) => dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } }),
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
-    edit_background: (background: Partial<'Background'>) => dispatch({ type: Actions.EDIT_BACKGROUND, payload: { background } }),
+    edit_background: (background: PageModel['background']) => dispatch({ type: Actions.EDIT_BACKGROUND, payload: { background } }),
   }
 
   const contextValue: WebsContextType = {

@@ -1,4 +1,4 @@
-import type { ConfigItem } from "./ConfigItem";
+import type { Config } from "./Config";
 
 // 组件类别枚举
 export enum ComponentCategoryEnum {
@@ -59,9 +59,9 @@ export interface ComponentSchema {
   comSchemaId: number; // 组件实例唯一标识
   metadata: ComponentMetadata; // 组件元信息
   position: ComponentPosition; // 组件位置信息
-  config: ConfigItem[]; // 组件配置项
+  config: Config[]; // 组件配置项
   children?: ComponentSchema[]; // 子组件列表
-  parentId?: string; // 父组件ID
+  parentId?: number; // 父组件ID
   isLocked?: boolean; // 是否锁定
   isVisible?: boolean; // 是否可见
 }
