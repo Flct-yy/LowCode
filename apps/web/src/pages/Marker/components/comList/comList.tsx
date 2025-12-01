@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col } from 'antd';
 import './comList.scss';
-import componentList from './comItemList';
+import initComponentList from '@/type/InitComponentMetaList';
 import ComItem from './comItem';
 
 
@@ -67,9 +67,9 @@ const ComList: React.FC = () => {
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'auto' }}>
       {/* 使用动态计算的colSpan渲染componentList */}
       <Row gutter={[16, 16]} style={{ marginInline: 'auto', padding: '12px' }}>
-        {componentList.map(item => (
-          <Col key={item.type.id} span={colSpan} style={{ paddingInline: '0px' }}>
-            <ComItem {...item.type} itemWidth={itemWidth} />
+        {initComponentList.map(item => (
+          <Col key={item.componentId} span={colSpan} style={{ paddingInline: '0px' }}>
+            <ComItem {...item} itemWidth={itemWidth} />
           </Col>
         ))}
       </Row>

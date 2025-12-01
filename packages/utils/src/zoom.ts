@@ -1,5 +1,6 @@
 // 鼠标滚轮缩放事件处理
 export const handleWheel: (e: React.WheelEvent, zoomRatio: number) => number = (e, zoomRatio) => {
+
   // 定义缩放步长和范围限制
   const zoomStep = 0.1;
   const minZoom = 0.1;

@@ -1,13 +1,13 @@
 import React from 'react';
-import componentType from '@/type/componentType';
+import type { ComponentMetadata } from '@/type/ComponentSchema';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
 
-const ComItem: React.FC<componentType & { itemWidth: number }> = ({ id, type, text, icon, itemWidth }) => {
+const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componentId, componentName, componentType, category, tags, version, description, icon, itemWidth }) => {
 
   const [{ isDragging }, drag]: any = useDrag(
     {
-      item: { comp: { id: id }, originalIndex: -1 },
+      item: { comp: { id: componentId }, originalIndex: -1 },
       type: DnDTypes.COMITEM,
       end: (i: any, monitor: DragSourceMonitor) => {
         if (monitor.didDrop()) {
@@ -25,7 +25,7 @@ const ComItem: React.FC<componentType & { itemWidth: number }> = ({ id, type, te
     <div ref={drag} className="com-item" style={{ width: `${itemWidth}px`, height: `${itemWidth}px` }}>
       <i style={{ backgroundImage: `url(${icon})` }} className="com-item__icon" />
       <span>
-        {text}
+        {componentName}
       </span>
     </div>
   );

@@ -9,7 +9,7 @@ import './preview.scss';
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { components, showIframe, compActiveIndex, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
+  const { components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -37,22 +37,26 @@ const Preview: React.FC = () => {
     })
   });
   const [, drop] = useDrop({
-    accept: DnDTypes.PAGEMOVE,
+    accept: DnDTypes.PAGEMOVE || DnDTypes.COMITEM,
     drop: (item: { type: string, startX: number | undefined, startY: number | undefined }, monitor) => {
-      if (monitor.canDrop()) {
-        // 刚开始拖拽鼠标对画布中心点的偏移量
-        // 缩放时画布中心点距离容器的中心点距离不变
-        const offsetX = item.startX! - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2 - previewScrollLeft;
-        const offsetY = item.startY! - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2 - previewScrollTop;
+      if (item.type === DnDTypes.PAGEMOVE) {
+        if (monitor.canDrop()) {
+          // 刚开始拖拽鼠标对画布中心点的偏移量
+          // 缩放时画布中心点距离容器的中心点距离不变
+          const offsetX = item.startX! - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2 - previewScrollLeft;
+          const offsetY = item.startY! - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2 - previewScrollTop;
 
-        // x, y 是鼠标在浏览器中的坐标
-        const { x, y } = monitor.getClientOffset()!;
+          // x, y 是鼠标在浏览器中的坐标
+          const { x, y } = monitor.getClientOffset()!;
 
-        // PreviewScroll算出的是当前鼠标距离预览容器中心的偏移量
-        const PreviewScrollTop = y - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2;
-        const PreviewScrollLeft = x - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2;
+          // PreviewScroll算出的是当前鼠标距离预览容器中心的偏移量
+          const PreviewScrollTop = y - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2;
+          const PreviewScrollLeft = x - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2;
 
-        actions.edit_preview_scroll(PreviewScrollTop - offsetY, PreviewScrollLeft - offsetX);
+          actions.edit_preview_scroll(PreviewScrollTop - offsetY, PreviewScrollLeft - offsetX);
+        }
+      } else if (item.type === DnDTypes.COMITEM) {
+        
       }
     },
     collect: (monitor) => ({
@@ -138,7 +142,7 @@ const Preview: React.FC = () => {
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__float'>
         <Dropdown menu={{ items: zoomRatioIItems }}>
-          <Button onClick={(e) => e.preventDefault()}>
+          <Button onClick={(e) => e.preventDefault()} style={{ margin: '0 6px' }}>
             <Space>
               缩放比例
             </Space>
@@ -146,7 +150,7 @@ const Preview: React.FC = () => {
         </Dropdown>
 
         <Dropdown menu={{ items: aspectRatioItems }}>
-          <Button onClick={(e) => e.preventDefault()}>
+          <Button onClick={(e) => e.preventDefault()} style={{ margin: '0 6px' }}>
             <Space>
               宽高比例
             </Space>

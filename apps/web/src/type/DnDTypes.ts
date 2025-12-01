@@ -1,4 +1,4 @@
-export const DnDTypes = {
-  COMITEM: 'comItem',
-  PAGEMOVE: 'pageMove',
+export const enum DnDTypes {
+  COMITEM = 'comItem',
+  PAGEMOVE = 'pageMove',
 }
