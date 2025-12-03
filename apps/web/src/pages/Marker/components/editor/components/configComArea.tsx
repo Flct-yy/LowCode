@@ -8,6 +8,9 @@ import ConfigComItem from './configComItem';
 const ConfigComArea: React.FC<{ config: TotesConfig }> = ({ config }) => {
   return (
     <div>
+      <div className='config-com-area'>
+        {config.areaName}
+      </div>
       {config.configItem.map((item: ConfigItem,index) => (
         <ConfigComItem key={index} item={item} />
       ))}

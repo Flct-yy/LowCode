@@ -20,7 +20,7 @@ export enum InputTypeEnum {
 /**
  * 配置项选项接口
  */
-export interface ConfigOption {
+interface ConfigOption {
   label: string; // 显示名称
   value: any; // 实际值
 }
@@ -72,8 +72,6 @@ interface InputConfigItem extends BaseConfigItem {
 interface SelectConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.SELECT;
   options: Array<ConfigOption>;
-  // 是否支持多选
-  multiple?: boolean;
 }
 
 /**

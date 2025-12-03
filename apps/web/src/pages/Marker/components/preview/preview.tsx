@@ -5,7 +5,7 @@ import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
 import { handleWheel } from '@wect/utils';
 import { generateComSchema } from '@utils/generateComSchema';
-import ComponentPreview from './components/ComponentPreview';
+import ComponentPreview from './components/componentPreview';
 import './preview.scss';
 
 
@@ -73,8 +73,6 @@ const Preview: React.FC = () => {
         // 拖拽组件到画布时，更新选中组件
         actions.add_component(compSchema);
       }
-      console.log(components);
-      
     },
     canDrop: (item, monitor) => {
       // 只有当没有其他组件级别的Drop目标时才允许放置

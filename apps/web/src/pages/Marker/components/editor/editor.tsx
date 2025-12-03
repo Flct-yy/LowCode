@@ -2,8 +2,9 @@ import React from 'react';
 import { Empty } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { type ComponentSchema } from '@/type/ComponentSchema';
-import { type Config } from '@/type/Config';
+import { type TotesConfig } from '@/type/Config';
 import ConfigComArea from './components/configComArea';
+import './editor.scss';
 
 const Editor: React.FC = () => {
   const { state, actions } = useWebsContext();
@@ -12,7 +13,7 @@ const Editor: React.FC = () => {
 
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className='editor'>
       {selectedComponentId !== -1 ? (
         <div>
           <div>
@@ -22,8 +23,8 @@ const Editor: React.FC = () => {
             组件ID：{selectedComponent?.comSchemaId}
           </div>
           {
-            selectedComponent?.config.map((item: Config, index: number) => (
-              <ConfigComArea key={index} config={item} />
+            selectedComponent?.config.map((item: TotesConfig,index: number) => (
+              <ConfigComArea key={item.areaName || index.toString()} config={item} />
             ))
           }
         </div>

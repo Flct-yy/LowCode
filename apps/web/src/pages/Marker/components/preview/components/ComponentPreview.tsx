@@ -7,7 +7,7 @@ import './ComponentPreview.scss';
 const ComponentPreview: React.FC<{ compSchema: ComponentSchema }> = ({ compSchema }) => {
   const {state, actions} = useWebsContext();
   const {selectedComponentId} = state;
-  console.log(selectedComponentId, compSchema.comSchemaId);
+
   return (
     <div className={`component-preview ${selectedComponentId === compSchema.comSchemaId ? 'component-preview--selected' : ''}`} style={{
       position: compSchema.position.position,
