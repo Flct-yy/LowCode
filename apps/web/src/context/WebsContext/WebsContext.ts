@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import PageModel from '@type/pageModel';
+import PageModel from '@type/PageModel';
 import type { ComponentSchema } from '@type/ComponentSchema';
 
 

@@ -46,8 +46,8 @@ export interface ComponentMetadata {
 export interface ComponentPosition {
   x: number; // X坐标
   y: number; // Y坐标
-  width: number; // 宽度
-  height: number; // 高度
+  width: string; // 宽度
+  height: string; // 高度
   position: 'static' | 'relative' | 'absolute' | 'fixed'; // 定位方式
   zIndex?: number; // 层级
 }

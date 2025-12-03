@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
-import PageModel, { AspectRatioEnum } from '@type/pageModel';
+import PageModel, { AspectRatioEnum } from '@/type/PageModel';
 import type { ComponentSchema } from '@type/ComponentSchema';
 
 const initialState: PageModel = {
