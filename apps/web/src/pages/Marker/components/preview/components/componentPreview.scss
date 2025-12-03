@@ -1,0 +1,15 @@
+.component-preview {
+  /* 默认添加透明边框，保持元素尺寸不变 */
+  border: 1px dashed transparent;
+  box-sizing: border-box;
+
+  &:hover {
+    /* 悬停时只改变边框颜色，不改变元素尺寸 */
+    border-color: #007bff;
+  }
+}
+
+
+.component-preview--selected {
+  border: 1px solid #007bff;
+}

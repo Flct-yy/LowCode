@@ -83,7 +83,7 @@ function WebsReducer(state: PageModel, action: {
   type: string; payload: {
     id?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
     comSchemaId?: number, component?: ComponentSchema,
-    showIframe?: boolean, compActiveIndex?: number,
+    showIframe?: boolean, selectedComponentId?: number,
     aspectRatio?: number, zoomRatio?: number,
     previewScrollTop?: number, previewScrollLeft?: number,
     background?: PageModel['background'],
@@ -133,7 +133,7 @@ function WebsReducer(state: PageModel, action: {
     case Actions.EDIT_SELECT_COM:
       return {
         ...state,
-        compActiveIndex: action.payload.compActiveIndex!,
+        selectedComponentId: action.payload.selectedComponentId!,
       }
     case Actions.EDIT_ASPECT_RATIO:
       return {
@@ -178,7 +178,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_component: (id: number, component: ComponentSchema) => dispatch({ type: Actions.EDIT_COMPONENT, payload: { id, component } }),
 
     edit_show_iframe: (showIframe: boolean) => dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
-    edit_select_com: (compActiveIndex: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { compActiveIndex } }),
+    edit_select_com: (selectedComponentId: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),
     edit_aspect_ratio: (aspectRatio: number) => dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } }),
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),

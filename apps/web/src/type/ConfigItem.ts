@@ -5,7 +5,8 @@ export enum UiTypeEnum {
   RADIO = 'Radio',
   INPUT_NUMBER = 'InputNumber',
   COLOR_PICKER = 'ColorPicker',
-  GROUP = 'Group'
+  GROUP = 'Group',
+  MARGIN_PADDING = 'MarginPadding'
 }
 
 // 输入框类型枚举
@@ -49,6 +50,8 @@ interface BaseConfigItem {
   uiType: UiTypeEnum;
   // 配置项的默认值
   defaultValue?: any;
+  // 配置项的当前值，用于在组件实例中引用
+  currentValue?: any;
   // 配置项的占位符，用于输入框等组件
   placeholder?: string;
   // 配置项的校验规则，用于表单校验
@@ -69,6 +72,7 @@ interface InputConfigItem extends BaseConfigItem {
 interface SelectConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.SELECT;
   options: Array<ConfigOption>;
+  // 是否支持多选
   multiple?: boolean;
 }
 
@@ -107,6 +111,33 @@ interface GroupConfigItem extends BaseConfigItem {
 }
 
 /**
+ * 边距/内边距配置项
+ */
+interface MarginPaddingConfigItem extends BaseConfigItem {
+  uiType: UiTypeEnum.MARGIN_PADDING;
+  defaultValue: {
+    topMargin: 0,
+    rightMargin: 0,
+    bottomMargin: 0,
+    leftMargin: 0,
+    topPadding: 0,
+    rightPadding: 0,
+    bottomPadding: 0,
+    leftPadding: 0,
+  };
+  currentValue: {
+    topMargin: 0,
+    rightMargin: 0,
+    bottomMargin: 0,
+    leftMargin: 0,
+    topPadding: 0,
+    rightPadding: 0,
+    bottomPadding: 0,
+    leftPadding: 0,
+  };
+}
+
+/**
  * 所有可视化配置项的联合类型
  */
 export type ConfigItem =
@@ -115,4 +146,5 @@ export type ConfigItem =
   | RadioConfigItem
   | InputNumberConfigItem
   | ColorPickerConfigItem
-  | GroupConfigItem;
+  | GroupConfigItem
+  | MarginPaddingConfigItem;

@@ -4,8 +4,8 @@ import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
 import { handleWheel } from '@wect/utils';
-import ComponentPreview from './components/ComponentPreview';
 import { generateComSchema } from '@utils/generateComSchema';
+import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 
 

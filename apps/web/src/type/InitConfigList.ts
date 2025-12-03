@@ -1,11 +1,11 @@
 import { ComponentTypeEnum } from './ComponentSchema';
 import { UiTypeEnum } from './ConfigItem';
-import { type Config } from './Config';
+import { type ShortConfig, ConfigItemFieldEnum } from './Config';
 
-interface InitConfigItem {
+export interface InitConfigItem {
   componentName: string;
   componentType: ComponentTypeEnum;
-  config: Config[];
+  config: ShortConfig[];
 }
 
 // 组件列表 默认组件
@@ -17,17 +17,21 @@ const initConfigList: InitConfigItem[] = [
       {
         areaName: '布局',
         configItem: [
-          {
-            field: '主轴方向',
-            label: 'Flex 方向',
-            uiType: UiTypeEnum.SELECT,
-            defaultValue: 'row',
-            options: [
-              { label: '水平方向', value: 'row' },
-              { label: '垂直方向', value: 'column' },
-            ],
-            rules: [{ required: true, message: '请选择 Flex 方向' }],
-          }
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.flexWrap,
+          ConfigItemFieldEnum.flexDirection,
+          ConfigItemFieldEnum.justifyContent,
+          ConfigItemFieldEnum.alignContent,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: '边框',
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
         ]
       }
     ],
