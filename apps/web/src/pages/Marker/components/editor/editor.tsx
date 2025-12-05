@@ -16,14 +16,16 @@ const Editor: React.FC = () => {
     <div className='editor'>
       {selectedComponentId !== -1 ? (
         <div>
-          <div>
-            组件：{selectedComponent?.metadata?.componentType}
-          </div>
-          <div>
-            组件ID：{selectedComponent?.comSchemaId}
+          <div className='config-com-info'>
+            <div className='config-com-info__item'>
+              组件：{selectedComponent?.metadata?.componentType}
+            </div>
+            <div className='config-com-info__item'>
+              {selectedComponent?.metadata?.description}
+            </div>
           </div>
           {
-            selectedComponent?.config.map((item: TotesConfig,index: number) => (
+            selectedComponent?.config.map((item: TotesConfig, index: number) => (
               <ConfigComArea key={item.areaName || index.toString()} config={item} />
             ))
           }

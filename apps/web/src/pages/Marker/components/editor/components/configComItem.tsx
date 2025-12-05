@@ -1,6 +1,6 @@
 import React from 'react';
 import { type ConfigItem, UiTypeEnum } from '@type/ConfigItem';
-import ConvertConfigToDom from '@components/convertConfigToDom';
+import ConvertConfigToDom from './convertConfigToDom';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 
 
@@ -13,7 +13,6 @@ const ConfigItem: React.FC<{ item: ConfigItem }> = ({ item }) => {
 
   return (
     <div className='config-item' ref={divRef}>
-      {label}: {field !== 'MarginPadding' ? currentValue : 0}
       <ConvertConfigToDom configItem={item} onChange={(field, value) => {
         actions.edit_component;
       }} />

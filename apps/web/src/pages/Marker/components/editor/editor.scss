@@ -5,6 +5,15 @@
   border-radius: .25rem;
   min-width: 12.5rem;
 
+  .config-com-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: .625rem;
+    color: #606266;
+    margin: .625rem;
+    margin-top: 0;
+  }
+
   .config-com-area {
     padding: .625rem;
     background-color: #f5f7fa;
@@ -15,5 +24,13 @@
 
   .config-item {
     margin: .375rem;
+
+    .config-item__label {
+      display: inline-block;
+      text-align: right;
+      margin-right: .625rem;
+      font-size: .75rem;
+
+    }
   }
 }
