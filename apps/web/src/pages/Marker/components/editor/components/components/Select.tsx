@@ -1,8 +1,9 @@
+import React from "react";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { SelectConfigItem } from "@type/ConfigItem";
 import { useState } from "react";
 
-const MySelect = ({
+const Select = ({
   configItem,
   setCurrentValue,
 }: {
@@ -59,4 +60,4 @@ const MySelect = ({
   );
 }
 
-export default MySelect;
+export default Select;

@@ -1,9 +1,10 @@
 .editor {
   padding: .625rem;
+  width: 100%;
+  min-width: 25rem;
   min-height: 100%;
   background-color: #fff;
   border-radius: .25rem;
-  min-width: 12.5rem;
 
   // 组件信息
   .config-com-info {
@@ -72,6 +73,11 @@
     border-radius: .375rem;
   }
 
+  .noBorder {
+    border: none;
+    border-radius: 0;
+  }
+
   .noOutline {
     outline: none;
   }
@@ -132,6 +138,74 @@
     }
 
 
+  }
+
+  // 数字输入框
+  .input_number-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
+    background-color: #fff;
+    height: 100%;
+    padding: .375rem .625rem;
+
+
+    &:hover {
+      .input_number-actions {
+        border-color: #40a9ff;
+        transform: translateX(0%);
+
+        .input_number-action-subtract {
+          border-color: #40a9ff;
+        }
+      }
+    }
+
+    .input_number-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 1.375rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-left: 1px solid #d9d9d9;
+      transform: translateX(100%);
+      transition: all 0.3s;
+
+      .input_number-action {
+        width: 100%;
+        height: 50%;
+        font-size: .875rem;
+        text-align: center;
+        background-color: #fff;
+        border: none;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        transition: all .3s;
+        user-select: none;
+      }
+
+      .input_number-action-subtract {
+        border-bottom: 1px solid #d9d9d9;
+      }
+
+      .input_number-action-subtract:hover {
+        margin-top: .375rem;
+      }
+
+      .input_number-action-add:hover {
+        margin-bottom: .375rem;
+      }
+
+    }
   }
 
 }

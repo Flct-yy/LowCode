@@ -1,10 +1,12 @@
 import React from 'react';
-import { Radio, InputNumber, ColorPicker } from 'antd';
+import { Radio, ColorPicker } from 'antd';
 import { ConfigItem, UiTypeEnum, InputTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
-import MySelect from './components/Select';
+import Select from './components/Select';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
+import InputNumber from './components/InputNumber';
+
 
 
 interface ConvertConfigToDomProps {
@@ -35,7 +37,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
 
     case UiTypeEnum.SELECT:
       return (
-        <MySelect
+        <Select
           configItem={configItem}
           setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
         />
@@ -57,18 +59,10 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
 
     case UiTypeEnum.INPUT_NUMBER:
       return (
-        <div className="config-item">
-          <label className="config-item__label">{label + 'input_number'}</label>
-          <InputNumber
-            value={currentValue}
-            min={(configItem as any).min}
-            max={(configItem as any).max}
-            step={(configItem as any).step}
-            onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
-            style={{ width: 150 }}
-            formatter={(value) => `${value}${(configItem as any).unit || ''}`}
-          />
-        </div>
+        <InputNumber
+          configItem={configItem}
+          setCurrentValue={(value: number) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
       );
 
     case UiTypeEnum.COLOR_PICKER:
@@ -88,28 +82,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
           <label className="config-item__label">{label + 'margin_padding'}</label>
           <div className="margin-padding-display">
             <div className="margin-padding-row">
-              <span>Margin:</span>
-              {(['topMargin', 'rightMargin', 'bottomMargin', 'leftMargin'] as const).map((key) => (
-                <InputNumber
-                  key={key}
-                  value={currentValue?.[key] || 0}
-                  onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, { ...currentValue, [key]: value })}
-                  style={{ width: 80, marginLeft: 8 }}
-                  formatter={(value) => `${value}px`}
-                />
-              ))}
-            </div>
-            <div className="margin-padding-row">
-              <span>Padding:</span>
-              {(['topPadding', 'rightPadding', 'bottomPadding', 'leftPadding'] as const).map((key) => (
-                <InputNumber
-                  key={key}
-                  value={currentValue?.[key] || 0}
-                  onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, { ...currentValue, [key]: value })}
-                  style={{ width: 80, marginLeft: 8 }}
-                  formatter={(value) => `${value}px`}
-                />
-              ))}
+            ...............
             </div>
           </div>
         </div>

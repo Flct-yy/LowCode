@@ -1,3 +1,4 @@
+import React from "react";
 import { InputConfigItem } from "@type/ConfigItem";
 
 
