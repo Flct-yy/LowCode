@@ -12,6 +12,5 @@
     "test": "echo '运行utils测试...'"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
   }
 }
