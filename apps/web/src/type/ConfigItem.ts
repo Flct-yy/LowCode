@@ -61,7 +61,7 @@ interface BaseConfigItem {
 /**
  * 输入框配置项
  */
-interface InputConfigItem extends BaseConfigItem {
+export interface InputConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.INPUT;
   type?: InputTypeEnum;
 }
@@ -69,7 +69,7 @@ interface InputConfigItem extends BaseConfigItem {
 /**
  * 下拉选择框配置项
  */
-interface SelectConfigItem extends BaseConfigItem {
+export interface SelectConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.SELECT;
   options: Array<ConfigOption>;
 }
@@ -77,7 +77,7 @@ interface SelectConfigItem extends BaseConfigItem {
 /**
  * 单选框配置项
  */
-interface RadioConfigItem extends BaseConfigItem {
+export interface RadioConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.RADIO;
   options: Array<ConfigOption>;
 }
@@ -85,7 +85,7 @@ interface RadioConfigItem extends BaseConfigItem {
 /**
  * 数字输入框配置项
  */
-interface InputNumberConfigItem extends BaseConfigItem {
+export interface InputNumberConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.INPUT_NUMBER;
   unit?: string;
   min?: number;
@@ -96,14 +96,14 @@ interface InputNumberConfigItem extends BaseConfigItem {
 /**
  * 颜色选择器配置项
  */
-interface ColorPickerConfigItem extends BaseConfigItem {
+export interface ColorPickerConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.COLOR_PICKER;
 }
 
 /**
  * 分组配置项，用于折叠一组相关的配置
  */
-interface GroupConfigItem extends BaseConfigItem {
+export interface GroupConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.GROUP;
   children: ConfigItem[];
 }
@@ -111,7 +111,7 @@ interface GroupConfigItem extends BaseConfigItem {
 /**
  * 边距/内边距配置项
  */
-interface MarginPaddingConfigItem extends BaseConfigItem {
+export interface MarginPaddingConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.MARGIN_PADDING;
   defaultValue: {
     topMargin: 0,

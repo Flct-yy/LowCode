@@ -1,40 +1,41 @@
 import React from 'react';
-import { Input, Select, Radio, InputNumber, ColorPicker } from 'antd';
+import { Select, Radio, InputNumber, ColorPicker } from 'antd';
 import { ConfigItem, UiTypeEnum, InputTypeEnum } from '@type/ConfigItem';
+import Input from './components/Input';
+import useWebsContext from '@context/WebsContext/useWebsContext';
+import { ConfigAreaEnum,ConfigItemFieldEnum } from '@type/Config';
+
 
 interface ConvertConfigToDomProps {
   configItem: ConfigItem;
-  onChange: (field: number, value: any) => void;
+  areaName: string;
 }
 
 /**
  * 将配置项转换为对应的React组件
  */
-export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configItem, onChange }) => {
+export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configItem, areaName }) => {
   const { field, label, uiType, currentValue, placeholder } = configItem;
+  const { actions } = useWebsContext();
 
-  const handleChangeValue = (value: any) => {
-
+  const handleChangeValue = (field: ConfigItemFieldEnum, value: any) => {
+    console.log('handleChangeValue', areaName, field, value);
+    actions.edit_change_value(areaName as ConfigAreaEnum, field, value);
   };
 
   switch (uiType) {
     case UiTypeEnum.INPUT:
       return (
-        <div className="config-item">
-          <label className="config-item__label">{label}</label>
-          <Input
-            type={(configItem as any).type || InputTypeEnum.TEXT}
-            value={currentValue || ''}
-            onChange={(e) => handleChangeValue(e.target.value)}
-            placeholder={placeholder}
-          />
-        </div>
+        <Input
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
       );
 
     case UiTypeEnum.SELECT:
       return (
         <div className="config-item">
-          <label className="config-item__label">{label}</label>
+          <label className="config-item__label">{label + 'select'}</label>
           <Select
             value={currentValue}
             options={(configItem as any).options}
@@ -47,8 +48,8 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.RADIO:
       return (
         <div className="config-item">
-          <label className="config-item__label">{label}</label>
-          <Radio.Group value={currentValue} onChange={(e) => handleChangeValue(e.target.value)}>
+          <label className="config-item__label">{label + 'radio'}</label>
+          <Radio.Group value={currentValue} onChange={(e) => handleChangeValue(configItem.field as ConfigItemFieldEnum, e.target.value)}>
             {(configItem as any).options?.map((option: any) => (
               <Radio key={option.value} value={option.value}>
                 {option.label}
@@ -61,13 +62,13 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.INPUT_NUMBER:
       return (
         <div className="config-item">
-          <label className="config-item__label">{label}</label>
+          <label className="config-item__label">{label + 'input_number'}</label>
           <InputNumber
             value={currentValue}
             min={(configItem as any).min}
             max={(configItem as any).max}
             step={(configItem as any).step}
-            onChange={handleChangeValue}
+            onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
             style={{ width: 150 }}
             formatter={(value) => `${value}${(configItem as any).unit || ''}`}
           />
@@ -77,10 +78,10 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.COLOR_PICKER:
       return (
         <div className="config-item">
-          <label className="config-item__label">{label}</label>
+          <label className="config-item__label">{label + 'color_picker'}</label>
           <ColorPicker
             value={currentValue}
-            onChange={handleChangeValue}
+            onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
           />
         </div>
       );
@@ -88,7 +89,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.MARGIN_PADDING:
       return (
         <div className="config-item margin-padding-item">
-          <label className="config-item__label">{label}</label>
+          <label className="config-item__label">{label + 'margin_padding'}</label>
           <div className="margin-padding-display">
             <div className="margin-padding-row">
               <span>Margin:</span>
@@ -96,7 +97,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
                 <InputNumber
                   key={key}
                   value={currentValue?.[key] || 0}
-                  onChange={(value) => handleChangeValue({ ...currentValue, [key]: value })}
+                  onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, { ...currentValue, [key]: value })}
                   style={{ width: 80, marginLeft: 8 }}
                   formatter={(value) => `${value}px`}
                 />
@@ -108,7 +109,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
                 <InputNumber
                   key={key}
                   value={currentValue?.[key] || 0}
-                  onChange={(value) => handleChangeValue({ ...currentValue, [key]: value })}
+                  onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, { ...currentValue, [key]: value })}
                   style={{ width: 80, marginLeft: 8 }}
                   formatter={(value) => `${value}px`}
                 />
@@ -121,7 +122,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.GROUP:
       return (
         <div className="config-item-group">
-          <div className="group-label">{label}</div>
+          <div className="group-label">{label + 'group'}</div>
           <div className="group-children">
 
           </div>
@@ -131,12 +132,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     default:
       return (
         <div className="config-item">
-          <label className="config-item__label">{label}</label>
-          <Input
-            value={currentValue || ''}
-            onChange={(e) => handleChangeValue(e.target.value)}
-            placeholder={placeholder}
-          />
+          <label className="config-item__label">{label + 'default'}</label>
         </div>
       );
   }

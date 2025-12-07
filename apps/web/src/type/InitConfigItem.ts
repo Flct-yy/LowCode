@@ -1,4 +1,4 @@
-import { type ConfigItem, UiTypeEnum } from "@type/ConfigItem";
+import { type ConfigItem, UiTypeEnum, InputTypeEnum } from "@type/ConfigItem";
 import { ConfigItemFieldEnum } from "@type/Config";
 
 
@@ -123,6 +123,73 @@ const initConfigItem: ConfigItem[] = [
       { label: '虚线', value: 'dashed' },
       { label: '点线', value: 'dotted' },
     ],
+  },
+  {
+    field: ConfigItemFieldEnum.width,
+    label: '宽度',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 0,
+    currentValue: 0,
+    min: 0,
+    max: 1000,
+    step: 1,
+  },
+  {
+    field: ConfigItemFieldEnum.height,
+    label: '高度',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 0,
+    currentValue: 0,
+    min: 0,
+    max: 1000,
+    step: 1,
+  },
+  {
+    field: ConfigItemFieldEnum.text,
+    label: '文字',
+    uiType: UiTypeEnum.INPUT,
+    placeholder: '请输入文字',
+    type: InputTypeEnum.TEXT,
+    defaultValue: '',
+    currentValue: '',
+  },
+  {
+    field: ConfigItemFieldEnum.fontSize,
+    label: '字体大小',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 0,
+    currentValue: 0,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  {
+    field: ConfigItemFieldEnum.fontWeight,
+    label: '字体粗细',
+    uiType: UiTypeEnum.SELECT,
+    defaultValue: 'normal',
+    currentValue: 'normal',
+    options: [
+      { label: '正常', value: 'normal' },
+      { label: '加粗', value: 'bold' },
+    ],
+  },
+  {
+    field: ConfigItemFieldEnum.lineHeight,
+    label: '行高',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 0,
+    currentValue: 0,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  {
+    field: ConfigItemFieldEnum.color,
+    label: '字体颜色',
+    uiType: UiTypeEnum.COLOR_PICKER,
+    defaultValue: '#000000',
+    currentValue: '#000000',
   },
 ]
 

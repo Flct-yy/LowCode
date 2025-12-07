@@ -12,7 +12,7 @@ const ConfigComArea: React.FC<{ config: TotesConfig }> = ({ config }) => {
         {config.areaName}
       </div>
       {config.configItem.map((item: ConfigItem,index) => (
-        <ConfigComItem key={index} item={item} />
+        <ConfigComItem key={index} item={item} areaName={config.areaName} />
       ))}
     </div>
   );

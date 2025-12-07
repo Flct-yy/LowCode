@@ -1,6 +1,6 @@
 import { ComponentTypeEnum } from './ComponentSchema';
 import { UiTypeEnum } from './ConfigItem';
-import { type ShortConfig, ConfigItemFieldEnum } from './Config';
+import { type ShortConfig, ConfigItemFieldEnum, ConfigAreaEnum } from './Config';
 
 export interface InitConfigItem {
   componentName: string;
@@ -15,7 +15,7 @@ const initConfigList: InitConfigItem[] = [
     componentType: ComponentTypeEnum.FLEX,
     config: [
       {
-        areaName: '布局',
+        areaName: ConfigAreaEnum.layout,
         configItem: [
           ConfigItemFieldEnum.backgroundColor,
           ConfigItemFieldEnum.flexWrap,
@@ -26,14 +26,31 @@ const initConfigList: InitConfigItem[] = [
         ]
       },
       {
-        areaName: '边框',
+        areaName: ConfigAreaEnum.border,
         configItem: [
           ConfigItemFieldEnum.borderColor,
           ConfigItemFieldEnum.borderWidth,
           ConfigItemFieldEnum.borderRadius,
           ConfigItemFieldEnum.borderStyle,
         ]
-      }
+      },
+      {
+        areaName: ConfigAreaEnum.regular,
+        configItem: [
+          ConfigItemFieldEnum.width,
+          ConfigItemFieldEnum.height,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.text,
+        configItem: [
+          ConfigItemFieldEnum.text,
+          ConfigItemFieldEnum.fontSize,
+          ConfigItemFieldEnum.fontWeight,
+          ConfigItemFieldEnum.lineHeight,
+          ConfigItemFieldEnum.color,
+        ]
+      },
     ],
   },
 

@@ -16,7 +16,7 @@ const ComponentPreview: React.FC<{ compSchema: ComponentSchema }> = ({ compSchem
     }} onMouseDown={() => actions.edit_select_com(compSchema.comSchemaId)}>
       <div className="component-preview__content">
         
-        <div className="component-preview__title">{compSchema.comSchemaId}</div>
+        <div className="component-preview__title">{compSchema.config[3].configItem[0].currentValue}</div>
       </div>
     </div>
   );

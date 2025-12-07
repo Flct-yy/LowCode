@@ -5,7 +5,7 @@ import useWebsContext from '@context/WebsContext/useWebsContext';
 
 
 
-const ConfigItem: React.FC<{ item: ConfigItem }> = ({ item }) => {
+const ConfigItem: React.FC<{ item: ConfigItem, areaName: string }> = ({ item, areaName }) => {
   const { field, label, uiType, defaultValue, currentValue } = item;
   const divRef = React.useRef<HTMLDivElement>(null);
   const { state, actions } = useWebsContext();
@@ -13,9 +13,7 @@ const ConfigItem: React.FC<{ item: ConfigItem }> = ({ item }) => {
 
   return (
     <div className='config-item' ref={divRef}>
-      <ConvertConfigToDom configItem={item} onChange={(field, value) => {
-        actions.edit_component;
-      }} />
+      <ConvertConfigToDom configItem={item} areaName={areaName} />
     </div>
   );
 }
