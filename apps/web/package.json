@@ -28,6 +28,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "@ant-design/icons": "6.x",
     "@wect/utils": "workspace:*",
     "antd": "^6.0.0",
     "react": "^19.2.0",

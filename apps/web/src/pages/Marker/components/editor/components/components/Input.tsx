@@ -22,6 +22,7 @@ const Input = ({
     <div className="config-item">
       <label className="config-item__label">{label+'input'}</label>
       <input
+        className="config-item__ui border padding noOutline"
         type={type}
         value={currentValue || ''}
         onChange={(e) => setCurrentValue(e.target.value)}

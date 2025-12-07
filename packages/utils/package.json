@@ -10,7 +10,5 @@
     "build": "tsc",
     "dev": "tsc -w",
     "test": "echo '运行utils测试...'"
-  },
-  "devDependencies": {
   }
 }

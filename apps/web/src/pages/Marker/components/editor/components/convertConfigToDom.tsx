@@ -1,9 +1,10 @@
 import React from 'react';
-import { Select, Radio, InputNumber, ColorPicker } from 'antd';
+import { Radio, InputNumber, ColorPicker } from 'antd';
 import { ConfigItem, UiTypeEnum, InputTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
+import MySelect from './components/Select';
 import useWebsContext from '@context/WebsContext/useWebsContext';
-import { ConfigAreaEnum,ConfigItemFieldEnum } from '@type/Config';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 
 
 interface ConvertConfigToDomProps {
@@ -34,15 +35,10 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
 
     case UiTypeEnum.SELECT:
       return (
-        <div className="config-item">
-          <label className="config-item__label">{label + 'select'}</label>
-          <Select
-            value={currentValue}
-            options={(configItem as any).options}
-            onChange={handleChangeValue}
-            style={{ width: 200 }}
-          />
-        </div>
+        <MySelect
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
       );
 
     case UiTypeEnum.RADIO:
