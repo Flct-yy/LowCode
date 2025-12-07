@@ -1,11 +1,12 @@
 import React from 'react';
-import { Radio, ColorPicker } from 'antd';
-import { ConfigItem, UiTypeEnum, InputTypeEnum } from '@type/ConfigItem';
+import { Radio,  } from 'antd';
+import { ConfigItem, UiTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
 import Select from './components/Select';
+import MColorPicker from './components/ColorPicker';
+import InputNumber from './components/InputNumber';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
-import InputNumber from './components/InputNumber';
 
 
 
@@ -67,13 +68,10 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
 
     case UiTypeEnum.COLOR_PICKER:
       return (
-        <div className="config-item">
-          <label className="config-item__label">{label + 'color_picker'}</label>
-          <ColorPicker
-            value={currentValue}
-            onChange={(value) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
-          />
-        </div>
+        <MColorPicker
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
       );
 
     case UiTypeEnum.MARGIN_PADDING:
