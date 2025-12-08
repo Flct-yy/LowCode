@@ -109,25 +109,34 @@ export interface GroupConfigItem extends BaseConfigItem {
 export interface MarginPaddingConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.MARGIN_PADDING;
   defaultValue: {
-    topMargin: 0,
-    rightMargin: 0,
-    bottomMargin: 0,
-    leftMargin: 0,
-    topPadding: 0,
-    rightPadding: 0,
-    bottomPadding: 0,
-    leftPadding: 0,
+    margin: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+    padding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
   };
   currentValue: {
-    topMargin: 0,
-    rightMargin: 0,
-    bottomMargin: 0,
-    leftMargin: 0,
-    topPadding: 0,
-    rightPadding: 0,
-    bottomPadding: 0,
-    leftPadding: 0,
+    margin: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+    padding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
   };
+  unit?: string;
 }
 
 /**

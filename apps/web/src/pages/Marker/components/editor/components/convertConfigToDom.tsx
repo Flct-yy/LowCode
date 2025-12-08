@@ -5,6 +5,7 @@ import Input from './components/Input';
 import Select from './components/Select';
 import ColorPicker from './components/ColorPicker';
 import InputNumber from './components/InputNumber';
+import MarginPadding from './components/MarginPadding';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 
@@ -66,14 +67,10 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
 
     case UiTypeEnum.MARGIN_PADDING:
       return (
-        <div className="config-item margin-padding-item">
-          <label className="config-item__label">{label + 'margin_padding'}</label>
-          <div className="margin-padding-display">
-            <div className="margin-padding-row">
-            ...............
-            </div>
-          </div>
-        </div>
+        <MarginPadding
+          configItem={configItem}
+          setCurrentValue={(value: { margin: Record<string, number>, padding: Record<string, number> }) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
       );
 
     case UiTypeEnum.GROUP:

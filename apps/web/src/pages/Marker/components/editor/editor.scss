@@ -88,6 +88,16 @@
     padding: .375rem .625rem;
   }
 
+  .no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    /* Chrome, Safari, Edge */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE 10+ */
+  }
+
   // 选择器样式
   .select-container {
     position: relative;
@@ -138,8 +148,6 @@
         }
       }
     }
-
-
   }
 
   // 数字输入框
@@ -209,6 +217,8 @@
 
     }
   }
+
+  // 数字输入框单位
   .input_number-unit-container {
     width: 2rem;
     height: 100%;
@@ -231,7 +241,80 @@
       height: 100%;
       cursor: pointer;
     }
-    
+
+  }
+
+  .margin-padding-container {
+
+    .margin {
+      position: relative;
+      /* 作为子元素绝对定位的参考 */
+      /* 预留足够空间显示数字，非实际数值 */
+      padding: 2rem;
+      width: 10rem;
+      aspect-ratio: 1;
+      /* 对应 margin 的数值（top/right/bottom/left） */
+      background-color: #e6c8a0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .padding {
+      position: relative;
+      /* 作为子元素绝对定位的参考 */
+      /* 预留足够空间显示数字，非实际数值 */
+      padding: 10px;
+      width: 10rem;
+      aspect-ratio: 1;
+      /* 对应 padding 的数值（top/right/bottom/left） */
+      background-color: #a0c8e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .dir-text{
+        width: 30%;
+      }
+    }
+
+    .dir-text {
+      position: absolute;
+      font-size: .875rem;
+      color: #333;
+      width: 20%;
+      height: 1.375rem;
+      text-align: center;
+      line-height: 1.375rem;
+      background-color: transparent;
+    }
+
+    /* 四个方向数字的位置 */
+
+    .top {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .right {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .bottom {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .left {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+
   }
 
 }
