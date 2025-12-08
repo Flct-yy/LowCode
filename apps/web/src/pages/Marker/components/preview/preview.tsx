@@ -4,12 +4,14 @@ import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
 import { handleWheel } from '@wect/utils';
+import { generateComSchema } from '@utils/generateComSchema';
+import ComponentPreview from './components/componentPreview';
 import './preview.scss';
 
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
+  const { metadata,components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -36,36 +38,53 @@ const Preview: React.FC = () => {
       isDragging: monitor.isDragging()
     })
   });
-  const [, drop] = useDrop({
-    accept: DnDTypes.PAGEMOVE || DnDTypes.COMITEM,
-    drop: (item: { type: string, startX: number | undefined, startY: number | undefined }, monitor) => {
-      if (item.type === DnDTypes.PAGEMOVE) {
-        if (monitor.canDrop()) {
-          // 刚开始拖拽鼠标对画布中心点的偏移量
-          // 缩放时画布中心点距离容器的中心点距离不变
-          const offsetX = item.startX! - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2 - previewScrollLeft;
-          const offsetY = item.startY! - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2 - previewScrollTop;
+  // 画布拖拽事件处理
+  const [, dropPageMove] = useDrop({
+    accept: DnDTypes.PAGEMOVE,
+    drop: (item: { type: string, startX: number, startY: number }, monitor) => {
+      if (monitor.canDrop()) {
+        // 刚开始拖拽鼠标对画布中心点的偏移量
+        // 缩放时画布中心点距离容器的中心点距离不变
+        const offsetX = item.startX! - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2 - previewScrollLeft;
+        const offsetY = item.startY! - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2 - previewScrollTop;
 
-          // x, y 是鼠标在浏览器中的坐标
-          const { x, y } = monitor.getClientOffset()!;
+        // x, y 是鼠标在浏览器中的坐标
+        const { x, y } = monitor.getClientOffset()!;
 
-          // PreviewScroll算出的是当前鼠标距离预览容器中心的偏移量
-          const PreviewScrollTop = y - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2;
-          const PreviewScrollLeft = x - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2;
+        // PreviewScroll算出的是当前鼠标距离预览容器中心的偏移量
+        const PreviewScrollTop = y - previewContainerRef.current!.offsetTop - previewContainerRef.current!.clientHeight / 2;
+        const PreviewScrollLeft = x - previewContainerRef.current!.offsetLeft - previewContainerRef.current!.clientWidth / 2;
 
-          actions.edit_preview_scroll(PreviewScrollTop - offsetY, PreviewScrollLeft - offsetX);
-        }
-      } else if (item.type === DnDTypes.COMITEM) {
-        
+        actions.edit_preview_scroll(PreviewScrollTop - offsetY, PreviewScrollLeft - offsetX);
       }
     },
     collect: (monitor) => ({
       canDrop: monitor.canDrop()
     })
   });
+
+  // 空白画布组件拖拽事件处理
+  const [, dropComItem] = useDrop({
+    accept: DnDTypes.COMITEM,
+    drop: (item: { type: string, comp: { id: number }, originalIndex: number }, monitor) => {
+      if (monitor.canDrop()) {
+        // 生成组件
+        const compSchema = generateComSchema(item.comp.id,metadata.id);
+        // 拖拽组件到画布时，更新选中组件
+        actions.add_component(compSchema);
+      }
+    },
+    canDrop: (item, monitor) => {
+      // 只有当没有其他组件级别的Drop目标时才允许放置
+      return monitor.isOver({ shallow: true });
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop()
+    })
+  });
   // 应用拖拽 ref 到预览元素
-  drop(previewContainerRef);
-  drag(previewRef);
+  dropPageMove(previewContainerRef);
+  dropComItem(drag(previewRef));
 
   // 缩放比例输入框
   const handleZoom = (value: number) => {
@@ -171,7 +190,9 @@ const Preview: React.FC = () => {
         <div className="preview__bg" />
         {/* 组件渲染区域 */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          {/* {state.cards.map(renderComponent)} */}
+          {components.map((compSchema) => (
+            <ComponentPreview key={compSchema.comSchemaId} compSchema={compSchema} />
+          ))}
         </div>
       </div>
     </div>

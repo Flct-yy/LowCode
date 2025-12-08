@@ -1,6 +1,7 @@
 import { createContext } from 'react';
-import PageModel from '@type/pageModel';
+import PageModel from '@type/PageModel';
 import type { ComponentSchema } from '@type/ComponentSchema';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 
 
 
@@ -15,6 +16,8 @@ export interface WebsContextType {
     add_component: (component: ComponentSchema) => void;
     remove_component: (id: number) => void;
     edit_component: (id: number, component: ComponentSchema) => void;
+    edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => void;
+    edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => void;
 
     edit_show_iframe: (showIframe: boolean) => void;
     edit_select_com: (compActiveIndex: number) => void;
@@ -22,7 +25,7 @@ export interface WebsContextType {
     edit_zoom_ratio: (zoomRatio: number) => void;
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
 
-    edit_background: (background: Partial<'Background'>) => void;
+    edit_background: (background: PageModel['background']) => void;
   };
 }
 

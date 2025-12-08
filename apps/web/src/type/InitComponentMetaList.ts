@@ -3,7 +3,7 @@ import { ComponentTypeEnum, ComponentCategoryEnum, type ComponentMetadata } from
 // 组件列表 默认组件
 const initComponentList: ComponentMetadata[] = [
   {
-    componentId: '1',
+    componentId: 1,
     componentName: 'Flex',
     componentType: ComponentTypeEnum.FLEX,
     category: ComponentCategoryEnum.LAYOUT,
