@@ -3,7 +3,7 @@ import { Radio,  } from 'antd';
 import { ConfigItem, UiTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
 import Select from './components/Select';
-import MColorPicker from './components/ColorPicker';
+import ColorPicker from './components/ColorPicker';
 import InputNumber from './components/InputNumber';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
@@ -23,8 +23,11 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
   const { actions } = useWebsContext();
 
   const handleChangeValue = (field: ConfigItemFieldEnum, value: any) => {
-    console.log('handleChangeValue', areaName, field, value);
     actions.edit_change_value(areaName as ConfigAreaEnum, field, value);
+  };
+  const handleChangeUnit = (field: ConfigItemFieldEnum, unit: string) => {
+    console.log('unit', unit);
+    actions.edit_change_unit(areaName as ConfigAreaEnum, field, unit);
   };
 
   switch (uiType) {
@@ -44,31 +47,18 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
         />
       );
 
-    case UiTypeEnum.RADIO:
-      return (
-        <div className="config-item">
-          <label className="config-item__label">{label + 'radio'}</label>
-          <Radio.Group value={currentValue} onChange={(e) => handleChangeValue(configItem.field as ConfigItemFieldEnum, e.target.value)}>
-            {(configItem as any).options?.map((option: any) => (
-              <Radio key={option.value} value={option.value}>
-                {option.label}
-              </Radio>
-            ))}
-          </Radio.Group>
-        </div>
-      );
-
     case UiTypeEnum.INPUT_NUMBER:
       return (
         <InputNumber
           configItem={configItem}
           setCurrentValue={(value: number) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+          setCurrentUnit={(unit: string) => handleChangeUnit(configItem.field as ConfigItemFieldEnum, unit)}
         />
       );
 
     case UiTypeEnum.COLOR_PICKER:
       return (
-        <MColorPicker
+        <ColorPicker
           configItem={configItem}
           setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
         />

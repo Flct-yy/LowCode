@@ -2,7 +2,6 @@
 export enum UiTypeEnum {
   INPUT = 'Input',
   SELECT = 'Select',
-  RADIO = 'Radio',
   INPUT_NUMBER = 'InputNumber',
   COLOR_PICKER = 'ColorPicker',
   GROUP = 'Group',
@@ -75,14 +74,6 @@ export interface SelectConfigItem extends BaseConfigItem {
 }
 
 /**
- * 单选框配置项
- */
-export interface RadioConfigItem extends BaseConfigItem {
-  uiType: UiTypeEnum.RADIO;
-  options: Array<ConfigOption>;
-}
-
-/**
  * 数字输入框配置项
  */
 export interface InputNumberConfigItem extends BaseConfigItem {
@@ -91,6 +82,10 @@ export interface InputNumberConfigItem extends BaseConfigItem {
   min?: number;
   max?: number;
   step?: number;
+  currentUnit?: string;
+  units?: Array<ConfigOption>;
+  mins?: Array<number>;
+  maxs?: Array<number>;
 }
 
 /**
@@ -141,7 +136,6 @@ export interface MarginPaddingConfigItem extends BaseConfigItem {
 export type ConfigItem =
   | InputConfigItem
   | SelectConfigItem
-  | RadioConfigItem
   | InputNumberConfigItem
   | ColorPickerConfigItem
   | GroupConfigItem

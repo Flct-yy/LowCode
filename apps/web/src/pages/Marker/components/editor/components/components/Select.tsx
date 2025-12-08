@@ -41,7 +41,7 @@ const Select = ({
   }, []);
   return (
     <div className="config-item">
-      <label className="config-item__label">{label + 'select'}</label>
+      <label className="config-item__label">{label}</label>
       <div className="select-container" ref={selectRef}>
         {/* 自定义选择框 */}
         <div

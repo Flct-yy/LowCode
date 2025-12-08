@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { Select } from "antd";
 import { InputNumberConfigItem } from "@/type/ConfigItem";
 
 const InputNumber = ({
   configItem,
   setCurrentValue,
+  setCurrentUnit,
 }: {
   configItem: InputNumberConfigItem;
   setCurrentValue: (value: number) => void;
+  setCurrentUnit: (unit: string) => void;
 }) => {
   const {
     field,
     label,
     uiType,
-    placeholder,
     min,
     max,
     step,
     defaultValue,
     currentValue,
+    currentUnit,
+    units,
+    unit,
+    maxs,
+    mins,
   } = configItem;
 
 
@@ -28,17 +35,32 @@ const InputNumber = ({
     setCurrentNumber(currentValue);
   }, [currentValue]);
 
+  useEffect(() => {
+    handleChange(currentNumber.toString());
+  }, [currentUnit]);
+
   const handleChange = (value: string) => {
     const trimmedValue = value.trim();
     let numValue = Number(trimmedValue);
     // 检查是否为有效数字
     if (!Number.isNaN(numValue)) {
-      if (typeof min === 'number' && numValue < min) {
-        numValue = min;
+      // 修复单位索引查找逻辑
+      let unitIndex: number = -1;
+      let minValue: number = min ?? 0;
+      let maxValue: number = max ?? Number.MAX_SAFE_INTEGER;
+      if (units && units.length > 0) {
+        unitIndex = units.findIndex(item => String(item.value) === String(currentUnit));
+        minValue = mins && mins[unitIndex] ? mins[unitIndex] : minValue;
+        maxValue = maxs && maxs[unitIndex] ? maxs[unitIndex] : maxValue;
       }
-      if (typeof max === 'number' && numValue > max) {
-        numValue = max;
+
+      if (typeof minValue === 'number' && numValue < minValue) {
+        numValue = minValue;
       }
+      if (typeof maxValue === 'number' && numValue > maxValue) {
+        numValue = maxValue;
+      }
+      
       console.log('numValue', numValue);
       setCurrentNumber(numValue);
       setCurrentValue(numValue);
@@ -47,9 +69,10 @@ const InputNumber = ({
       setCurrentNumber(currentValue);
     }
   }
+
   return (
     <div className="config-item">
-      <label className="config-item__label">{label + 'number'}</label>
+      <label className="config-item__label">{label}</label>
       <div className="input_number-container config-item__ui border padding noOutline">
         <input
           type="text"
@@ -68,6 +91,20 @@ const InputNumber = ({
           <div className="input_number-action input_number-action-add"
             onClick={() => handleChange((currentNumber + (typeof step === 'number' ? step : 1)).toString())}>+</div>
         </div>
+      </div>
+      <div className="input_number-unit-container">
+        {
+          configItem.unit && <div className="input_number-unit">{configItem.unit}</div>
+        }
+        {
+          configItem.units && <div className="input_number-units">
+            <Select
+              options={configItem.units}
+              value={currentUnit}
+              onChange={setCurrentUnit}
+            />
+          </div>
+        }
       </div>
     </div>
   );

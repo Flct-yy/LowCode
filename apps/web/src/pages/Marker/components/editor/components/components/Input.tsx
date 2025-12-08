@@ -21,7 +21,7 @@ const Input = ({
 
   return (
     <div className="config-item">
-      <label className="config-item__label">{label+'input'}</label>
+      <label className="config-item__label">{label}</label>
       <input
         className="config-item__ui border padding noOutline"
         type={type}

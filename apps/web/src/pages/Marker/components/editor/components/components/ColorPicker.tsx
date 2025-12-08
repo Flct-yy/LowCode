@@ -6,8 +6,9 @@ interface ColorPickerProps {
   setCurrentValue: (value: string) => void;
 }
 
-const MColorPicker: React.FC<ColorPickerProps> = ({
+const ColorPicker: React.FC<ColorPickerProps> = ({
   configItem,
+  setCurrentValue
 }) => {
   const {
     field,
@@ -17,11 +18,10 @@ const MColorPicker: React.FC<ColorPickerProps> = ({
     defaultValue,
     currentValue,
   } = configItem;
-  const [currentColor, setCurrentColor] = useState(currentValue);
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newColor = e.target.value;
-    setCurrentColor(newColor);
+    setCurrentValue(newColor);
   };
 
   return (
@@ -31,7 +31,7 @@ const MColorPicker: React.FC<ColorPickerProps> = ({
         <input
           className="color-picker-input border"
           type="color"
-          value={currentColor}
+          value={currentValue}
           onChange={handleColorChange}
         />
       </div>
@@ -39,5 +39,5 @@ const MColorPicker: React.FC<ColorPickerProps> = ({
   );
 };
 
-export default MColorPicker;
+export default ColorPicker;
 
