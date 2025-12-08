@@ -1,33 +1,40 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { type ComponentSchema } from '@type/ComponentSchema';
-import convertConfigToStyle from '@utils/convertConfigToStyle';
-import getConfigText from '@utils/getConfigText';
-
 import useWebsContext from '@/context/WebsContext/useWebsContext';
+import convertConfigToStyle from '@utils/convertConfigToStyle';
+import renderComponentContent from './renderComponentContent';
 import './ComponentPreview.scss';
 
 
-const ComponentPreview: React.FC<{ compSchema: ComponentSchema }> = ({ compSchema }) => {
+
+
+const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) => {
   const { state, actions } = useWebsContext();
-  const { selectedComponentId } = state;
+  const { aspectRatio, selectedComponentId } = state;
+  const isSelected = selectedComponentId === comRoot.comSchemaId;
 
-  const style = convertConfigToStyle(compSchema.config);
-
-  useEffect(() => {
-    const style = convertConfigToStyle(compSchema.config);
-  }, [compSchema.config]);
-
-  const text = getConfigText(compSchema.config);
-  console.log(text);
-
+  // 将组件配置转换为样式
+  const componentStyle = convertConfigToStyle(comRoot.config);
+  console.log('componentStyle', componentStyle);
+  // 组件位置样式
+  const positionStyle: React.CSSProperties = {
+    position: comRoot.position.position,
+    left: comRoot.position.x,
+    top: comRoot.position.y,
+    zIndex: comRoot.position.zIndex,
+  };
 
   return (
-    <div className={`component-preview ${selectedComponentId === compSchema.comSchemaId ? 'component-preview--selected' : ''}`} style={{
-      position: compSchema.position.position,
-      left: compSchema.position.x,
-      top: compSchema.position.y,
-    }} onMouseDown={() => actions.edit_select_com(compSchema.comSchemaId)}>
-      <div className="component-preview__text" style={style}>{text}</div>
+    <div
+      className={`component-preview-container ${isSelected ? 'component-preview--selected' : ''}`}
+      style={{ ...positionStyle }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        actions?.edit_select_com?.(comRoot.comSchemaId);
+      }}
+    >
+      {/* 组件内容 - 递归渲染 */}
+      {renderComponentContent(comRoot, componentStyle)}
     </div>
   );
 };

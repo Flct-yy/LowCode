@@ -9,7 +9,7 @@ import './editor.scss';
 const Editor: React.FC = () => {
   const { state, actions } = useWebsContext();
   const { selectedComponentId } = state;
-  const selectedComponent: ComponentSchema | undefined = state.components.find((component: ComponentSchema) => component.comSchemaId === selectedComponentId);
+  const selectedComponent: ComponentSchema | undefined = state.comTree.findNode(selectedComponentId!);
 
 
   return (

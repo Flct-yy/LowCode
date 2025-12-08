@@ -61,7 +61,6 @@ const InputNumber = ({
         numValue = maxValue;
       }
       
-      console.log('numValue', numValue);
       setCurrentNumber(numValue);
       setCurrentValue(numValue);
     } else {

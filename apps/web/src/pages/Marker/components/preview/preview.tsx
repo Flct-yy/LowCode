@@ -12,7 +12,7 @@ import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata, components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
+  const { metadata, comTree, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -63,29 +63,9 @@ const Preview: React.FC = () => {
       canDrop: monitor.canDrop()
     })
   });
-
-  // 空白画布组件拖拽事件处理
-  const [, dropComItem] = useDrop({
-    accept: DnDTypes.COMITEM,
-    drop: (item: { type: string, comp: { id: number }, originalIndex: number }, monitor) => {
-      if (monitor.canDrop()) {
-        // 生成组件
-        const compSchema = generateComSchema(item.comp.id, metadata.id);
-        // 拖拽组件到画布时，更新选中组件
-        actions.add_component(compSchema);
-      }
-    },
-    canDrop: (item, monitor) => {
-      // 只有当没有其他组件级别的Drop目标时才允许放置
-      return monitor.isOver({ shallow: true });
-    },
-    collect: (monitor) => ({
-      canDrop: monitor.canDrop()
-    })
-  });
   // 应用拖拽 ref 到预览元素
   dropPageMove(previewContainerRef);
-  dropComItem(drag(previewRef));
+  drag(previewRef);
 
   // 缩放比例输入框
   const handleZoom = (value: number) => {
@@ -202,6 +182,9 @@ const Preview: React.FC = () => {
           ></Button>
         </Popconfirm>
       </div>
+      <div className={`preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} >
+        <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
+      </div>
       <div className="preview"
         ref={previewRef}
         style={{
@@ -216,9 +199,7 @@ const Preview: React.FC = () => {
         <div className="preview__bg" />
         {/* 组件渲染区域 */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          {components.map((compSchema) => (
-            <ComponentPreview key={compSchema.comSchemaId} compSchema={compSchema} />
-          ))}
+          <ComponentPreview comRoot={comTree.root} />
         </div>
       </div>
     </div>

@@ -1,9 +1,10 @@
 import React, { useReducer } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
 import PageModel, { AspectRatioEnum } from '@type/PageModel';
-import type { ComponentSchema } from '@type/ComponentSchema';
+import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@type/Config';
 import { type ConfigItem } from '@type/ConfigItem';
+import ComTree from '@/type/comTree';
 
 const initialState: PageModel = {
   metadata: {
@@ -14,7 +15,7 @@ const initialState: PageModel = {
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  components: [],
+  comTree: new ComTree(),
   showIframe: true,
   selectedComponentId: -1,
   aspectRatio: AspectRatioEnum.RATIO_16_9,
@@ -40,7 +41,6 @@ interface ActionType {
   // 编辑组件
   ADD_COMPONENT: string,
   REMOVE_COMPONENT: string,
-  EDIT_COMPONENT: string,
   EDIT_CHANGE_VALUE: string,
   EDIT_CHANGE_UNIT: string,
 
@@ -64,7 +64,6 @@ const Actions: ActionType = {
   // 编辑组件
   ADD_COMPONENT: 'ADD_COMPONENT',
   REMOVE_COMPONENT: 'REMOVE_COMPONENT',
-  EDIT_COMPONENT: 'EDIT_COMPONENT',
   EDIT_CHANGE_VALUE: 'EDIT_CHANGE_VALUE',
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
 
@@ -86,17 +85,18 @@ const Actions: ActionType = {
 
 
 function WebsReducer(state: PageModel, action: {
-  type: string; payload: {
+  type: string;
+  payload: {
     id?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
     comSchemaId?: number, component?: ComponentSchema,
     showIframe?: boolean, selectedComponentId?: number,
     aspectRatio?: number, zoomRatio?: number,
     previewScrollTop?: number, previewScrollLeft?: number,
     background?: PageModel['background'],
-    areaName?: ConfigAreaEnum,field?: ConfigItemFieldEnum,currentValue?: any,
-    currentUnit?: string,
+    areaName?: ConfigAreaEnum, field?: ConfigItemFieldEnum, currentValue?: any,
+    currentUnit?: string, parentId?: number,
   }
-}) {
+}): PageModel {
   switch (action.type) {
     case Actions.EDIT_TITLE:
       return {
@@ -119,47 +119,29 @@ function WebsReducer(state: PageModel, action: {
         metadata: { ...state.metadata, updatedAt: new Date() },
       }
     case Actions.ADD_COMPONENT:
+      state.comTree.addNode(action.payload.component!, action.payload.parentId!)
       return {
         ...state,
-        components: [...state.components, action.payload.component!],
+        comTree: state.comTree,
       }
     case Actions.REMOVE_COMPONENT:
+      state.comTree.removeNode(action.payload.id!)
       return {
         ...state,
-        components: state.components.filter((component: ComponentSchema) => component.comSchemaId !== action.payload.comSchemaId),
-      }
-    case Actions.EDIT_COMPONENT:
-      return {
-        ...state,
-        components: state.components.map((component: ComponentSchema) => component.comSchemaId === action.payload.comSchemaId ? action.payload.component! : component),
+        comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_VALUE:
+      state.comTree.updateNodeConfig(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentValue!)
       return {
         ...state,
-        components: state.components.map((component: ComponentSchema) => component.comSchemaId === state.selectedComponentId! ? {
-          ...component,
-          config: component.config.map((configArea: TotesConfig) => configArea.areaName === action.payload.areaName ? {
-            ...configArea,
-            configItem: configArea.configItem.map((configItem: ConfigItem) => configItem.field === action.payload.field ? {
-              ...configItem,
-              currentValue: action.payload.currentValue!,
-            } : configItem),
-          } : configArea),
-        } : component),
+        comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_UNIT:
+      console.log(state.selectedComponentId);
+      state.comTree.updateNodeUnit(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentUnit!)
       return {
         ...state,
-        components: state.components.map((component: ComponentSchema) => component.comSchemaId === state.selectedComponentId! ? {
-          ...component,
-          config: component.config.map((configArea: TotesConfig) => configArea.areaName === action.payload.areaName ? {
-            ...configArea,
-            configItem: configArea.configItem.map((configItem: ConfigItem) => configItem.field === action.payload.field ? {
-              ...configItem,
-              currentUnit: action.payload.currentUnit!,
-            } : configItem),
-          } : configArea),
-        } : component),
+        comTree: state.comTree,
       }
     case Actions.EDIT_SHOW_IFRAME:
       return {
@@ -209,9 +191,8 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_keywords: (keywords: string[]) => dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords } }),
     update_page: () => dispatch({ type: Actions.UPDATE_PAGE, payload: {} }),
 
-    add_component: (component: ComponentSchema) => dispatch({ type: Actions.ADD_COMPONENT, payload: { component } }),
+    add_component: (component: ComponentSchema, parentId: number) => dispatch({ type: Actions.ADD_COMPONENT, payload: { component, parentId } }),
     remove_component: (id: number) => dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
-    edit_component: (id: number, component: ComponentSchema) => dispatch({ type: Actions.EDIT_COMPONENT, payload: { id, component } }),
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
 

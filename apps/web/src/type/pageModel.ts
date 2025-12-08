@@ -1,4 +1,5 @@
 import type { ComponentSchema } from './ComponentSchema';
+import ComTree from '@/type/comTree';
 
 // 页面元信息接口
 export interface PageMetadata {
@@ -25,7 +26,7 @@ export enum AspectRatioEnum {
 // 页面模型接口
 export interface PageModel {
   metadata: PageMetadata; // 页面元信息
-  components: ComponentSchema[]; // 组件列表
+  comTree: ComTree; // 组件树
   showIframe: boolean; // 是否显示Iframe
   selectedComponentId?: number; // 选中的组件ID
   aspectRatio: AspectRatioEnum; // 宽高比

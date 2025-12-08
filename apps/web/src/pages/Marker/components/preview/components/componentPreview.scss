@@ -1,4 +1,4 @@
-.component-preview {
+.component-preview-container {
   /* 默认添加透明边框，保持元素尺寸不变 */
   border: 1px dashed #555555;
   box-sizing: border-box;
@@ -7,9 +7,12 @@
     /* 悬停时只改变边框颜色，不改变元素尺寸 */
     border-color: #007bff;
   }
+
+  &.component-preview-container--selected {
+    border: 1px solid #007bff;
+  }
 }
 
-
-.component-preview--selected {
-  border: 1px solid #007bff;
+.component-preview__root {
+  width: 100%;
 }

@@ -5,7 +5,7 @@ import generateComConfig from '@utils/generateComConfig';
 /**
  * 初始化 组件的默认 Schema 配置
  */
-export const generateComSchema: (componentId: number, parentId?: number) => ComponentSchema = (componentId, parentId) => {
+export const generateComSchema: (componentId: number, parentId: number) => ComponentSchema = (componentId, parentId) => {
   const componentMeta: ComponentMetadata | undefined = InitComponentMetadata.find((item) => item.componentId === componentId);
   const componentType = componentMeta?.componentType;
   let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum);
@@ -25,7 +25,7 @@ export const generateComSchema: (componentId: number, parentId?: number) => Comp
     config,
     children: [],
     parentId: parentId,
-    isContainer: false,
+    isLocked: false,
     isVisible: true,
   }
 };

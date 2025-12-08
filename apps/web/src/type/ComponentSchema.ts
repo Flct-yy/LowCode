@@ -2,28 +2,33 @@ import type { TotesConfig } from "./Config";
 
 // 组件类别枚举
 export enum ComponentCategoryEnum {
+  // 根组件
+  ROOT = 'root',
   // 布局组件
   LAYOUT = 'layout',
-  // 基础组件
-  BASIC = 'basic',
-  // 表单组件
-  FORM = 'form',
-  // 显示组件
-  DISPLAY = 'display',
-  // 高级组件
-  ADVANCED = 'advanced'
+  // // 基础组件
+  // BASIC = 'basic',
+  // // 表单组件
+  // FORM = 'form',
+  // // 显示组件
+  // DISPLAY = 'display',
+  // // 高级组件
+  // ADVANCED = 'advanced'
 }
 
 // 组件类型枚举
 export enum ComponentTypeEnum {
+  // 根组件
+  ROOT = 'Root',
+  // 布局组件
   FLEX = 'Flex',
-  BUTTON = 'Button',
-  INPUT = 'Input',
-  IMAGE = 'Image',
-  TEXT = 'Text',
-  SELECT = 'Select',
-  RADIO = 'Radio',
-  CHECKBOX = 'Checkbox'
+  // BUTTON = 'Button',
+  // INPUT = 'Input',
+  // IMAGE = 'Image',
+  // TEXT = 'Text',
+  // SELECT = 'Select',
+  // RADIO = 'Radio',
+  // CHECKBOX = 'Checkbox'
 }
 
 /**
@@ -58,8 +63,8 @@ export interface ComponentSchema {
   metadata: ComponentMetadata; // 组件元信息
   position: ComponentPosition; // 组件位置信息
   config: TotesConfig[]; // 组件配置项
-  children?: ComponentSchema[]; // 子组件列表
-  parentId?: number; // 父组件ID
+  children: ComponentSchema[]; // 子组件列表
+  parentId: number; // 父组件ID
   isLocked?: boolean; // 是否锁定
   isVisible?: boolean; // 是否可见
 }

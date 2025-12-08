@@ -13,9 +13,8 @@ export interface WebsContextType {
     edit_keywords: (keywords: string[]) => void;
     update_page: () => void;
 
-    add_component: (component: ComponentSchema) => void;
+    add_component: (component: ComponentSchema, parentId: number) => void;
     remove_component: (id: number) => void;
-    edit_component: (id: number, component: ComponentSchema) => void;
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => void;
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => void;
 
