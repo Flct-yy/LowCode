@@ -4,7 +4,7 @@
   overflow: hidden;
   position: relative;
 
-  .preview__float {
+  .preview__operation {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -21,7 +21,6 @@
     position: relative;
     top: 50%;
     overflow: auto;
-    border-radius: 6px;
     box-sizing: border-box;
 
     .preview__bg {

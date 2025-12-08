@@ -1,6 +1,6 @@
 .component-preview {
   /* 默认添加透明边框，保持元素尺寸不变 */
-  border: 1px dashed transparent;
+  border: 1px dashed #555555;
   box-sizing: border-box;
 
   &:hover {

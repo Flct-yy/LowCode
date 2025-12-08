@@ -1,17 +1,18 @@
-import React, { useRef } from 'react';
-import { Slider, InputNumber, Dropdown, Space, Button, } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Slider, InputNumber, Dropdown, Space, Button, Popconfirm, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
 import { handleWheel } from '@wect/utils';
 import { generateComSchema } from '@utils/generateComSchema';
-import ComponentPreview from './components/componentPreview';
+import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
+import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata,components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
+  const { metadata, components, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +70,7 @@ const Preview: React.FC = () => {
     drop: (item: { type: string, comp: { id: number }, originalIndex: number }, monitor) => {
       if (monitor.canDrop()) {
         // 生成组件
-        const compSchema = generateComSchema(item.comp.id,metadata.id);
+        const compSchema = generateComSchema(item.comp.id, metadata.id);
         // 拖拽组件到画布时，更新选中组件
         actions.add_component(compSchema);
       }
@@ -157,9 +158,21 @@ const Preview: React.FC = () => {
       ),
     },
   ];
+  // 重置画布位置缩放
+  const confirm = () => {
+    actions.edit_zoom_ratio(1);
+    actions.edit_aspect_ratio(16 / 9);
+    actions.edit_preview_scroll(0, 0);
+  };
+  // 组件操作按钮-删除组件
+  const handleDeleteComponent = () => {
+    if (selectedComponentId !== -1) {
+      actions.remove_component(selectedComponentId!);
+    }
+  };
   return (
     <div className='preview__container' ref={previewContainerRef}>
-      <div className='preview__float'>
+      <div className='preview__operation'>
         <Dropdown menu={{ items: zoomRatioIItems }}>
           <Button onClick={(e) => e.preventDefault()} style={{ margin: '0 6px' }}>
             <Space>
@@ -175,6 +188,19 @@ const Preview: React.FC = () => {
             </Space>
           </Button>
         </Dropdown>
+
+        <Popconfirm
+          placement="bottom"
+          title="重置画布位置缩放"
+          description="是否重置画布位置缩放？"
+          onConfirm={confirm}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger
+            icon={<RedoOutlined />}
+          ></Button>
+        </Popconfirm>
       </div>
       <div className="preview"
         ref={previewRef}
