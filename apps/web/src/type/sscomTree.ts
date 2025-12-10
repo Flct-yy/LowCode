@@ -32,7 +32,7 @@ class ComTree {
   }
 
   // 递归查找节点（核心辅助方法）
-  findNode(targetId: number, node = this.root): ComponentSchema | undefined {
+  findNode(targetId: number, node = this.root): ComponentSchema | null {
     // 找到目标节点，直接返回
     if (node.comSchemaId === targetId) {
       return node;
@@ -47,11 +47,11 @@ class ComTree {
     }
 
     // 未找到
-    return undefined;
+    return null;
   }
 
   // 添加子节点
-  addNode(newNode: ComponentSchema, parentId: number) {
+  addNode(parentId: number, newNode: ComponentSchema) {
     if (!newNode.comSchemaId || !newNode.metadata.componentName) {
       console.error('新节点必须包含 comSchemaId 和 metadata.componentName 属性');
       return false;
@@ -65,11 +65,11 @@ class ComTree {
     }
 
     // 校验子节点 ID 唯一性
-    // 在 main.tsx 中启用了 React.StrictMode ，这会导致组件在开发模式下进行双重渲染，包括 useDrop 钩子的设置和事件处理函数。 所以会暂时报错
     if (this.findNode(newNode.comSchemaId)) {
       console.error(`节点 ID ${newNode.comSchemaId} 已存在`);
       return false;
     }
+
     // 初始化 children（防止传入的新节点没有 children 属性）
     newNode.children = newNode.children || [];
     // 添加子节点
@@ -77,29 +77,8 @@ class ComTree {
     return true;
   }
 
-  // 删除节点（包含其子节点）
-  removeNode(targetId: number) {
-
-    // 查找节点
-    const currentNode = this.findNode(targetId);
-    if (!currentNode) {
-      console.error(`节点 ${targetId} 不存在`);
-      return false;
-    }
-    // 查找父节点
-    const parentNode = this.findNode(currentNode.parentId);
-    if (!parentNode) {
-      console.error(`节点 ${targetId} 的父节点不存在`);
-      return false;
-    }
-
-    // 过滤掉要删除的节点
-    parentNode.children = parentNode.children.filter(node => node.comSchemaId !== currentNode.comSchemaId);
-    return true;
-  }
-
   // 更新节点配置
-  updateNodeConfig(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: string) {
+  updateNode(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: string) {
     const targetNode = this.findNode(targetId);
     if (!targetNode) {
       console.error(`节点 ${targetId} 不存在`);
@@ -118,6 +97,7 @@ class ComTree {
       return false;
     }
     configItem.currentValue = currentValue;
+
     return true;
   }
   // 更新节点单位
@@ -143,50 +123,25 @@ class ComTree {
     return true;
   }
 
-  // 拖拽函数
-  dropDrag(sourceId: number, targetParentId: number) {
-    // 1. 验证参数有效性
-    if (!sourceId || !targetParentId) {
-      throw new Error('缺少必要参数');
+  // 删除节点（包含其子节点）
+  deleteNode(targetId: number) {
+
+    // 查找节点
+    const currentNode = this.findNode(targetId);
+    if (!currentNode) {
+      console.error(`节点 ${targetId} 不存在`);
+      return false;
+    }
+    // 查找父节点
+    const parentNode = this.findNode(currentNode.parentId);
+    if (!parentNode) {
+      console.error(`节点 ${targetId} 的父节点不存在`);
+      return false;
     }
 
-    // 2. 防止源组件自身作为目标父组件
-    if (sourceId === targetParentId) {
-      return;
-    }
-
-    // 3. 查找源组件和目标父组件
-    const sourceComponent = this.findNode(sourceId);
-    const targetParentComponent = this.findNode(targetParentId);
-
-    if (!sourceComponent) {
-      throw new Error(`源组件 ${sourceId} 不存在`);
-    }
-
-    if (!targetParentComponent) {
-      throw new Error(`目标父组件 ${targetParentId} 不存在`);
-    }
-
-    // 6. 保存原父组件ID，用于错误恢复
-    const originalParentId = sourceComponent.parentId;
-
-    // 7. 执行拖拽操作
-    const removeResult = this.removeNode(sourceId);
-    if (!removeResult) {
-      throw new Error(`移除源组件 ${sourceId} 失败`);
-    }
-
-    const addResult = this.addNode(sourceComponent, targetParentId);
-
-    if (!addResult) {
-      // 如果添加失败，尝试恢复源组件到原来的父组件
-      this.addNode(sourceComponent, originalParentId);
-      throw new Error(`将源组件 ${sourceId} 添加到目标父组件 ${targetParentId} 失败`);
-    } else {
-      // 8. 更新源组件的 parentId
-      sourceComponent.parentId = targetParentId;
-
-    }
+    // 过滤掉要删除的节点
+    parentNode.children = parentNode.children.filter(node => node.comSchemaId !== currentNode.comSchemaId);
+    return true;
   }
 
   // 打印树形结构（辅助方法，便于调试）

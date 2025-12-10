@@ -4,6 +4,7 @@ import type { TotesConfig } from "./Config";
 export enum ComponentCategoryEnum {
   // 根组件
   ROOT = 'root',
+  VIRTUAL = 'virtual',
   // 布局组件
   LAYOUT = 'layout',
   // // 基础组件
@@ -20,6 +21,7 @@ export enum ComponentCategoryEnum {
 export enum ComponentTypeEnum {
   // 根组件
   ROOT = 'Root',
+  VIRTUAL = 'Virtual',
   // 布局组件
   FLEX = 'Flex',
   // BUTTON = 'Button',

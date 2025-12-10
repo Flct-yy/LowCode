@@ -148,9 +148,10 @@ const Preview: React.FC = () => {
   const handleDeleteComponent = () => {
     if (selectedComponentId !== -1) {
       actions.remove_component(selectedComponentId!);
+      const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
+      actions.edit_select_com(comSchemaId as number);
     }
   };
-  console.log(isDragCom);
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>

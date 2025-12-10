@@ -23,6 +23,7 @@ const initialState: PageModel = {
   previewScrollTop: 0,
   previewScrollLeft: 0,
   isDragCom: false,
+  virtualDomId: -1,
 }
 
 interface ActionType {
@@ -37,6 +38,7 @@ interface ActionType {
   REMOVE_COMPONENT: string,
   EDIT_CHANGE_VALUE: string,
   EDIT_CHANGE_UNIT: string,
+  HANDLE_DRAG_DROP: string,
 
   EDIT_SHOW_IFRAME: string,
   EDIT_SELECT_COM: string,
@@ -44,6 +46,7 @@ interface ActionType {
   EDIT_ZOOM_RATIO: string,
   EDIT_PREVIEW_SCROLL: string,
   EDIT_IS_DRAG_COM: string,
+  EDIT_VIRTUAL_DOM_ID: string,
 }
 
 const Actions: ActionType = {
@@ -58,6 +61,7 @@ const Actions: ActionType = {
   REMOVE_COMPONENT: 'REMOVE_COMPONENT',
   EDIT_CHANGE_VALUE: 'EDIT_CHANGE_VALUE',
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
+  HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
 
   // 编辑是否显示Iframe
   EDIT_SHOW_IFRAME: 'EDIT_SHOW_IFRAME',
@@ -71,6 +75,8 @@ const Actions: ActionType = {
   EDIT_PREVIEW_SCROLL: 'EDIT_PREVIEW_SCROLL',
   // 编辑是否拖动画布还是组件
   EDIT_IS_DRAG_COM: 'EDIT_IS_DRAG_COM',
+  // 编辑虚拟DOM ID
+  EDIT_VIRTUAL_DOM_ID: 'EDIT_VIRTUAL_DOM_ID',
 }
 
 
@@ -86,6 +92,8 @@ function WebsReducer(state: PageModel, action: {
     isDragCom?: boolean, areaName?: ConfigAreaEnum,
     field?: ConfigItemFieldEnum, currentValue?: any,
     currentUnit?: string, parentId?: number,
+    virtualDomId?: number,
+    sourceId?: number, targetParentId?: number,
   }
 }): PageModel {
   switch (action.type) {
@@ -134,12 +142,24 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         comTree: state.comTree,
       }
+    case Actions.HANDLE_DRAG_DROP:
+      state.comTree.dropDrag(action.payload.sourceId!, action.payload.targetParentId!)
+      return {
+        ...state,
+        comTree: state.comTree,
+      }
     case Actions.EDIT_SHOW_IFRAME:
       return {
         ...state,
         showIframe: action.payload.showIframe!,
       }
     case Actions.EDIT_SELECT_COM:
+      if (action.payload.selectedComponentId === state.metadata.id) {
+        return {
+          ...state,
+          selectedComponentId: -1,
+        }
+      }
       return {
         ...state,
         selectedComponentId: action.payload.selectedComponentId!,
@@ -165,6 +185,11 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         isDragCom: action.payload.isDragCom!,
       }
+    case Actions.EDIT_VIRTUAL_DOM_ID:
+      return {
+        ...state,
+        virtualDomId: action.payload.virtualDomId!,
+      }
     default:
       return state;
   }
@@ -183,6 +208,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     remove_component: (id: number) => dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
+    handle_drag_drop: (sourceId: number, targetParentId: number) => dispatch({ type: Actions.HANDLE_DRAG_DROP, payload: { sourceId, targetParentId } }),
 
     edit_show_iframe: (showIframe: boolean) => dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
     edit_select_com: (selectedComponentId: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),
@@ -190,6 +216,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
     edit_is_drag_com: (isDragCom: boolean) => dispatch({ type: Actions.EDIT_IS_DRAG_COM, payload: { isDragCom } }),
+    edit_virtual_dom_id: (virtualDomId: number) => dispatch({ type: Actions.EDIT_VIRTUAL_DOM_ID, payload: { virtualDomId } }),
   }
 
   const contextValue: WebsContextType = {

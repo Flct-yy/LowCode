@@ -63,6 +63,7 @@ const ComList: React.FC = () => {
       observer.disconnect();
     };
   }, []);
+
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'auto' }}>
       {/* 使用动态计算的colSpan渲染componentList */}

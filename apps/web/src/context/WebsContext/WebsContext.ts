@@ -17,6 +17,7 @@ export interface WebsContextType {
     remove_component: (id: number) => void;
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => void;
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => void;
+    handle_drag_drop: (sourceId: number, targetParentId: number) => void;
 
     edit_show_iframe: (showIframe: boolean) => void;
     edit_select_com: (compActiveIndex: number) => void;
@@ -24,6 +25,7 @@ export interface WebsContextType {
     edit_zoom_ratio: (zoomRatio: number) => void;
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
     edit_is_drag_com: (isDragCom: boolean) => void;
+    edit_virtual_dom_id: (virtualDomId: number) => void;
   };
 }
 

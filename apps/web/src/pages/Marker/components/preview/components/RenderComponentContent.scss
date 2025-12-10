@@ -14,11 +14,11 @@
   }
 }
 
-.component-preview__root {
+.component-preview__virtual {
+  margin: 20px;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  background-color: #007bff !important;
 }
 
 .component-preview__flex {
