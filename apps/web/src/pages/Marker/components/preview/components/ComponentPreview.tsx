@@ -14,7 +14,6 @@ import { generateComSchema, generateVirtualDom } from '@/utils/generateComSchema
 const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) => {
   const { state, actions } = useWebsContext();
   const { aspectRatio, selectedComponentId, virtualDomId } = state;
-  const isSelected = selectedComponentId === comRoot.comSchemaId;
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   type ItemType =
@@ -100,7 +99,7 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
     <div className="component-preview" style={{ aspectRatio }}>
       {/* 组件内容 - 递归渲染 */}
       <div ref={rootRef}
-        className={`component-preview__root ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={{ ...newStyle }}
+        className={`component-preview__root ${canDrop ? 'component-preview__can-drop' : ''}`} style={{ ...newStyle }}
         onMouseDown={(e) => {
           e.stopPropagation();
           actions?.edit_select_com?.(comRoot.comSchemaId);

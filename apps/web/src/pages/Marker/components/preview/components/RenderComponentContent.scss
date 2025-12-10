@@ -12,10 +12,13 @@
   &.component-preview__selected {
     border: 1px dashed #007bff !important;
   }
+
+  &.component-preview__can-drop {
+    padding: 10px !important;
+  }
 }
 
 .component-preview__virtual {
-  margin: 20px;
   width: 100%;
   height: 100%;
   background-color: #007bff !important;
