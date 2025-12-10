@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Slider, InputNumber, Dropdown, Space, Button, Popconfirm, } from 'antd';
+import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrag, useDrop } from 'react-dnd';
@@ -12,7 +12,7 @@ import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata, comTree, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft } = state;
+  const { metadata, comTree, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ const Preview: React.FC = () => {
         startY: clientOffset?.y
       };
     },
-
+    canDrag: () => !isDragCom,
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
@@ -90,7 +90,7 @@ const Preview: React.FC = () => {
       ),
     },
     {
-      key: '1',
+      key: '2',
       label: (
 
         <InputNumber
@@ -150,23 +150,20 @@ const Preview: React.FC = () => {
       actions.remove_component(selectedComponentId!);
     }
   };
+  console.log(isDragCom);
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>
         <Dropdown menu={{ items: zoomRatioIItems }}>
-          <Button onClick={(e) => e.preventDefault()} style={{ margin: '0 6px' }}>
-            <Space>
-              缩放比例
-            </Space>
-          </Button>
+          <div className="preview__item preview__div no-select">
+            缩放比例
+          </div>
         </Dropdown>
 
         <Dropdown menu={{ items: aspectRatioItems }}>
-          <Button onClick={(e) => e.preventDefault()} style={{ margin: '0 6px' }}>
-            <Space>
-              宽高比例
-            </Space>
-          </Button>
+          <div className="preview__item preview__div no-select">
+            宽高比例
+          </div>
         </Dropdown>
 
         <Popconfirm
@@ -177,14 +174,28 @@ const Preview: React.FC = () => {
           okText="Yes"
           cancelText="No"
         >
-          <Button danger
+          <Button className="preview__item" danger
             icon={<RedoOutlined />}
           ></Button>
         </Popconfirm>
+
+        <div className="preview__item preview__div no-select">
+          组件操作
+          <Switch
+            checkedChildren="拖动组件"
+            unCheckedChildren="拖动画布"
+            checked={isDragCom}
+            onChange={actions.edit_is_drag_com}
+          />
+        </div>
+
+
+        <div className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={{ top: 0, right: 0 }}>
+          <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
+        </div>
+
       </div>
-      <div className={`preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} >
-        <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
-      </div>
+
       <div className="preview"
         ref={previewRef}
         style={{

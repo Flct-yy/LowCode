@@ -4,7 +4,7 @@ import PageModel, { AspectRatioEnum } from '@type/PageModel';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@type/Config';
 import { type ConfigItem } from '@type/ConfigItem';
-import ComTree from '@/type/comTree';
+import ComTree from '@/type/ComTree';
 
 const initialState: PageModel = {
   metadata: {
@@ -22,13 +22,7 @@ const initialState: PageModel = {
   zoomRatio: 1,
   previewScrollTop: 0,
   previewScrollLeft: 0,
-  background: {
-    color: '#fff',
-    image: '',
-    repeat: 'no-repeat',
-    position: 'center center',
-    size: 'cover',
-  }
+  isDragCom: false,
 }
 
 interface ActionType {
@@ -49,9 +43,7 @@ interface ActionType {
   EDIT_ASPECT_RATIO: string,
   EDIT_ZOOM_RATIO: string,
   EDIT_PREVIEW_SCROLL: string,
-
-  // 编辑背景
-  EDIT_BACKGROUND: string,
+  EDIT_IS_DRAG_COM: string,
 }
 
 const Actions: ActionType = {
@@ -77,9 +69,8 @@ const Actions: ActionType = {
   EDIT_ZOOM_RATIO: 'EDIT_ZOOM_RATIO',
   // 编辑预览区域滚动位置
   EDIT_PREVIEW_SCROLL: 'EDIT_PREVIEW_SCROLL',
-
-  // 编辑背景
-  EDIT_BACKGROUND: 'EDIT_BACKGROUND',
+  // 编辑是否拖动画布还是组件
+  EDIT_IS_DRAG_COM: 'EDIT_IS_DRAG_COM',
 }
 
 
@@ -92,8 +83,8 @@ function WebsReducer(state: PageModel, action: {
     showIframe?: boolean, selectedComponentId?: number,
     aspectRatio?: number, zoomRatio?: number,
     previewScrollTop?: number, previewScrollLeft?: number,
-    background?: PageModel['background'],
-    areaName?: ConfigAreaEnum, field?: ConfigItemFieldEnum, currentValue?: any,
+    isDragCom?: boolean, areaName?: ConfigAreaEnum,
+    field?: ConfigItemFieldEnum, currentValue?: any,
     currentUnit?: string, parentId?: number,
   }
 }): PageModel {
@@ -169,13 +160,10 @@ function WebsReducer(state: PageModel, action: {
         previewScrollTop: action.payload.previewScrollTop!,
         previewScrollLeft: action.payload.previewScrollLeft!,
       }
-    case Actions.EDIT_BACKGROUND:
+    case Actions.EDIT_IS_DRAG_COM:
       return {
         ...state,
-        background: {
-          ...state.background,
-          ...action.payload.background!,
-        }
+        isDragCom: action.payload.isDragCom!,
       }
     default:
       return state;
@@ -201,7 +189,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_aspect_ratio: (aspectRatio: number) => dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } }),
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
-    edit_background: (background: PageModel['background']) => dispatch({ type: Actions.EDIT_BACKGROUND, payload: { background } }),
+    edit_is_drag_com: (isDragCom: boolean) => dispatch({ type: Actions.EDIT_IS_DRAG_COM, payload: { isDragCom } }),
   }
 
   const contextValue: WebsContextType = {

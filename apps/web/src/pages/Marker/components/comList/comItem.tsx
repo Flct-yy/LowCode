@@ -7,8 +7,8 @@ const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componen
 
   const [{ isDragging }, drag]: any = useDrag(
     {
-      item: { comp: { id: componentId }, originalIndex: -1 },
-      type: DnDTypes.COMITEM,
+      item: { type: DnDTypes.COMMETA, comMeta: { id: componentId } },
+      type: DnDTypes.COMMETA,
       end: (i: any, monitor: DragSourceMonitor) => {
         if (monitor.didDrop()) {
           i.originalIndex = -1

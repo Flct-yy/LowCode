@@ -1,4 +1,5 @@
 export const enum DnDTypes {
-  COMITEM = 'comItem',
+  COMMETA = 'comMeta',
+  COMSCHEMA = 'comSchema',
   PAGEMOVE = 'pageMove',
 }

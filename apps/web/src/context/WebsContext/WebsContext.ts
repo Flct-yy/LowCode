@@ -23,8 +23,7 @@ export interface WebsContextType {
     edit_aspect_ratio: (aspectRatio: number) => void;
     edit_zoom_ratio: (zoomRatio: number) => void;
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
-
-    edit_background: (background: PageModel['background']) => void;
+    edit_is_drag_com: (isDragCom: boolean) => void;
   };
 }
 

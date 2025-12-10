@@ -36,12 +36,21 @@ const convertConfigToStyle = (config: ComponentSchema['config']): React.CSSPrope
           style.padding = `${padding.top}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.right}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.bottom}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.left}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
           break;
         case ConfigItemFieldEnum.borderColor:
+          if(configItem.currentValue === configItem.defaultValue) {
+            break;
+          }
           style.borderColor = configItem.currentValue as React.CSSProperties['borderColor'];
           break;
         case ConfigItemFieldEnum.borderWidth:
+          if(configItem.currentValue === configItem.defaultValue) {
+            break;
+          }
           style.borderWidth = `${configItem.currentValue}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
           break;
         case ConfigItemFieldEnum.borderRadius:
+          if(configItem.currentValue === configItem.defaultValue) {
+            break;
+          }
           style.borderRadius = `${configItem.currentValue}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
           break;
         case ConfigItemFieldEnum.borderStyle:

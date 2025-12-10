@@ -1,5 +1,5 @@
 import type { ComponentSchema } from './ComponentSchema';
-import ComTree from '@/type/comTree';
+import ComTree from '@/type/ComTree';
 
 // 页面元信息接口
 export interface PageMetadata {
@@ -33,13 +33,7 @@ export interface PageModel {
   zoomRatio: number; // 缩放比例
   previewScrollTop: number; // 预览区域滚动位置
   previewScrollLeft: number; // 预览区域滚动位置
-  background?: {
-    color?: string; // 背景颜色
-    image?: string; // 背景图片
-    repeat?: string; // 背景重复方式
-    position?: string; // 背景位置
-    size?: string; // 背景大小
-  }; // 页面背景设置
+  isDragCom: boolean;// 是否拖动画布还是组件
 }
 
 // 导出默认接口，保持向后兼容
