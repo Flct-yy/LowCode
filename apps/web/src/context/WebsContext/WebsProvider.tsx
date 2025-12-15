@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
-import PageModel, { AspectRatioEnum } from '@type/PageModel';
+import PageModel, { AspectRatioEnum, PageMetadata } from '@type/PageModel';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@type/Config';
 import { type ConfigItem } from '@type/ConfigItem';
@@ -37,6 +37,7 @@ interface ActionType {
   // 编辑组件
   ADD_COMPONENT: string,
   REMOVE_COMPONENT: string,
+  EDIT_COM_TREE: string,
   EDIT_CHANGE_VALUE: string,
   EDIT_CHANGE_UNIT: string,
   HANDLE_DRAG_DROP: string,
@@ -61,6 +62,7 @@ const Actions: ActionType = {
   // 编辑组件
   ADD_COMPONENT: 'ADD_COMPONENT',
   REMOVE_COMPONENT: 'REMOVE_COMPONENT',
+  EDIT_COM_TREE: 'EDIT_COM_TREE',
   EDIT_CHANGE_VALUE: 'EDIT_CHANGE_VALUE',
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
   HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
@@ -99,6 +101,7 @@ function WebsReducer(state: PageModel, action: {
     virtualDomId?: number,
     sourceId?: number, targetParentId?: number, childrenIndex?: number,
     isSliding?: boolean,
+    comTree?: ComponentSchema,
   }
 }): PageModel {
   switch (action.type) {
@@ -133,6 +136,11 @@ function WebsReducer(state: PageModel, action: {
       return {
         ...state,
         comTree: state.comTree,
+      }
+    case Actions.EDIT_COM_TREE:
+      return {
+        ...state,
+        comTree: new ComTree(action.payload.comTree!),
       }
     case Actions.EDIT_CHANGE_VALUE:
       state.comTree.updateNodeConfig(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentValue!)
@@ -209,26 +217,96 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
   const [state, dispatch] = useReducer(WebsReducer, initialState);
 
   const actions = {
-    edit_title: (title: string) => dispatch({ type: Actions.EDIT_TITLE, payload: { title } }),
-    edit_description: (description: string) => dispatch({ type: Actions.EDIT_DESCRIPTION, payload: { description } }),
-    edit_keywords: (keywords: string[]) => dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords } }),
-    update_page: () => dispatch({ type: Actions.UPDATE_PAGE, payload: {} }),
+    edit_title: (title: string) => {
+      dispatch({ type: Actions.EDIT_TITLE, payload: { title } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
 
-    add_component: (component: ComponentSchema, parentId: number, childrenIndex: number) => dispatch({ type: Actions.ADD_COMPONENT, payload: { component, parentId, childrenIndex } }),
-    remove_component: (id: number) => dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
-    edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
-    edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
-    handle_drag_drop: (sourceId: number, targetParentId: number, childrenIndex: number) => dispatch({ type: Actions.HANDLE_DRAG_DROP, payload: { sourceId, targetParentId, childrenIndex } }),
+    }, edit_description: (description: string) => {
+      dispatch({ type: Actions.EDIT_DESCRIPTION, payload: { description } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
 
-    edit_show_iframe: (showIframe: boolean) => dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
-    edit_select_com: (selectedComponentId: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),
-    edit_aspect_ratio: (aspectRatio: number) => dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } }),
-    edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
-    edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
-    edit_is_drag_com: (isDragCom: boolean) => dispatch({ type: Actions.EDIT_IS_DRAG_COM, payload: { isDragCom } }),
+    }, edit_keywords: (keywords: string[]) => {
+      dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+
+    }, update_page: () => {
+      dispatch({
+        type: Actions.UPDATE_PAGE, payload: {}
+      }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+
+    },
+    add_component: (component: ComponentSchema, parentId: number, childrenIndex: number) => {
+      dispatch({ type: Actions.ADD_COMPONENT, payload: { component, parentId, childrenIndex } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+
+    },
+    remove_component: (id: number) => {
+      dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+
+    },
+    edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => {
+      dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => {
+      dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    handle_drag_drop: (sourceId: number, targetParentId: number, childrenIndex: number) => {
+      dispatch({
+        type: Actions.HANDLE_DRAG_DROP, payload: {
+          sourceId, targetParentId
+          , childrenIndex
+        }
+      })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_show_iframe: (showIframe: boolean) => {
+      dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_select_com: (selectedComponentId: number) => {
+      dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_aspect_ratio: (aspectRatio: number) => {
+      dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_zoom_ratio: (zoomRatio: number) => {
+      dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => {
+      dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_is_drag_com: (isDragCom: boolean) => {
+      dispatch({ type: Actions.EDIT_IS_DRAG_COM, payload: { isDragCom } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
     // 编辑是否滑动
-    edit_is_sliding: (isSliding: boolean) => dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } }),
-    edit_virtual_dom_id: (virtualDomId: number) => dispatch({ type: Actions.EDIT_VIRTUAL_DOM_ID, payload: { virtualDomId } }),
+    edit_is_sliding: (isSliding: boolean) => {
+      dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_virtual_dom_id: (virtualDomId: number) => {
+      dispatch({ type: Actions.EDIT_VIRTUAL_DOM_ID, payload: { virtualDomId } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+
+    // 导入
+    import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => {
+      // 导入组件树后，需要更新页面元信息
+      dispatch({ type: Actions.EDIT_TITLE, payload: { title: pageMetadata.title } })
+      dispatch({ type: Actions.EDIT_DESCRIPTION, payload: { description: pageMetadata.description } })
+      dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords: pageMetadata.keywords } })
+      // 导入组件树后，需要更新组件树
+      dispatch({ type: Actions.EDIT_COM_TREE, payload: { comTree: componentTree } })
+      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
   }
 
   const contextValue: WebsContextType = {

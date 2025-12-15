@@ -6,24 +6,28 @@ import { UiTypeEnum } from '@type/ConfigItem';
  */
 class ComTree {
   root: ComponentSchema
-  constructor() {
+  constructor(comTree?: ComponentSchema) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
-    this.root = {
-      comSchemaId: new Date().getTime(),
-      metadata: {
-        componentId: 0,
-        componentName: '根节点',
-        componentType: ComponentTypeEnum.ROOT,
-        category: ComponentCategoryEnum.ROOT,
-        tags: [],
-        version: '1.0.0',
-      },
-      config: [],
-      children: [],
-      parentId: -1,
-      isLocked: false,
-      isVisible: true,
-    };
+    if (!comTree) {
+      this.root = {
+        comSchemaId: new Date().getTime(),
+        metadata: {
+          componentId: 0,
+          componentName: '根节点',
+          componentType: ComponentTypeEnum.ROOT,
+          category: ComponentCategoryEnum.ROOT,
+          tags: [],
+          version: '1.0.0',
+        },
+        config: [],
+        children: [],
+        parentId: -1,
+        isLocked: false,
+        isVisible: true,
+      };
+    } else {
+      this.root = comTree;
+    }
   }
 
   // 递归查找节点（核心辅助方法）

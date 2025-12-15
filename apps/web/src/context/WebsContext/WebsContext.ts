@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import PageModel from '@type/PageModel';
+import PageModel, { PageMetadata } from '@type/PageModel';
 import type { ComponentSchema } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 
@@ -27,6 +27,7 @@ export interface WebsContextType {
     edit_is_drag_com: (isDragCom: boolean) => void;
     edit_is_sliding: (isSliding: boolean) => void;
     edit_virtual_dom_id: (virtualDomId: number) => void;
+    import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => void;
   };
 }
 
