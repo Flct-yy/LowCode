@@ -42,17 +42,33 @@ const MarginPadding: React.FC<MarginPaddingProps> = ({
       <div className="config-item__ui margin-padding-container">
         <div className="margin border no-select">
           {/* Margin 四个方向的数字 */}
-          <input className="dir-text top noBorder noOutline" value={currentValue.margin.top} onChange={(e) => handleChange('margin', 'top', e.target.value)} />
-          <input className="dir-text right noBorder noOutline" value={currentValue.margin.right} onChange={(e) => handleChange('margin', 'right', e.target.value)} />
-          <input className="dir-text bottom noBorder noOutline" value={currentValue.margin.bottom} onChange={(e) => handleChange('margin', 'bottom', e.target.value)} />
-          <input className="dir-text left noBorder noOutline" value={currentValue.margin.left} onChange={(e) => handleChange('margin', 'left', e.target.value)} />
+          <input className="dir-text top noBorder noOutline" value={currentValue.margin.top}
+            onChange={(e) => handleChange('margin', 'top', e.target.value)}
+            onBlur={(e) => handleChange('margin', 'top', e.target.value)} />
+          <input className="dir-text right noBorder noOutline" value={currentValue.margin.right}
+            onChange={(e) => handleChange('margin', 'right', e.target.value)}
+            onBlur={(e) => handleChange('margin', 'right', e.target.value)} />
+          <input className="dir-text bottom noBorder noOutline" value={currentValue.margin.bottom}
+            onChange={(e) => handleChange('margin', 'bottom', e.target.value)}
+            onBlur={(e) => handleChange('margin', 'bottom', e.target.value)} />
+          <input className="dir-text left noBorder noOutline" value={currentValue.margin.left}
+            onChange={(e) => handleChange('margin', 'left', e.target.value)}
+            onBlur={(e) => handleChange('margin', 'left', e.target.value)} />
 
           <div className="padding border no-select">
             {/* Padding 四个方向的数字 */}
-            <input className="dir-text top noBorder noOutline" value={currentValue.padding.top} onChange={(e) => handleChange('padding', 'top', e.target.value)} />
-            <input className="dir-text right noBorder noOutline" value={currentValue.padding.right} onChange={(e) => handleChange('padding', 'right', e.target.value)} />
-            <input className="dir-text bottom noBorder noOutline" value={currentValue.padding.bottom} onChange={(e) => handleChange('padding', 'bottom', e.target.value)} />
-            <input className="dir-text left noBorder noOutline" value={currentValue.padding.left} onChange={(e) => handleChange('padding', 'left', e.target.value)} />
+            <input className="dir-text top noBorder noOutline" value={currentValue.padding.top}
+              onChange={(e) => handleChange('padding', 'top', e.target.value)}
+              onBlur={(e) => handleChange('padding', 'top', e.target.value)} />
+            <input className="dir-text right noBorder noOutline" value={currentValue.padding.right}
+              onChange={(e) => handleChange('padding', 'right', e.target.value)}
+              onBlur={(e) => handleChange('padding', 'right', e.target.value)} />
+            <input className="dir-text bottom noBorder noOutline" value={currentValue.padding.bottom}
+              onChange={(e) => handleChange('padding', 'bottom', e.target.value)}
+              onBlur={(e) => handleChange('padding', 'bottom', e.target.value)} />
+            <input className="dir-text left noBorder noOutline" value={currentValue.padding.left}
+              onChange={(e) => handleChange('padding', 'left', e.target.value)}
+              onBlur={(e) => handleChange('padding', 'left', e.target.value)} />
           </div>
         </div>
       </div>

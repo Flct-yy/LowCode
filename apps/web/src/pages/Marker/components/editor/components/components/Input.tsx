@@ -27,6 +27,7 @@ const Input = ({
         type={type}
         value={currentValue || ''}
         onChange={(e) => setCurrentValue(e.target.value)}
+        onBlur={(e) => setCurrentValue(e.target.value)}
         placeholder={placeholder}
       />
     </div>

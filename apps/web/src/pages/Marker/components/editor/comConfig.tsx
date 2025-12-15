@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ConfigComArea from './components/configComArea';
 import { type ComponentSchema } from '@/type/ComponentSchema';
 import { type TotesConfig } from '@/type/Config';
 
 const ComConfig: React.FC<{ selectedComponent: ComponentSchema }> = ({ selectedComponent }) => {
-  return (
+  return useMemo(() => (
     <div>
       <div className='config-com-info'>
         <div className='config-com-info__item'>
@@ -20,6 +20,6 @@ const ComConfig: React.FC<{ selectedComponent: ComponentSchema }> = ({ selectedC
         ))
       }
     </div>
-  )
+  ), [selectedComponent])
 }
 export default ComConfig;

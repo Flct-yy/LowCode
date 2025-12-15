@@ -33,6 +33,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           type="color"
           value={currentValue}
           onChange={handleColorChange}
+          onBlur={handleColorChange}
         />
       </div>
     </div>

@@ -32,12 +32,13 @@ const InputNumber = ({
   const [currentNumber, setCurrentNumber] = useState(currentValue);
 
   useEffect(() => {
+    console.log('currentValue', currentValue);
     setCurrentNumber(currentValue);
-  }, [currentValue]);
+    handleChange(currentValue.toString());
+  }, [currentValue, currentUnit]);
 
-  useEffect(() => {
-    handleChange(currentNumber.toString());
-  }, [currentUnit]);
+  // 移除不必要的useEffect，当前单位变化时不需要立即调用handleChange
+  // 单位变化由父组件通过setCurrentUnit处理，值变化在失焦或按Enter时提交
 
   const handleChange = (value: string) => {
     const trimmedValue = value.trim();
@@ -78,6 +79,7 @@ const InputNumber = ({
           className="border noBorder noOutline"
           value={currentNumber}
           onChange={(e) => setCurrentNumber(e.target.value)}
+          onBlur={(e) => handleChange((e.target as HTMLInputElement).value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleChange((e.target as HTMLInputElement).value);
