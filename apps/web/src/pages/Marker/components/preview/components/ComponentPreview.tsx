@@ -31,7 +31,7 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
           // 生成组件Schema
           const compSchema = generateComSchema(comMeta.comMeta.id, comRoot.comSchemaId);
           // 拖拽组件到画布时，更新选中组件
-          actions.add_component(compSchema, comRoot.comSchemaId);
+          actions.add_component(compSchema, comRoot.comSchemaId, -1);
           dropped = true;
         } else if (item.type === DnDTypes.COMSCHEMA) {
           const comSchema = item as { type: string, comSchemaId: number };

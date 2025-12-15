@@ -163,6 +163,8 @@ const Preview: React.FC = () => {
       actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
     }
   };
+  console.log(state.comTree.root);
+  
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>

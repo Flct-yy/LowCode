@@ -53,7 +53,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
           // 生成组件Schema
           const compSchema = generateComSchema(comMeta.comMeta.id, component.comSchemaId);
           // 拖拽组件到画布时，更新选中组件
-          actions.add_component(compSchema, component.comSchemaId);
+          actions.add_component(compSchema, component.comSchemaId, -1);
           dropped = true;
         } else if (item.type === DnDTypes.COMSCHEMA) {
           const comSchema = item as { type: string, comSchemaId: number };

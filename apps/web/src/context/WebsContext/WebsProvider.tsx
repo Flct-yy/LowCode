@@ -204,7 +204,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_keywords: (keywords: string[]) => dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords } }),
     update_page: () => dispatch({ type: Actions.UPDATE_PAGE, payload: {} }),
 
-    add_component: (component: ComponentSchema, parentId: number) => dispatch({ type: Actions.ADD_COMPONENT, payload: { component, parentId } }),
+    add_component: (component: ComponentSchema, parentId: number, childrenIndex: number) => dispatch({ type: Actions.ADD_COMPONENT, payload: { component, parentId, childrenIndex } }),
     remove_component: (id: number) => dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
