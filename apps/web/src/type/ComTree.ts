@@ -51,11 +51,12 @@ class ComTree {
   }
 
   // 添加子节点
-  addNode(newNode: ComponentSchema, parentId: number) {
+  addNode(newNode: ComponentSchema, parentId: number, childrenArrIndex: number) {
     if (!newNode.comSchemaId || !newNode.metadata.componentName) {
       console.error('新节点必须包含 comSchemaId 和 metadata.componentName 属性');
       return false;
     }
+
 
     // 查找父节点
     const parentNode = this.findNode(parentId);
@@ -63,6 +64,8 @@ class ComTree {
       console.error(`父节点 ${parentId} 不存在`);
       return false;
     }
+    // 处理 childrenArrIndex 参数
+    const insertIndex = childrenArrIndex !== -1 ? childrenArrIndex : parentNode.children.length;
 
     // 校验子节点 ID 唯一性
     // 在 main.tsx 中启用了 React.StrictMode ，这会导致组件在开发模式下进行双重渲染，包括 useDrop 钩子的设置和事件处理函数。 所以会暂时报错
@@ -73,7 +76,9 @@ class ComTree {
     // 初始化 children（防止传入的新节点没有 children 属性）
     newNode.children = newNode.children || [];
     // 添加子节点
-    parentNode.children.push(newNode);
+    parentNode.children.splice(insertIndex, 0, newNode);
+    // 更新子节点的 parentId
+    newNode.parentId = parentId;
     return true;
   }
 
@@ -144,7 +149,7 @@ class ComTree {
   }
 
   // 拖拽函数
-  dropDrag(sourceId: number, targetParentId: number) {
+  dropDrag(sourceId: number, targetParentId: number, childrenIndex: number) {
     // 1. 验证参数有效性
     if (!sourceId || !targetParentId) {
       throw new Error('缺少必要参数');
@@ -175,17 +180,14 @@ class ComTree {
     if (!removeResult) {
       throw new Error(`移除源组件 ${sourceId} 失败`);
     }
+    const childrenArrIndex = childrenIndex || -1;
 
-    const addResult = this.addNode(sourceComponent, targetParentId);
+    const addResult = this.addNode(sourceComponent, targetParentId, childrenArrIndex);
 
     if (!addResult) {
       // 如果添加失败，尝试恢复源组件到原来的父组件
-      this.addNode(sourceComponent, originalParentId);
+      this.addNode(sourceComponent, originalParentId, childrenArrIndex);
       throw new Error(`将源组件 ${sourceId} 添加到目标父组件 ${targetParentId} 失败`);
-    } else {
-      // 8. 更新源组件的 parentId
-      sourceComponent.parentId = targetParentId;
-
     }
   }
 

@@ -9,7 +9,7 @@ import { generateComSchema, generateVirtualDom } from "@utils/generateComSchema"
 import './RenderComponentContent.scss'
 
 // 根据组件类型渲染不同的DOM元素
-const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ component }) => {
+const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: boolean }> = ({ component, Selected }) => {
   const { metadata, config, children } = component;
   const { state, actions } = useWebsContext();
   const { selectedComponentId, isDragCom, virtualDomId } = state;
@@ -18,10 +18,10 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
   const divRef = useRef<HTMLDivElement>(null);
 
   // 是否选中
-  const [isSelected, setIsSelected] = useState(selectedComponentId === component.comSchemaId);
+  const [isSelected, setIsSelected] = useState(Selected || selectedComponentId === component.comSchemaId);
   useEffect(() => {
-    setIsSelected(selectedComponentId === component.comSchemaId);
-  }, [selectedComponentId]);
+    setIsSelected(Selected || selectedComponentId === component.comSchemaId);
+  }, [selectedComponentId, Selected]);
 
   // 获得组件文本
   const text = getConfigText(config);
@@ -59,7 +59,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
           const comSchema = item as { type: string, comSchemaId: number };
           // 拖拽组件到组件上时，更新选中组件
           console.log('拖拽组件到组件上时，更新选中组件', comSchema.comSchemaId, component);
-          actions.handle_drag_drop(comSchema.comSchemaId, component.comSchemaId);
+          actions.handle_drag_drop(comSchema.comSchemaId, component.comSchemaId, -1);
 
         }
       }
@@ -68,36 +68,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
         actions.edit_virtual_dom_id(-1);
       }
       return dropped;
-    },
-    hover: (item: ItemType, monitor) => {
-      // 使用shallow选项确保只有最上层的放置目标处理hover事件
-      if (monitor.canDrop() && monitor.didDrop() === false) {
-        if (item.type === DnDTypes.COMMETA) {
-          actions?.edit_is_drag_com?.(true);
-        } else if (item.type === DnDTypes.COMSCHEMA) {
-
-        }
-        // 检查拖拽是否仍然在放置目标上，且是最上层目标
-        if (monitor.isOver({ shallow: true })) {
-          // monitor.isOver({ shallow: true }) 确保只有最上层的放置目标处理hover事件
-          // { shallow: true }表示 只检测当前放置目标是否是最上层的
-          // 虚拟Dom实现预览效果
-          // 只在没有虚拟DOM的情况下创建
-          if (virtualDomId === -1) {
-            const newVirtualDomId = (virtualDomId === -1 ? 0 : virtualDomId) + 1;
-            const virtualDom = generateVirtualDom(newVirtualDomId, component.comSchemaId);
-            actions.edit_virtual_dom_id(virtualDom.comSchemaId);
-            actions.add_component(virtualDom, component.comSchemaId);
-          }
-        } else if (!monitor.isOver()) {
-          // 拖拽离开所有放置目标时移除虚拟DOM
-          // 如果不加 '(!monitor.isOver())' 的话,会导致不满足上面的条件的区域都执行会移除虚拟DOM 并且会不断添加删除虚拟DOM浪费性能
-          if (virtualDomId !== undefined) {
-            actions.remove_component(virtualDomId);
-            actions.edit_virtual_dom_id(-1);
-          }
-        }
-      }
     },
     collect: (monitor) => ({
       canDrop: monitor.canDrop(),
@@ -116,6 +86,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
   });
   dragComItem(divRef.current);
 
+  console.log(component.comSchemaId,'Selected', Selected, 'isSelected', isSelected);
   // 渲染组件内容
   switch (metadata.componentType) {
     case ComponentTypeEnum.VIRTUAL:
@@ -134,7 +105,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
           }}>
           {text !== '' && text}
           {children && children.length > 0 && children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} />
+            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
           ))}
         </div>
       );
@@ -147,7 +118,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema }> = ({ comp
           }}>
           {text && <div className="component-preview__text">{text}</div>}
           {children && children.length > 0 && children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} />
+            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
           ))}
         </div>
       );

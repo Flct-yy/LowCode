@@ -93,7 +93,7 @@ function WebsReducer(state: PageModel, action: {
     field?: ConfigItemFieldEnum, currentValue?: any,
     currentUnit?: string, parentId?: number,
     virtualDomId?: number,
-    sourceId?: number, targetParentId?: number,
+    sourceId?: number, targetParentId?: number, childrenIndex?: number,
   }
 }): PageModel {
   switch (action.type) {
@@ -118,7 +118,7 @@ function WebsReducer(state: PageModel, action: {
         metadata: { ...state.metadata, updatedAt: new Date() },
       }
     case Actions.ADD_COMPONENT:
-      state.comTree.addNode(action.payload.component!, action.payload.parentId!)
+      state.comTree.addNode(action.payload.component!, action.payload.parentId!, action.payload.childrenIndex!)
       return {
         ...state,
         comTree: state.comTree,
@@ -143,7 +143,7 @@ function WebsReducer(state: PageModel, action: {
         comTree: state.comTree,
       }
     case Actions.HANDLE_DRAG_DROP:
-      state.comTree.dropDrag(action.payload.sourceId!, action.payload.targetParentId!)
+      state.comTree.dropDrag(action.payload.sourceId!, action.payload.targetParentId!, action.payload.childrenIndex!)
       return {
         ...state,
         comTree: state.comTree,
@@ -208,7 +208,7 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     remove_component: (id: number) => dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => dispatch({ type: Actions.EDIT_CHANGE_VALUE, payload: { areaName, field, currentValue } }),
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => dispatch({ type: Actions.EDIT_CHANGE_UNIT, payload: { areaName, field, currentUnit } }),
-    handle_drag_drop: (sourceId: number, targetParentId: number) => dispatch({ type: Actions.HANDLE_DRAG_DROP, payload: { sourceId, targetParentId } }),
+    handle_drag_drop: (sourceId: number, targetParentId: number, childrenIndex: number) => dispatch({ type: Actions.HANDLE_DRAG_DROP, payload: { sourceId, targetParentId, childrenIndex } }),
 
     edit_show_iframe: (showIframe: boolean) => dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
     edit_select_com: (selectedComponentId: number) => dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),

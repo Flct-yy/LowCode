@@ -1,8 +1,4 @@
 .component-preview__default {
-  width: 100%;
-  /* 默认添加透明边框，保持元素尺寸不变 */
-  border: 1px dashed #555555;
-  box-sizing: border-box;
 
   &:hover {
     /* 悬停时只改变边框颜色，不改变元素尺寸 */
@@ -10,11 +6,10 @@
   }
 
   &.component-preview__selected {
-    border: 1px dashed #007bff !important;
+    background-color: rgba(111, 113, 115, 0.1) !important;
   }
 
   &.component-preview__can-drop {
-    padding: 10px !important;
   }
 }
 

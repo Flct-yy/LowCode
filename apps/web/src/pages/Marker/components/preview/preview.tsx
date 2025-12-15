@@ -7,7 +7,7 @@ import { handleWheel } from '@wect/utils';
 import { generateComSchema } from '@utils/generateComSchema';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
-import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 
 
 const Preview: React.FC = () => {
@@ -152,6 +152,17 @@ const Preview: React.FC = () => {
       actions.edit_select_com(comSchemaId as number);
     }
   };
+  // 组件操作按钮-移动组件
+  const handleMoveUpComponent = () => {
+    if (selectedComponentId !== -1) {
+      actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.parentId || -1);
+    }
+  };
+  const handleMoveDownComponent = () => {
+    if (selectedComponentId !== -1) {
+      actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
+    }
+  };
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>
@@ -192,7 +203,9 @@ const Preview: React.FC = () => {
 
 
         <div className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={{ top: 0, right: 0 }}>
-          <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
+          <Button style={{ marginRight: 8 }} danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
+          <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} />
+          <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowDownOutlined />} onClick={handleMoveDownComponent} />
         </div>
 
       </div>

@@ -1,38 +1,38 @@
 import React from 'react';
-import { Empty } from 'antd';
+import { Empty, Tabs, TabsProps } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { type ComponentSchema } from '@/type/ComponentSchema';
-import { type TotesConfig } from '@/type/Config';
-import ConfigComArea from './components/configComArea';
+import ComConfig from './comConfig';
+import ComTreeControl from './comTreeControl';
 import './editor.scss';
 
 const Editor: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { selectedComponentId } = state;
-  const selectedComponent: ComponentSchema | undefined = state.comTree.findNode(selectedComponentId!);
+  const { comTree, selectedComponentId } = state;
+  const selectedComponent: ComponentSchema | undefined = comTree.findNode(selectedComponentId!);
 
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: '组件配置',
+      children: selectedComponentId !== -1 ? (
+        <ComConfig selectedComponent={selectedComponent!} />
+      ) : <Empty description="请选择组件" />,
+    },
+    {
+      key: '2',
+      label: '组件总览',
+      children: <ComTreeControl
+        selectedComponentId={selectedComponentId!}
+        comTree={comTree}
+        onSelect={actions.edit_select_com}
+        onDragDrop={actions.handle_drag_drop} />,
+    },
+  ];
 
   return (
     <div className='editor'>
-      {selectedComponentId !== -1 ? (
-        <div>
-          <div className='config-com-info'>
-            <div className='config-com-info__item'>
-              组件：{selectedComponent?.metadata?.componentType}
-            </div>
-            <div className='config-com-info__item'>
-              {selectedComponent?.metadata?.description}
-            </div>
-          </div>
-          {
-            selectedComponent?.config.map((item: TotesConfig, index: number) => (
-              <ConfigComArea key={item.areaName || index.toString()} config={item} />
-            ))
-          }
-        </div>
-      ) : (
-        <Empty description="请选择组件" />
-      )}
+      <Tabs defaultActiveKey="1" items={items} onChange={(key) => console.log(key)} />
     </div>
   );
 }
