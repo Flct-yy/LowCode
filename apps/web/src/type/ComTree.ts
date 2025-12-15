@@ -18,11 +18,6 @@ class ComTree {
         tags: [],
         version: '1.0.0',
       },
-      position: {
-        x: 0,
-        y: 0,
-        position: 'static',
-      },
       config: [],
       children: [],
       parentId: -1,

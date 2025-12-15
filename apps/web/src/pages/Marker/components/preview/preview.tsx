@@ -1,10 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
-import { useDrag, useDrop } from 'react-dnd';
-import { handleWheel } from '@wect/utils';
-import { generateComSchema } from '@utils/generateComSchema';
+import {  useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
@@ -12,33 +10,9 @@ import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata, comTree, showIframe, selectedComponentId, aspectRatio, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom } = state;
+  const { metadata, comTree, showIframe, selectedComponentId, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
 
-  // 鼠标滚轮缩放事件处理
-  const handleWheelZoom = (e: React.WheelEvent) => {
-    const newZoomRatio = handleWheel(e, zoomRatio);
-    actions.edit_zoom_ratio(newZoomRatio);
-  };
-
-  // 使用 react-dnd 实现画布拖拽
-  const [, drag] = useDrag({
-    type: DnDTypes.PAGEMOVE,
-    item: (monitor) => {
-      // 拖拽开始时获取鼠标位置
-      const clientOffset = monitor.getClientOffset();
-      return {
-        type: DnDTypes.PAGEMOVE,
-        startX: clientOffset?.x,
-        startY: clientOffset?.y
-      };
-    },
-    canDrag: () => !isDragCom,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  });
   // 画布拖拽事件处理
   const [, dropPageMove] = useDrop({
     accept: DnDTypes.PAGEMOVE,
@@ -65,7 +39,7 @@ const Preview: React.FC = () => {
   });
   // 应用拖拽 ref 到预览元素
   dropPageMove(previewContainerRef);
-  drag(previewRef);
+
 
   // 缩放比例输入框
   const handleZoom = (value: number) => {
@@ -163,8 +137,7 @@ const Preview: React.FC = () => {
       actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
     }
   };
-  console.log(state.comTree.root);
-  
+
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>
@@ -201,8 +174,13 @@ const Preview: React.FC = () => {
             checked={isDragCom}
             onChange={actions.edit_is_drag_com}
           />
+          <Switch
+            checkedChildren="滑动"
+            unCheckedChildren="缩放"
+            checked={isSliding}
+            onChange={actions.edit_is_sliding}
+          />
         </div>
-
 
         <div className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={{ top: 0, right: 0 }}>
           <Button style={{ marginRight: 8 }} danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
@@ -211,24 +189,8 @@ const Preview: React.FC = () => {
         </div>
 
       </div>
-
-      <div className="preview"
-        ref={previewRef}
-        style={{
-          aspectRatio: aspectRatio,
-          transform: `translateY(-50%) scale(${zoomRatio})`,
-          transformOrigin: 'center center',
-          translate: `${previewScrollLeft}px ${previewScrollTop}px`
-        }}
-        onWheelCapture={handleWheelZoom}
-      >
-        {/* 画布背景网格 */}
-        <div className="preview__bg" />
-        {/* 组件渲染区域 */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <ComponentPreview comRoot={comTree.root} />
-        </div>
-      </div>
+      {/* 组件渲染区域 */}
+      <ComponentPreview comRoot={comTree.root} />
     </div>
   );
 }

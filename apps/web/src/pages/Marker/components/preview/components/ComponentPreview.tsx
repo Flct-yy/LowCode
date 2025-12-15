@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { type ComponentSchema } from '@type/ComponentSchema';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import convertConfigToStyle from '@utils/convertConfigToStyle';
 import RenderComponentContent from './RenderComponentContent';
 import './ComponentPreview.scss';
-import { useDrop } from 'react-dnd';
+import { useDrop, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
-import { generateComSchema, generateVirtualDom } from '@/utils/generateComSchema';
+import { generateComSchema } from '@/utils/generateComSchema';
+import { handleWheel } from '@wect/utils';
 
 
 
 
 const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) => {
   const { state, actions } = useWebsContext();
-  const { aspectRatio, selectedComponentId, virtualDomId } = state;
-  const rootRef = React.useRef<HTMLDivElement>(null);
+  const { aspectRatio, selectedComponentId, virtualDomId, previewScrollLeft, previewScrollTop, zoomRatio, isSliding, isDragCom } = state;
+  const previewRef = useRef<HTMLDivElement>(null);
+
 
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
@@ -53,31 +55,64 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
       isOverShallow: monitor.isOver({ shallow: true })
     })
   });
-  dropComItem(rootRef.current);
+  dropComItem(previewRef.current);
+  // 使用 react-dnd 实现画布拖拽
+  const [, drag] = useDrag({
+    type: DnDTypes.PAGEMOVE,
+    item: (monitor) => {
+      // 拖拽开始时获取鼠标位置
+      const clientOffset = monitor.getClientOffset();
+      return {
+        type: DnDTypes.PAGEMOVE,
+        startX: clientOffset?.x,
+        startY: clientOffset?.y
+      };
+    },
+    canDrag: () => !isDragCom,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging()
+    })
+  });
+  drag(previewRef);
 
   const style = convertConfigToStyle(comRoot.config);
   const positionStyle: React.CSSProperties = {
-    position: comRoot.position.position,
-    left: comRoot.position.x,
-    top: comRoot.position.y,
-    zIndex: comRoot.position.zIndex,
+    aspectRatio: aspectRatio,
+    transform: `translateY(-50%) scale(${zoomRatio})`,
+    transformOrigin: 'center center',
+    translate: `${previewScrollLeft}px ${previewScrollTop}px`
   };
   const newStyle = { ...style, ...positionStyle };
 
+  // 鼠标滚轮缩放事件处理
+  const handleWheelZoom = (e: React.WheelEvent) => {
+    if (isSliding) {
+      return;
+    }
+    e.preventDefault();
+    const newZoomRatio = handleWheel(e, zoomRatio);
+    actions.edit_zoom_ratio(newZoomRatio);
+  };
   return (
-    <div className="component-preview" style={{ aspectRatio }}>
-      {/* 组件内容 - 递归渲染 */}
-      <div ref={rootRef}
-        className={`component-preview__root ${canDrop ? 'component-preview__can-drop' : ''}`} style={{ ...newStyle }}
-        onMouseDown={(e) => {
-          e.stopPropagation();
-          actions?.edit_select_com?.(comRoot.comSchemaId);
-        }}>
-        {comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
-          <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={selectedComponentId === child.comSchemaId} />
-        ))}
+    <div ref={previewRef}
+      className={`component-preview__root ${isSliding ? 'component-preview__sliding' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`
+      } style={{ ...newStyle, aspectRatio }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        actions?.edit_select_com?.(comRoot.comSchemaId);
+      }}
+      onWheelCapture={handleWheelZoom}
+    >
+      <div className="preview__content">
+        <div className="preview__bg"></div>
+          {
+            comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
+              <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={selectedComponentId === child.comSchemaId} />
+            ))
+          }
       </div>
     </div>
+
   );
 };
 

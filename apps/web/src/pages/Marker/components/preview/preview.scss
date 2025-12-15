@@ -55,27 +55,4 @@
       opacity: 1;
     }
   }
-
-  .preview {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    cursor: move;
-    background-color: #ffffff;
-    position: relative;
-    top: 50%;
-    overflow: auto;
-    box-sizing: border-box;
-
-    .preview__bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
-      background-size: 20px 20px;
-      pointer-events: none;
-      z-index: 0;
-    }
-  }
 }

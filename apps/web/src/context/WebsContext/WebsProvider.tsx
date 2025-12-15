@@ -23,6 +23,7 @@ const initialState: PageModel = {
   previewScrollTop: 0,
   previewScrollLeft: 0,
   isDragCom: false,
+  isSliding: false,
   virtualDomId: -1,
 }
 
@@ -46,6 +47,7 @@ interface ActionType {
   EDIT_ZOOM_RATIO: string,
   EDIT_PREVIEW_SCROLL: string,
   EDIT_IS_DRAG_COM: string,
+  EDIT_IS_SLIDING: string,
   EDIT_VIRTUAL_DOM_ID: string,
 }
 
@@ -75,6 +77,8 @@ const Actions: ActionType = {
   EDIT_PREVIEW_SCROLL: 'EDIT_PREVIEW_SCROLL',
   // 编辑是否拖动画布还是组件
   EDIT_IS_DRAG_COM: 'EDIT_IS_DRAG_COM',
+  // 编辑是否滑动
+  EDIT_IS_SLIDING: 'EDIT_IS_SLIDING',
   // 编辑虚拟DOM ID
   EDIT_VIRTUAL_DOM_ID: 'EDIT_VIRTUAL_DOM_ID',
 }
@@ -94,6 +98,7 @@ function WebsReducer(state: PageModel, action: {
     currentUnit?: string, parentId?: number,
     virtualDomId?: number,
     sourceId?: number, targetParentId?: number, childrenIndex?: number,
+    isSliding?: boolean,
   }
 }): PageModel {
   switch (action.type) {
@@ -185,6 +190,11 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         isDragCom: action.payload.isDragCom!,
       }
+    case Actions.EDIT_IS_SLIDING:
+      return {
+        ...state,
+        isSliding: action.payload.isSliding!,
+      }
     case Actions.EDIT_VIRTUAL_DOM_ID:
       return {
         ...state,
@@ -216,6 +226,8 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
     edit_zoom_ratio: (zoomRatio: number) => dispatch({ type: Actions.EDIT_ZOOM_RATIO, payload: { zoomRatio } }),
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => dispatch({ type: Actions.EDIT_PREVIEW_SCROLL, payload: { previewScrollTop, previewScrollLeft } }),
     edit_is_drag_com: (isDragCom: boolean) => dispatch({ type: Actions.EDIT_IS_DRAG_COM, payload: { isDragCom } }),
+    // 编辑是否滑动
+    edit_is_sliding: (isSliding: boolean) => dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } }),
     edit_virtual_dom_id: (virtualDomId: number) => dispatch({ type: Actions.EDIT_VIRTUAL_DOM_ID, payload: { virtualDomId } }),
   }
 

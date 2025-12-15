@@ -16,6 +16,8 @@
 
 /* 针对 IE, Edge 和 Firefox */
 body {
+  overflow: hidden;
+  
   -ms-overflow-style: none;
   /* IE 和 Edge */
   scrollbar-width: none;
