@@ -27,13 +27,14 @@ const convertConfigToStyle = (config: ComponentSchema['config']): React.CSSPrope
           style.alignContent = configItem.currentValue as React.CSSProperties['alignContent'];
           break;
         case ConfigItemFieldEnum.MarginPadding:
-          // 处理MarginPadding配置项 未完成
+          // 处理MarginPadding配置项
           const margin = configItem.currentValue.margin;
           const padding = configItem.currentValue.padding;
+          // 获取单位，默认为px
+          const unit = (configItem as any).unit || (configItem as any).currentUnit || 'px';
           
-          style.margin = `${margin.top}${(configItem as InputNumberConfigItem).unit || (configItem as InputNumberConfigItem).unit} ${margin.right}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${margin.bottom}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${margin.left}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
-
-          style.padding = `${padding.top}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.right}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.bottom}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${padding.left}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
+          style.margin = `${margin.top}${unit} ${margin.right}${unit} ${margin.bottom}${unit} ${margin.left}${unit}`;
+          style.padding = `${padding.top}${unit} ${padding.right}${unit} ${padding.bottom}${unit} ${padding.left}${unit}`;
           break;
         case ConfigItemFieldEnum.borderColor:
           style.borderColor = configItem.currentValue as React.CSSProperties['borderColor'];

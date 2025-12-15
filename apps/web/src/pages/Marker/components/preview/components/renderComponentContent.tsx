@@ -86,7 +86,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   });
   dragComItem(divRef.current);
 
-  console.log(component.comSchemaId,'Selected', Selected, 'isSelected', isSelected);
   // 渲染组件内容
   switch (metadata.componentType) {
     case ComponentTypeEnum.VIRTUAL:
