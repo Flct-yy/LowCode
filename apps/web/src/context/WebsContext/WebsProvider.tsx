@@ -24,7 +24,6 @@ const initialState: PageModel = {
   previewScrollLeft: 0,
   isDragCom: false,
   isSliding: false,
-  virtualDomId: -1,
 }
 
 interface ActionType {
@@ -49,7 +48,6 @@ interface ActionType {
   EDIT_PREVIEW_SCROLL: string,
   EDIT_IS_DRAG_COM: string,
   EDIT_IS_SLIDING: string,
-  EDIT_VIRTUAL_DOM_ID: string,
 }
 
 const Actions: ActionType = {
@@ -81,8 +79,6 @@ const Actions: ActionType = {
   EDIT_IS_DRAG_COM: 'EDIT_IS_DRAG_COM',
   // 编辑是否滑动
   EDIT_IS_SLIDING: 'EDIT_IS_SLIDING',
-  // 编辑虚拟DOM ID
-  EDIT_VIRTUAL_DOM_ID: 'EDIT_VIRTUAL_DOM_ID',
 }
 
 
@@ -98,7 +94,6 @@ function WebsReducer(state: PageModel, action: {
     isDragCom?: boolean, areaName?: ConfigAreaEnum,
     field?: ConfigItemFieldEnum, currentValue?: any,
     currentUnit?: string, parentId?: number,
-    virtualDomId?: number,
     sourceId?: number, targetParentId?: number, childrenIndex?: number,
     isSliding?: boolean,
     comTree?: ComponentSchema,
@@ -203,11 +198,6 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         isSliding: action.payload.isSliding!,
       }
-    case Actions.EDIT_VIRTUAL_DOM_ID:
-      return {
-        ...state,
-        virtualDomId: action.payload.virtualDomId!,
-      }
     default:
       return state;
   }
@@ -292,11 +282,6 @@ export default function WebsProvider({ children }: { children: React.ReactNode }
       dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
-    edit_virtual_dom_id: (virtualDomId: number) => {
-      dispatch({ type: Actions.EDIT_VIRTUAL_DOM_ID, payload: { virtualDomId } })
-      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
-    },
-
     // 导入
     import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => {
       // 导入组件树后，需要更新页面元信息

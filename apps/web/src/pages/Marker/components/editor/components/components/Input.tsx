@@ -1,5 +1,6 @@
 import React from "react";
 import { InputConfigItem } from "@type/ConfigItem";
+import { text } from "stream/consumers";
 
 
 const Input = ({
@@ -14,7 +15,6 @@ const Input = ({
     label,
     uiType,
     placeholder,
-    type,
     defaultValue,
     currentValue,
   } = configItem;
@@ -24,7 +24,7 @@ const Input = ({
       <label className="config-item__label">{label}</label>
       <input
         className="config-item__ui border padding noOutline"
-        type={type}
+        type="text"
         value={currentValue || ''}
         onChange={(e) => setCurrentValue(e.target.value)}
         onBlur={(e) => setCurrentValue(e.target.value)}

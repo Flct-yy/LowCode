@@ -35,7 +35,6 @@ export interface PageModel {
   previewScrollLeft: number; // 预览区域滚动位置
   isDragCom: boolean;// 是否拖动画布还是组件
   isSliding: boolean;// 是否滑动
-  virtualDomId?: number; // 虚拟DOM ID
 }
 
 // 导出默认接口，保持向后兼容

@@ -1,4 +1,4 @@
-import { type ConfigItem, UiTypeEnum, InputTypeEnum } from "@type/ConfigItem";
+import { type ConfigItem, UiTypeEnum } from "@type/ConfigItem";
 import { ConfigItemFieldEnum } from "@type/Config";
 
 
@@ -13,7 +13,7 @@ const initConfigItem: ConfigItem[] = [
   {
     field: ConfigItemFieldEnum.flexWrap,
     label: '换行',
-    uiType: UiTypeEnum.SELECT,
+    uiType: UiTypeEnum.GROUP,
     defaultValue: 'nowrap',
     currentValue: 'nowrap',
     options: [
@@ -24,7 +24,7 @@ const initConfigItem: ConfigItem[] = [
   {
     field: ConfigItemFieldEnum.flexDirection,
     label: '主轴方向',
-    uiType: UiTypeEnum.SELECT,
+    uiType: UiTypeEnum.GROUP,
     defaultValue: 'row',
     currentValue: 'row',
     options: [
@@ -157,7 +157,7 @@ const initConfigItem: ConfigItem[] = [
   {
     field: ConfigItemFieldEnum.borderStyle,
     label: '边框样式',
-    uiType: UiTypeEnum.SELECT,
+    uiType: UiTypeEnum.GROUP,
     defaultValue: 'solid',
     currentValue: 'solid',
     options: [
@@ -201,7 +201,6 @@ const initConfigItem: ConfigItem[] = [
     label: '文字',
     uiType: UiTypeEnum.INPUT,
     placeholder: '请输入文字',
-    type: InputTypeEnum.TEXT,
     defaultValue: '',
     currentValue: '',
   },

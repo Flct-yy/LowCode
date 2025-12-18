@@ -26,7 +26,6 @@ export interface WebsContextType {
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
     edit_is_drag_com: (isDragCom: boolean) => void;
     edit_is_sliding: (isSliding: boolean) => void;
-    edit_virtual_dom_id: (virtualDomId: number) => void;
     import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => void;
   };
 }

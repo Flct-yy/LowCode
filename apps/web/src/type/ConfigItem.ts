@@ -9,14 +9,6 @@ export enum UiTypeEnum {
   MARGIN_PADDING = 'MarginPadding',
 }
 
-// 输入框类型枚举
-export enum InputTypeEnum {
-  TEXT = 'text',
-  NUMBER = 'number',
-  PASSWORD = 'password',
-  EMAIL = 'email'
-}
-
 /**
  * 配置项选项接口
  */
@@ -63,7 +55,6 @@ interface BaseConfigItem {
  */
 export interface InputConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.INPUT;
-  type?: InputTypeEnum;
 }
 
 /**
@@ -120,7 +111,7 @@ export interface ColorPickerConfigItem extends BaseConfigItem {
  */
 export interface GroupConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.GROUP;
-  children: ConfigItem[];
+  options: Array<ConfigOption>;
 }
 
 /**

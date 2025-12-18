@@ -6,6 +6,7 @@ import Select from './components/Select';
 import ColorPicker from './components/ColorPicker';
 import InputNumber from './components/InputNumber';
 import MarginPadding from './components/MarginPadding';
+import Group from './components/Group';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 import DoubleInputNumber from './components/DoubleInputNumber';
@@ -65,10 +66,18 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
           setCurrentValue={(value: { one: number, two: number }) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
         />
       );
-      
+
     case UiTypeEnum.COLOR_PICKER:
       return (
         <ColorPicker
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
+      );
+
+    case UiTypeEnum.GROUP:
+      return (
+        <Group
           configItem={configItem}
           setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
         />
