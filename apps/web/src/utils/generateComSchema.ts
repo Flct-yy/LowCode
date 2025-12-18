@@ -34,30 +34,3 @@ export const generateComSchema: (componentId: number, parentId: number) => Compo
     isVisible: true,
   }
 };
-
-export const generateVirtualDom = (uniqueId: number,parentId: number): ComponentSchema => {
-  return {
-    comSchemaId: uniqueId!,
-    metadata: {
-      componentId: -1,
-      componentName: 'VirtualDom',
-      componentType: ComponentTypeEnum.VIRTUAL,
-      category: ComponentCategoryEnum.VIRTUAL,
-      tags: ['布局', 'VirtualDom'],
-      version: '1.0.0',
-      description: '用于布局的VirtualDom组件',
-      icon: 'virtual-dom',
-    },
-    position: {
-      x: 0,
-      y: 0,
-      position: 'static',
-      zIndex: 0,
-    },
-    config: [],
-    children: [],
-    parentId: parentId,
-    isLocked: false,
-    isVisible: true,
-  }
-}

@@ -88,28 +88,28 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
   const handleWheelZoom = (e: React.WheelEvent) => {
     if (isSliding) {
       return;
+    } else {
+      const newZoomRatio = handleWheel(e, zoomRatio);
+      actions.edit_zoom_ratio(newZoomRatio);
     }
-    e.preventDefault();
-    const newZoomRatio = handleWheel(e, zoomRatio);
-    actions.edit_zoom_ratio(newZoomRatio);
   };
   return (
     <div ref={previewRef}
       className={`component-preview__root ${isSliding ? 'component-preview__sliding' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`
-      } style={{ ...newStyle, aspectRatio }}
+      } style={{ ...newStyle, aspectRatio, }}
       onMouseDown={(e) => {
         e.stopPropagation();
         actions?.edit_select_com?.(comRoot.comSchemaId);
       }}
-      onWheelCapture={handleWheelZoom}
+      onWheel={handleWheelZoom}
     >
       <div className="preview__content">
         <div className="preview__bg"></div>
-          {
-            comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
-              <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={selectedComponentId === child.comSchemaId} />
-            ))
-          }
+        {
+          comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
+            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={selectedComponentId === child.comSchemaId} />
+          ))
+        }
       </div>
     </div>
 

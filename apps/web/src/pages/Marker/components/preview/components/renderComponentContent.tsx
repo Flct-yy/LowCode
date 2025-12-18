@@ -5,7 +5,7 @@ import convertConfigToStyle from "@utils/convertConfigToStyle";
 import { useDrop, useDrag } from "react-dnd";
 import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
-import { generateComSchema, generateVirtualDom } from "@utils/generateComSchema";
+import { generateComSchema } from "@utils/generateComSchema";
 import './RenderComponentContent.scss'
 
 // 根据组件类型渲染不同的DOM元素
@@ -28,10 +28,10 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
 
   // 获得样式
   const positionStyle: React.CSSProperties = {
-    position: component.position.position,
-    left: component.position.x,
-    top: component.position.y,
-    zIndex: component.position.zIndex,
+    position: component.position?.position,
+    left: component.position?.x || 0,
+    top: component.position?.y || 0,
+    zIndex: component.position?.zIndex || 0,
   };
   const style = convertConfigToStyle(component.config);
   const newStyle = { ...positionStyle, ...style };
@@ -88,12 +88,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
 
   // 渲染组件内容
   switch (metadata.componentType) {
-    case ComponentTypeEnum.VIRTUAL:
-      return (
-        <div style={{ ...newStyle }} className="component-preview__virtual">
-          虚拟组件
-        </div>
-      )
     case ComponentTypeEnum.FLEX:
       return (
         <div ref={divRef}

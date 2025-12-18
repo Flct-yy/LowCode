@@ -8,9 +8,7 @@
   box-sizing: border-box;
 
   &.component-preview__sliding {
-    overflow: overlay; /* 使用overlay让滚动条覆盖在内容之上，不占用宽高 */
-    scrollbar-width: thin; /* Firefox: 设置滚动条宽度 */
-    scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Firefox: 设置滑块和轨道颜色 */
+    overflow: auto;
   }
 
   .preview__content {
