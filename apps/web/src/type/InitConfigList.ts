@@ -28,19 +28,19 @@ const initConfigList: InitConfigItem[] = [
         ]
       },
       {
+        areaName: ConfigAreaEnum.regular,
+        configItem: [
+          ConfigItemFieldEnum.width,
+          ConfigItemFieldEnum.height,
+        ]
+      },
+      {
         areaName: ConfigAreaEnum.border,
         configItem: [
           ConfigItemFieldEnum.borderColor,
           ConfigItemFieldEnum.borderWidth,
           ConfigItemFieldEnum.borderRadius,
           ConfigItemFieldEnum.borderStyle,
-        ]
-      },
-      {
-        areaName: ConfigAreaEnum.regular,
-        configItem: [
-          ConfigItemFieldEnum.width,
-          ConfigItemFieldEnum.height,
         ]
       },
     ],

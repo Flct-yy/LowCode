@@ -16,4 +16,6 @@ node_modules
 #!.yarn/cache
 .pnp.*
 
+*/env
+
 docs/日志.md
