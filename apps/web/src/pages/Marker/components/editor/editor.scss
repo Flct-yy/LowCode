@@ -225,6 +225,25 @@
     margin-left: .375rem;
   }
 
+  .double-input-number-container {
+    width: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+
+    .config-item__ui {
+      min-width: auto;
+      width: 5rem;
+
+      .double-input-number-input {
+        width: 50%;
+        height: 100%;
+        text-align: center;
+      }
+    }
+  }
+
   // 颜色选择器
   .color-picker {
     min-width: 0;
@@ -272,7 +291,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      .dir-text{
+
+      .dir-text {
         width: 30%;
       }
     }

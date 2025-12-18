@@ -22,6 +22,8 @@ const initConfigList: InitConfigItem[] = [
           ConfigItemFieldEnum.flexDirection,
           ConfigItemFieldEnum.justifyContent,
           ConfigItemFieldEnum.alignContent,
+          ConfigItemFieldEnum.alignItems,
+          ConfigItemFieldEnum.gap,
           ConfigItemFieldEnum.MarginPadding,
         ]
       },
@@ -39,16 +41,6 @@ const initConfigList: InitConfigItem[] = [
         configItem: [
           ConfigItemFieldEnum.width,
           ConfigItemFieldEnum.height,
-        ]
-      },
-      {
-        areaName: ConfigAreaEnum.text,
-        configItem: [
-          ConfigItemFieldEnum.text,
-          ConfigItemFieldEnum.fontSize,
-          ConfigItemFieldEnum.fontWeight,
-          ConfigItemFieldEnum.lineHeight,
-          ConfigItemFieldEnum.color,
         ]
       },
     ],

@@ -32,7 +32,6 @@ const InputNumber = ({
   const [currentNumber, setCurrentNumber] = useState(currentValue);
 
   useEffect(() => {
-    console.log('currentValue', currentValue);
     setCurrentNumber(currentValue);
     handleChange(currentValue.toString());
   }, [currentValue, currentUnit]);
@@ -65,7 +64,6 @@ const InputNumber = ({
       setCurrentNumber(numValue);
       setCurrentValue(numValue);
     } else {
-      console.log('输入无效，回滚到当前值', currentValue);
       setCurrentNumber(currentValue);
     }
   }

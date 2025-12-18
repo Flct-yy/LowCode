@@ -14,6 +14,8 @@ export enum ConfigItemFieldEnum {
   flexDirection = 'flexDirection',
   justifyContent = 'justifyContent',
   alignContent = 'alignContent',
+  alignItems = 'alignItems',
+  gap = 'gap',
   MarginPadding = 'MarginPadding',
   // 边框
   borderColor = 'borderColor',

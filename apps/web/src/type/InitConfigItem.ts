@@ -48,7 +48,7 @@ const initConfigItem: ConfigItem[] = [
   },
   {
     field: ConfigItemFieldEnum.alignContent,
-    label: '侧轴对齐',
+    label: '多行对齐',
     uiType: UiTypeEnum.SELECT,
     defaultValue: 'center',
     currentValue: 'center',
@@ -59,6 +59,37 @@ const initConfigItem: ConfigItem[] = [
       { label: '均匀分布', value: 'space-around' },
       { label: '两侧分布', value: 'space-between' },
     ],
+  },
+  {
+    field: ConfigItemFieldEnum.alignItems,
+    label: '侧轴对齐',
+    uiType: UiTypeEnum.SELECT,
+    defaultValue: 'center',
+    currentValue: 'center',
+    options: [
+      { label: '左对齐', value: 'flex-start' },
+      { label: '居中', value: 'center' },
+      { label: '右对齐', value: 'flex-end' },
+      { label: '基线对齐', value: 'baseline' },
+      { label: '拉伸', value: 'stretch' },
+    ],
+  },
+  {
+    field: ConfigItemFieldEnum.gap,
+    label: '间距',
+    uiType: UiTypeEnum.DOUBLE_INPUT_NUMBER,
+    defaultValue: {
+      one: 0,
+      two: 0,
+    },
+    currentValue: {
+      one: 0,
+      two: 0,
+    },
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: 'px',
   },
   {
     field: ConfigItemFieldEnum.MarginPadding,

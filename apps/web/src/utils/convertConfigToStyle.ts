@@ -26,6 +26,12 @@ const convertConfigToStyle = (config: ComponentSchema['config']): React.CSSPrope
         case ConfigItemFieldEnum.alignContent:
           style.alignContent = configItem.currentValue as React.CSSProperties['alignContent'];
           break;
+        case ConfigItemFieldEnum.gap:
+          style.gap = `${configItem.currentValue.one}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit} ${configItem.currentValue.two}${(configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit}`;
+          break;
+        case ConfigItemFieldEnum.alignItems:
+          style.alignItems = configItem.currentValue as React.CSSProperties['alignItems'];
+          break;
         case ConfigItemFieldEnum.MarginPadding:
           // 处理MarginPadding配置项
           const margin = configItem.currentValue.margin;

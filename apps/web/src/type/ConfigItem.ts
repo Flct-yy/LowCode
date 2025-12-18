@@ -3,9 +3,10 @@ export enum UiTypeEnum {
   INPUT = 'Input',
   SELECT = 'Select',
   INPUT_NUMBER = 'InputNumber',
+  DOUBLE_INPUT_NUMBER = 'DoubleInputNumber',
   COLOR_PICKER = 'ColorPicker',
   GROUP = 'Group',
-  MARGIN_PADDING = 'MarginPadding'
+  MARGIN_PADDING = 'MarginPadding',
 }
 
 // 输入框类型枚举
@@ -89,6 +90,25 @@ export interface InputNumberConfigItem extends BaseConfigItem {
 }
 
 /**
+ * 双数字配置项
+ */
+export interface DoubleInputNumberConfigItem extends BaseConfigItem {
+  uiType: UiTypeEnum.DOUBLE_INPUT_NUMBER;
+  defaultValue: {
+    one: number;
+    two: number;
+  };
+  currentValue: {
+    one: number;
+    two: number;
+  };
+  unit: string;
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+/**
  * 颜色选择器配置项
  */
 export interface ColorPickerConfigItem extends BaseConfigItem {
@@ -146,6 +166,7 @@ export type ConfigItem =
   | InputConfigItem
   | SelectConfigItem
   | InputNumberConfigItem
+  | DoubleInputNumberConfigItem
   | ColorPickerConfigItem
   | GroupConfigItem
   | MarginPaddingConfigItem;

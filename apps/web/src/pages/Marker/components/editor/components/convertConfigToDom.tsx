@@ -1,5 +1,5 @@
 import React from 'react';
-import { Radio,  } from 'antd';
+import { Radio, } from 'antd';
 import { ConfigItem, UiTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
 import Select from './components/Select';
@@ -8,6 +8,7 @@ import InputNumber from './components/InputNumber';
 import MarginPadding from './components/MarginPadding';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
+import DoubleInputNumber from './components/DoubleInputNumber';
 
 
 
@@ -57,6 +58,14 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
         />
       );
 
+    case UiTypeEnum.DOUBLE_INPUT_NUMBER:
+      return (
+        <DoubleInputNumber
+          configItem={configItem}
+          setCurrentValue={(value: { one: number, two: number }) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
+      );
+      
     case UiTypeEnum.COLOR_PICKER:
       return (
         <ColorPicker
