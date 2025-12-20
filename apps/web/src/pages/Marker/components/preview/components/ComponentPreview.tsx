@@ -14,7 +14,7 @@ import { handleWheel } from '@wect/utils';
 
 const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) => {
   const { state, actions } = useWebsContext();
-  const { aspectRatio, selectedComponentId, virtualDomId, previewScrollLeft, previewScrollTop, zoomRatio, isSliding, isDragCom } = state;
+  const { aspectRatio, selectedComponentId, previewScrollLeft, previewScrollTop, zoomRatio, isSliding, isDragCom } = state;
   const previewRef = useRef<HTMLDivElement>(null);
 
 
@@ -42,11 +42,6 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
           actions.handle_drag_drop(comSchema.comSchemaId, comRoot.comSchemaId, -1);
           dropped = true;
         }
-      }
-      // 无论是否执行了放置操作，都要移除虚拟节点
-      if (virtualDomId !== -1) {
-        actions.remove_component(virtualDomId as number);
-        actions.edit_virtual_dom_id(-1);
       }
       return dropped ? { dropped: true } : undefined;
     },

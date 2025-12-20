@@ -12,7 +12,7 @@ import './RenderComponentContent.scss'
 const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: boolean }> = ({ component, Selected }) => {
   const { metadata, config, children } = component;
   const { state, actions } = useWebsContext();
-  const { selectedComponentId, isDragCom, virtualDomId } = state;
+  const { selectedComponentId, isDragCom } = state;
 
   // 组件容器 拖动放置 ref
   const divRef = useRef<HTMLDivElement>(null);
@@ -63,10 +63,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
 
         }
       }
-      if (virtualDomId !== -1) {
-        actions.remove_component(virtualDomId as number);
-        actions.edit_virtual_dom_id(-1);
-      }
       return dropped;
     },
     collect: (monitor) => ({
@@ -91,7 +87,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
     case ComponentTypeEnum.FLEX:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__flex ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={newStyle}
+          className={`component-preview__default component-preview__flex ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`} style={newStyle}
           onMouseDown={(e) => {
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
