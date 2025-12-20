@@ -16,7 +16,7 @@ export class PageMetadata {
   /**
    * 页面标题
    */
-  @Column({ length: 255, nullable: false })
+  @Column({ length: 255, nullable: false, unique: true })
   title!: string;
 
   /**
@@ -35,6 +35,7 @@ export class PageMetadata {
    * 创建时间
    */
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP',
   })
@@ -44,14 +45,22 @@ export class PageMetadata {
    * 更新时间
    */
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt!: Date;
 
   /**
+   * 关联主表page_model的主键id
+   */
+  @Column({ name: 'model_id', type: 'bigint', nullable: true, unique: true })
+  model_id!: bigint;
+
+  /**
    * 一对一关联到PageModel
    */
-  @OneToOne(() => PageModel, (pageModel) => pageModel.metadata, { cascade: ['insert', 'update'], onDelete: 'CASCADE' })
+  @OneToOne(() => PageModel, (pageModel) => pageModel.pageMetadata, { cascade: ['insert', 'update'], onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'model_id' })
   pageModel!: PageModel;
 }

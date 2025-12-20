@@ -58,21 +58,22 @@ export class PageService {
     /**
      * 注入页面元信息仓库
      */
-    @InjectRepository(PageMetadata) 
+    @InjectRepository(PageMetadata)
     private readonly pageMetadataRepository: Repository<PageMetadata>,
     /**
      * 注入页面模型仓库
      */
-    @InjectRepository(PageModel) 
+    @InjectRepository(PageModel)
     private readonly pageModelRepository: Repository<PageModel>
-  ) {}
+  ) { }
 
   /**
    * 创建新页面
    * @param createPageDto 创建页面的数据
    * @returns 创建的页面信息
    */
-  async createPage(createPageDto: CreatePageDto): Promise<PageMetadata> {
+  async createPage(createPageDto: CreatePageDto): Promise<any> {
+
     // 创建页面元信息
     const pageMetadata = this.pageMetadataRepository.create({
       title: createPageDto.title,
@@ -80,30 +81,22 @@ export class PageService {
       keywords: createPageDto.keywords,
     });
 
-    // 保存页面元信息
-    const savedMetadata = await this.pageMetadataRepository.save(pageMetadata);
-
     // 创建页面模型
     const pageModel = this.pageModelRepository.create({
-      metadata_id: savedMetadata.id,
       com_tree: createPageDto.comTree,
-      metadata: savedMetadata,
     });
 
-    // 保存页面模型
-    await this.pageModelRepository.save(pageModel);
+    // 建立双向关联
+    pageMetadata.pageModel = pageModel;
+    pageModel.pageMetadata = pageMetadata;
 
-    // 返回包含模型的完整页面信息
-    const result = await this.pageMetadataRepository.findOne({
-      where: { id: savedMetadata.id },
-      relations: ['pageModel'],
-    });
+    // 保存页面元信息（会级联保存页面模型）
+    const savedMetadata = await this.pageMetadataRepository.save(pageMetadata);
 
-    if (!result) {
-      throw new NotFoundException(`Page with ID ${savedMetadata.id} not found`);
-    }
-
-    return result;
+    return {
+      pageMetadata: savedMetadata,
+      com_tree: savedMetadata.pageModel.com_tree,
+    };
   }
 
   /**
@@ -111,7 +104,7 @@ export class PageService {
    * @param id 页面ID
    * @returns 页面信息
    */
-  async getPageById(id: bigint): Promise<PageMetadata> {
+  async getPageById(id: bigint): Promise<any> {
     const page = await this.pageMetadataRepository.findOne({
       where: { id },
       relations: ['pageModel'],
@@ -121,7 +114,11 @@ export class PageService {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
 
-    return page;
+    // 返回用户指定的数据结构
+    return {
+      pageMetadata: page,
+      com_tree: page.pageModel.com_tree,
+    };
   }
 
   /**
@@ -140,41 +137,40 @@ export class PageService {
    * @param updatePageDto 更新页面的数据
    * @returns 更新后的页面信息
    */
-  async updatePage(id: bigint, updatePageDto: UpdatePageDto): Promise<PageMetadata> {
+  async updatePage(id: bigint, updatePageDto: UpdatePageDto): Promise<any> {
     // 查找页面
-    const page = await this.getPageById(id);
+    const { pageMetadata } = await this.getPageById(id);
 
     // 更新页面元信息
-    if (updatePageDto.title) page.title = updatePageDto.title;
-    if (updatePageDto.description) page.description = updatePageDto.description;
-    if (updatePageDto.keywords) page.keywords = updatePageDto.keywords;
+    if (updatePageDto.title) pageMetadata.title = updatePageDto.title;
+    if (updatePageDto.description) pageMetadata.description = updatePageDto.description;
+    if (updatePageDto.keywords) pageMetadata.keywords = updatePageDto.keywords;
 
     // 保存更新后的元信息
-    const updatedMetadata = await this.pageMetadataRepository.save(page);
+    const updatedMetadata = await this.pageMetadataRepository.save(pageMetadata);
+
+    // 获取当前的组件树，默认为原有的
+    let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
     // 如果有组件树更新，也更新页面模型
     if (updatePageDto.comTree) {
+      // 查找关联的页面模型
       const pageModel = await this.pageModelRepository.findOne({
-        where: { metadata_id: id },
+        where: { pageMetadata: { id: updatedMetadata.id } },
       });
 
       if (pageModel) {
         pageModel.com_tree = updatePageDto.comTree;
+        updatedComTree = updatePageDto.comTree;
         await this.pageModelRepository.save(pageModel);
       }
     }
 
-    // 返回更新后的完整页面信息
-    const result = await this.pageMetadataRepository.findOne({
-      where: { id },
-      relations: ['pageModel'],
-    });
-
-    if (!result) {
-      throw new NotFoundException(`Page with ID ${id} not found`);
-    }
-
-    return result;
+    // 返回用户指定的数据结构
+    return {
+      pageMetadata: updatedMetadata,
+      com_tree: updatedComTree,
+    };
   }
 
   /**

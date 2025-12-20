@@ -1,30 +1,32 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
 import PageModel, { AspectRatioEnum, PageMetadata } from '@type/PageModel';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@type/Config';
 import { type ConfigItem } from '@type/ConfigItem';
+import { useNavigate } from 'react-router-dom';
+import pageApi from '@/api/pageApi';
 import ComTree from '@/type/ComTree';
 
-const initialState: PageModel = {
-  metadata: {
-    id: new Date().getTime(),
-    title: '',
-    description: '',
-    keywords: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  comTree: new ComTree(),
-  showIframe: true,
-  selectedComponentId: -1,
-  aspectRatio: AspectRatioEnum.RATIO_16_9,
-  zoomRatio: 1,
-  previewScrollTop: 0,
-  previewScrollLeft: 0,
-  isDragCom: false,
-  isSliding: false,
-}
+  const initialPageState: PageModel = {
+    metadata: {
+      id: 0,
+      title: '',
+      description: '',
+      keywords: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    comTree: new ComTree(),
+    showIframe: true,
+    selectedComponentId: -1,
+    aspectRatio: AspectRatioEnum.RATIO_16_9,
+    zoomRatio: 1,
+    previewScrollTop: 0,
+    previewScrollLeft: 0,
+    isDragCom: false,
+    isSliding: false,
+  };
 
 interface ActionType {
   // 编辑Page源
@@ -32,6 +34,7 @@ interface ActionType {
   EDIT_DESCRIPTION: string,
   EDIT_KEYWORDS: string,
   UPDATE_PAGE: string,
+  SET_PAGE_DATA: string,
 
   // 编辑组件
   ADD_COMPONENT: string,
@@ -56,6 +59,7 @@ const Actions: ActionType = {
   EDIT_DESCRIPTION: 'EDIT_DESCRIPTION',
   EDIT_KEYWORDS: 'EDIT_KEYWORDS',
   UPDATE_PAGE: 'UPDATE_PAGE',
+  SET_PAGE_DATA: 'SET_PAGE_DATA', // 新增：设置整个页面数据
 
   // 编辑组件
   ADD_COMPONENT: 'ADD_COMPONENT',
@@ -81,8 +85,6 @@ const Actions: ActionType = {
   EDIT_IS_SLIDING: 'EDIT_IS_SLIDING',
 }
 
-
-
 function WebsReducer(state: PageModel, action: {
   type: string;
   payload: {
@@ -97,6 +99,7 @@ function WebsReducer(state: PageModel, action: {
     sourceId?: number, targetParentId?: number, childrenIndex?: number,
     isSliding?: boolean,
     comTree?: ComponentSchema,
+    pageData?: PageModel, // 新增：整个页面数据
   }
 }): PageModel {
   switch (action.type) {
@@ -120,6 +123,10 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         metadata: { ...state.metadata, updatedAt: new Date() },
       }
+    // 新增：设置整个页面数据
+    case Actions.SET_PAGE_DATA:
+      if (!action.payload.pageData) return state;
+      return action.payload.pageData;
     case Actions.ADD_COMPONENT:
       state.comTree.addNode(action.payload.component!, action.payload.parentId!, action.payload.childrenIndex!)
       return {
@@ -203,8 +210,71 @@ function WebsReducer(state: PageModel, action: {
   }
 }
 
-export default function WebsProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(WebsReducer, initialState);
+export default function WebsProvider({ pageId, children }: { pageId: number, children: React.ReactNode }) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const defaultPageState = {
+    showIframe: true,
+    selectedComponentId: -1,
+    aspectRatio: AspectRatioEnum.RATIO_16_9,
+    zoomRatio: 1,
+    previewScrollTop: 0,
+    previewScrollLeft: 0,
+    isDragCom: false,
+    isSliding: false,
+  };
+  // 使用useEffect确保API只在pageId变化时调用一次
+  useEffect(() => {
+    // 重置状态
+    setLoading(true);
+    setError(null);
+    // 验证pageId
+    if (!pageId || typeof pageId !== 'number') {
+      setError('pageId 为空或类型不正确');
+      setLoading(false);
+      navigate('/');
+      return;
+    }
+    // 调用API获取页面详情
+    pageApi.getPageById(pageId)
+      .then((res) => {
+        if (!res || !res.pageMetadata || !res.com_tree) {
+          throw new Error('API返回数据格式不正确');
+        }
+        // 数据转换
+        const transformedData: PageModel = {
+          ...defaultPageState,
+          metadata: {
+            ...res.pageMetadata,
+            // 确保日期字段是Date对象
+            createdAt: new Date(res.pageMetadata.createdAt),
+            updatedAt: new Date(res.pageMetadata.updatedAt),
+          },
+          // 将API返回的com_tree对象转换为ComTree类的实例
+          comTree: new ComTree(res.com_tree),
+        };
+
+        if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
+          dispatch({ type: Actions.SET_PAGE_DATA, payload: { pageData: transformedData } });
+        }
+      })
+      .catch((error) => {
+        // 处理API调用错误
+        const errorMessage = error instanceof Error ? error.message : '获取页面详情失败';
+        console.error('获取页面详情失败:', error);
+        setError(errorMessage);
+        // 跳转到列表页
+        navigate('/');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [pageId, navigate]);
+
+  // 使用useReducer管理状态，初始状态为initialPageState
+  const [state, dispatch] = useReducer(WebsReducer, initialPageState);
 
   const actions = {
     edit_title: (title: string) => {

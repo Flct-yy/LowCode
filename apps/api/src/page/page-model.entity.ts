@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PageMetadata } from './page-metadata.entity';
 
 /**
@@ -14,11 +14,6 @@ export class PageModel {
   id!: bigint;
 
   /**
-   * 元信息ID，关联page_metadata表的id
-   */
-  @Column({ type: 'bigint', nullable: false })
-  metadata_id!: bigint;
-  /**
    * 组件树结构，JSON格式存储
    */
   @Column({ name: 'com_tree', type: 'json', nullable: false })
@@ -28,6 +23,5 @@ export class PageModel {
    * 一对一关联到PageMetadata
    */
   @OneToOne(() => PageMetadata, (metadata) => metadata.pageModel, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'metadata_id' })
-  metadata!: PageMetadata;
+  pageMetadata!: PageMetadata;
 }

@@ -22,7 +22,6 @@ import { PageModule } from './page/page.module';
       password: process.env.DB_PASSWORD || 'password', // 数据库密码
       database: process.env.DB_DATABASE || 'LowCode', // 数据库名称
       autoLoadEntities: true, // 自动加载实体
-      synchronize: true, // 自动同步数据库表结构
     }),
     // 页面模块
     PageModule,

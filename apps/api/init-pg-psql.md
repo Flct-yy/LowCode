@@ -1,51 +1,52 @@
-1. 创建page_metadata表（主表）
-```sql
--- 如果有则先删除已存在的表（可选，谨慎使用，会清空数据）
-DROP TABLE IF EXISTS page_metadata CASCADE;
-
--- 创建序列（可选，PostgreSQL的serial/bigserial会自动创建，这里显式创建便于管理）
-DROP SEQUENCE IF EXISTS page_metadata_id_seq;
-CREATE SEQUENCE page_metadata_id_seq START WITH 1 INCREMENT BY 1;
-
--- 创建page_metadata表
-CREATE TABLE public.page_metadata (
-    id bigint NOT NULL DEFAULT nextval('page_metadata_id_seq'::regclass),  -- 自增主键
-    title character varying(255) NOT NULL,  -- 页面标题，非空
-    description text NOT NULL,  -- 页面描述，非空
-    keywords text[] NOT NULL DEFAULT '{}',  -- 关键词数组（text[]类型）,默认空数组
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 创建时间，默认当前时间
-    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 更新时间，默认当前时间
-    -- 主键约束（PostgreSQL会自动为主键创建B树索引）
-    CONSTRAINT page_metadata_pkey PRIMARY KEY (id)
-);
-
--- 给title添加唯一约束（避免重复标题，根据业务需求添加）
-ALTER TABLE public.page_metadata ADD CONSTRAINT uk_page_metadata_title UNIQUE (title);
-```
-
-2. 创建page_model表（从表，依赖 page_metadata）
-```sql
 -- 如果有则先删除已存在的表（可选）
 DROP TABLE IF EXISTS page_model CASCADE;
-
--- 创建序列
 DROP SEQUENCE IF EXISTS page_model_id_seq;
-CREATE SEQUENCE page_model_id_seq START WITH 1 INCREMENT BY 1;
 
--- 创建page_model表
+-- 第一步：先创建表（此时不指定序列默认值）
 CREATE TABLE public.page_model (
-    id bigint NOT NULL DEFAULT nextval('page_model_id_seq'::regclass), -- 自增主键
-    metadata_id bigint NOT NULL,  -- 关联page_metadata的id，非空
-    com_tree json NOT NULL,  -- 组件树JSON数据（注意双引号保留大小写，若用小写则无需引号）
-    
-    -- 主键约束
-    CONSTRAINT page_model_pkey PRIMARY KEY (id),
-    -- 唯一约束（实现一对一关联，PostgreSQL会自动创建B树索引）
-    CONSTRAINT uk_page_model_metadata_id UNIQUE (metadata_id),
-    -- 外键约束（关联主表的id，级联更新/级联删除）
-    CONSTRAINT fk_page_model_page_metadata FOREIGN KEY (metadata_id)
-        REFERENCES public.page_metadata (id)
-        ON UPDATE CASCADE  -- 主表id更新时，从表同步更新
-        ON DELETE CASCADE  -- 主表记录删除时，从表关联记录自动删除
+    id bigint NOT NULL, -- 先只定义主键字段，不设置默认值
+    com_tree json NOT NULL,  -- 组件树JSON数据
+    CONSTRAINT page_model_pkey PRIMARY KEY (id)
 );
-```
+-- 第二步：创建序列（此时再绑定到表的主键列，表已存在）
+CREATE SEQUENCE page_model_id_seq 
+    START WITH 1 
+    INCREMENT BY 1
+    OWNED BY public.page_model.id; -- 现在表存在，可正常绑定
+
+-- 第三步：给表的id字段设置默认值（关联序列）
+ALTER TABLE public.page_model 
+ALTER COLUMN id SET DEFAULT nextval('page_model_id_seq'::regclass);
+
+
+-- 如果有则先删除已存在的表（可选，谨慎使用，会清空数据）
+DROP TABLE IF EXISTS page_metadata CASCADE;
+DROP SEQUENCE IF EXISTS page_metadata_id_seq;
+
+-- 第一步：创建从表
+CREATE TABLE public.page_metadata (
+    id bigint NOT NULL, -- 先不设置默认值
+    model_id bigint NOT NULL,  -- 关联主表page_model的主键id
+    title character varying(255) NOT NULL,  -- 页面标题
+    description text NOT NULL,  -- 页面描述
+    keywords text[] NOT NULL DEFAULT '{}',  -- 关键词数组
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 创建时间
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 更新时间
+    -- 主键约束
+    CONSTRAINT page_metadata_pkey PRIMARY KEY (id),
+    -- 外键约束：关联主表page_model的主键id
+    CONSTRAINT fk_page_metadata_page_model FOREIGN KEY (model_id)
+        REFERENCES public.page_model (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    -- 标题唯一约束
+    CONSTRAINT uk_page_metadata_title UNIQUE (title),
+    -- 一对一关联约束
+    CONSTRAINT uk_page_metadata_model_id UNIQUE (model_id)
+);
+
+-- 第二步：创建序列并绑定
+CREATE SEQUENCE page_metadata_id_seq 
+    START WITH 1 
+    INCREMENT BY 1
+    OWNED BY public.page_metadata.id;
