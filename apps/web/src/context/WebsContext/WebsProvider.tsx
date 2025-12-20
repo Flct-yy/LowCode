@@ -169,12 +169,6 @@ function WebsReducer(state: PageModel, action: {
         showIframe: action.payload.showIframe!,
       }
     case Actions.EDIT_SELECT_COM:
-      if (action.payload.selectedComponentId === state.metadata.id) {
-        return {
-          ...state,
-          selectedComponentId: -1,
-        }
-      }
       return {
         ...state,
         selectedComponentId: action.payload.selectedComponentId!,

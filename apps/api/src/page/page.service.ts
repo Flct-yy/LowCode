@@ -72,7 +72,7 @@ export class PageService {
    * @param createPageDto 创建页面的数据
    * @returns 创建的页面信息
    */
-  async createPage(createPageDto: CreatePageDto): Promise<any> {
+  async createPage(createPageDto: CreatePageDto): Promise<void> {
 
     // 创建页面元信息
     const pageMetadata = this.pageMetadataRepository.create({
@@ -92,11 +92,6 @@ export class PageService {
 
     // 保存页面元信息（会级联保存页面模型）
     const savedMetadata = await this.pageMetadataRepository.save(pageMetadata);
-
-    return {
-      pageMetadata: savedMetadata,
-      com_tree: savedMetadata.pageModel.com_tree,
-    };
   }
 
   /**
@@ -125,10 +120,10 @@ export class PageService {
    * 获取所有页面
    * @returns 所有页面的列表
    */
-  async getAllPages(): Promise<PageMetadata[]> {
-    return this.pageMetadataRepository.find({
-      relations: ['pageModel'],
-    });
+  async getAllPages(): Promise<any[]> {
+    // 使用pageMetadataRepository查询所有页面元信息
+    return await this.pageMetadataRepository.find();
+
   }
 
   /**
@@ -149,7 +144,7 @@ export class PageService {
     // 保存更新后的元信息
     const updatedMetadata = await this.pageMetadataRepository.save(pageMetadata);
 
-    // 获取当前的组件树，默认为原有的
+    // 获取当前的组件树，默认为原有组件树
     let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
     // 如果有组件树更新，也更新页面模型

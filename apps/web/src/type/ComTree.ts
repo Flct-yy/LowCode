@@ -26,7 +26,7 @@ class ComTree {
         isVisible: true,
       };
     } else {
-      this.root = comTree;
+      this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
   }
 

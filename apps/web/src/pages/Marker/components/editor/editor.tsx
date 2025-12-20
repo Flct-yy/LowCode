@@ -9,14 +9,13 @@ import './editor.scss';
 const Editor: React.FC = () => {
   const { state, actions } = useWebsContext();
   const { comTree, selectedComponentId } = state;
-  const selectedComponent: ComponentSchema | undefined = comTree.findNode(selectedComponentId!);
 
   const items: TabsProps['items'] = [
     {
       key: '1',
       label: '组件配置',
-      children: selectedComponentId !== -1 ? (
-        <ComConfig selectedComponent={selectedComponent!} />
+      children: selectedComponentId !== -1 && selectedComponentId ? (
+        <ComConfig />
       ) : <Empty description="请选择组件" />,
     },
     {

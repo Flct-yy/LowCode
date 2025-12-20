@@ -1,13 +1,25 @@
 import React from 'react';
-import { Button, Flex } from 'antd';
+import { Button, Flex, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
+import pageApi from '@/api/pageApi';
+
+
 
 const TopBar: React.FC = () => {
   const navigate = useNavigate();
   const { state, actions } = useWebsContext();
   const { metadata, comTree } = state;
 
+  const handleSave = async () => {
+    // 处理保存逻辑
+    try {
+      await pageApi.updatePage(metadata.id, { comTree });
+      message.success('保存成功');
+    } catch (error) {
+      message.error('保存失败');
+    }
+  };
 
   const handleImport = () => {
     // 处理导入逻辑
@@ -80,7 +92,7 @@ const TopBar: React.FC = () => {
         <Button type="text" onClick={() => navigate(-1)}>返回</Button>
         <Flex justify={'space-between'} align={'center'} gap={10}>
           <Button>预览</Button>
-          <Button>保存</Button>
+          <Button onClick={handleSave}>保存</Button>
           <Button type="primary" onClick={handleImport}>导入</Button>
           <Button type="primary" onClick={handleExport}>导出</Button>
         </Flex>

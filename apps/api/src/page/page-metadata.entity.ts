@@ -54,7 +54,7 @@ export class PageMetadata {
   /**
    * 关联主表page_model的主键id
    */
-  @Column({ name: 'model_id', type: 'bigint', nullable: true, unique: true })
+  @Column({ name: 'model_id', type: 'bigint', nullable: false, unique: true })
   model_id!: bigint;
 
   /**

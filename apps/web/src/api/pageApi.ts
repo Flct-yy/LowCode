@@ -31,22 +31,22 @@ const pageApi = {
     return await api.post('/pages', params);
   },
 
-  // 获取页面列表
-  getPages: async (): Promise<PageModelResponse[]> => {
+  // 获取页面列表无组件树
+  getPages: async (): Promise<PageMetadata[]> => {
     return await api.get('/pages');
   },
 
-  // 根据ID获取页面
+  // 根据PageMetadata的ID获取页面及组件树
   getPageById: async (id: number): Promise<PageModelResponse> => {
     return await api.get(`/pages/${id}`);
   },
 
-  // 更新页面
+  // 更新页面及组件树
   updatePage: async (id: number, params: UpdatePageParams): Promise<PageModelResponse> => {
     return await api.put(`/pages/${id}`, params);
   },
 
-  // 删除页面
+  // 删除页面及组件树
   deletePage: async (id: number): Promise<void> => {
     return await api.delete(`/pages/${id}`);
   },

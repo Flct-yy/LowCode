@@ -11,7 +11,7 @@ const ConfigComArea: React.FC<{ config: TotesConfig }> = ({ config }) => {
       <div className='config-com-info'>
         {config.areaName}
       </div>
-      {config.configItem.map((item: ConfigItem,index) => (
+      {(config.configItem || []).map((item: ConfigItem,index) => (
         <ConfigComItem key={index} item={item} areaName={config.areaName} />
       ))}
     </div>

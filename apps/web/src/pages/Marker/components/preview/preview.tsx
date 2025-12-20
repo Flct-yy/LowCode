@@ -138,7 +138,6 @@ const Preview: React.FC = () => {
     }
   };
 
-  console.log('pre',state.comTree);
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>

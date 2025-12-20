@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import pageApi from '@/api/pageApi';
 import { PageModel } from '@type/PageModel';
+import ComTree from '@/type/ComTree';
 
 // 页面数据接口
 interface PageData {
@@ -28,7 +29,6 @@ const Lists: React.FC = () => {
     setLoading(true);
     try {
       const pages = await pageApi.getPages();
-      // 修复数据结构不匹配问题：后端返回的页面对象直接包含id、title等属性
       const formattedPages = pages.map((page: any) => ({
         key: page.id,
         id: page.id,
@@ -120,11 +120,13 @@ const Lists: React.FC = () => {
   // 添加新页面
   const handleAddPage = async () => {
     try {
+      // 使用时间戳确保标题唯一性
+      const uniqueTitle = `新页面_${Date.now()}`;
       const newPage = await pageApi.createPage({
-        title: '新页面',
+        title: uniqueTitle,
         description: '这是一个新创建的页面',
         keywords: ['新页面'],
-        comTree: {},
+        comTree: new ComTree(),
       });
       message.success('页面创建成功');
       fetchPages(); // 重新获取页面列表

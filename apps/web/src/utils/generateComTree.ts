@@ -4,17 +4,44 @@ import { CarryOutOutlined } from '@ant-design/icons';
 import { ComponentSchema } from "@/type/ComponentSchema";
 
 const getComTreeNode = (comSchema: ComponentSchema): TreeDataNode => {
+  // 添加调试信息
+  console.log('getComTreeNode called with comSchema:', comSchema);
+  
+  // 添加防御性检查，避免undefined访问错误
+  if (!comSchema) {
+    console.error('comSchema is undefined');
+    return {
+      title: '未定义节点',
+      key: 'undefined',
+      children: [],
+    };
+  }
+  if (!comSchema.metadata) {
+    console.error('comSchema.metadata is undefined');
+    return {
+      title: `未定义组件(${comSchema.comSchemaId || 'undefined'})`,
+      key: comSchema.comSchemaId || 'undefined',
+      icon: React.createElement(CarryOutOutlined),
+      children: [],
+    };
+  }
+  if (!comSchema.metadata.componentName) {
+    console.error('comSchema.metadata.componentName is undefined');
+  }
   return {
-    title: `${comSchema.metadata.componentName}(${comSchema.comSchemaId})`,
+    title: `${comSchema.metadata.componentName || '未命名'}(${comSchema.comSchemaId})`,
     key: comSchema.comSchemaId,
     icon: React.createElement(CarryOutOutlined),
-    children: comSchema.children.map(child => getComTreeNode(child)),
-  }
+    children: (comSchema.children || []).map(child => getComTreeNode(child)),
+  };
 }
 
 const generateComTree = (comRoot: ComponentSchema): TreeDataNode[] => {
   const treeData: TreeDataNode[] = [];
-  treeData.push(getComTreeNode(comRoot));
+  // 添加防御性检查，避免undefined访问错误
+  if (comRoot) {
+    treeData.push(getComTreeNode(comRoot));
+  }
   return treeData;
 }
 
