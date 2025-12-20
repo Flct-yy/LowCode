@@ -1,32 +1,288 @@
--- 事务包裹：保证数据一致性
+-- 事务包裹：确保主从表数据关联一致
 BEGIN;
 
--- 清空page_model 和 page_metadata
-TRUNCATE TABLE page_model, page_metadata RESTART IDENTITY;
+-- 清空表并重置自增ID（核心修改：添加CASCADE处理外键，后续手动重置序列）
+TRUNCATE TABLE page_model, page_metadata CASCADE; -- 先清空数据（CASCADE处理外键）
+-- 强制重置序列：将序列的当前值设为1，下次从1开始自增
+ALTER SEQUENCE page_metadata_id_seq RESTART WITH 1;
+ALTER SEQUENCE page_model_id_seq RESTART WITH 1;
 
--- 插入page_metadata（修复数组格式，UTF8编码）
-INSERT INTO page_metadata (title, description, keywords)
-VALUES
-('首页', '低代码平台首页', ARRAY['首页', '低代码', '示例']),
-('示例页面', '示例页面，展示各种组件', ARRAY['示例', '组件', '演示'])
-ON CONFLICT DO NOTHING;
-
--- 批量插入page_model（使用小写comtree，避免大小写问题）
-INSERT INTO page_model (metadata_id, comtree)
+-- 第一步：插入主表page_metadata数据（首页+示例页面）
+INSERT INTO public.page_metadata (title, description, keywords)
 VALUES
 (
-  (SELECT id FROM page_metadata WHERE title = '首页'), 
-  '{"comSchemaId": 1, "metadata": {"componentId": 1, "componentName": "根节点", "componentType": "Root", "category": "root", "tags": [], "version": "1.0.0"}, "config": [], "children": [{"comSchemaId": 2, "metadata": {"componentId": 2, "componentName": "弹性布局", "componentType": "Flex", "category": "layout", "tags": [], "version": "1.0.0"}, "config": [{"areaName": "布局", "configItem": [{"field": "flexDirection", "label": "方向", "uiType": "Select", "defaultValue": "row", "currentValue": "row", "options": [{"label": "水平", "value": "row"}, {"label": "垂直", "value": "column"}]}, {"field": "flexWrap", "label": "换行", "uiType": "Select", "defaultValue": "nowrap", "currentValue": "nowrap", "options": [{"label": "不换行", "value": "nowrap"}, {"label": "换行", "value": "wrap"}, {"label": "正向换行", "value": "wrap-reverse"}]}, {"field": "justifyContent", "label": "主轴对齐", "uiType": "Select", "defaultValue": "flex-start", "currentValue": "flex-start", "options": [{"label": "左对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "右对齐", "value": "flex-end"}, {"label": "两端对齐", "value": "space-between"}, {"label": "等距分布", "value": "space-around"}]}, {"field": "alignItems", "label": "交叉轴对齐", "uiType": "Select", "defaultValue": "stretch", "currentValue": "stretch", "options": [{"label": "上对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "下对齐", "value": "flex-end"}, {"label": "拉伸", "value": "stretch"}]}, {"field": "gap", "label": "间距", "uiType": "InputNumber", "defaultValue": 10, "currentValue": 20, "unit": "px", "min": 0, "max": 100, "step": 1}]}, {"areaName": "边框", "configItem": [{"field": "borderWidth", "label": "边框宽度", "uiType": "InputNumber", "defaultValue": 0, "currentValue": 1, "unit": "px", "min": 0, "max": 20, "step": 1}, {"field": "borderColor", "label": "边框颜色", "uiType": "ColorPicker", "defaultValue": "#000000", "currentValue": "#0066cc"}, {"field": "borderStyle", "label": "边框样式", "uiType": "Select", "defaultValue": "solid", "currentValue": "solid", "options": [{"label": "实线", "value": "solid"}, {"label": "虚线", "value": "dashed"}, {"label": "点线", "value": "dotted"}]}, {"field": "borderRadius", "label": "圆角", "uiType": "InputNumber", "defaultValue": 0, "currentValue": 4, "unit": "px", "min": 0, "max": 50, "step": 1}]}, {"areaName": "常规", "configItem": [{"field": "width", "label": "宽度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 80, "unit": "%", "min": 0, "max": 100, "step": 1}, {"field": "height", "label": "高度", "uiType": "InputNumber", "defaultValue": 200, "currentValue": 200, "unit": "px", "min": 0, "max": 1000, "step": 1}, {"field": "backgroundColor", "label": "背景颜色", "uiType": "ColorPicker", "defaultValue": "#ffffff", "currentValue": "#f5f5f5"}]}, {"areaName": "文字", "configItem": [{"field": "text", "label": "文本内容", "uiType": "Input", "defaultValue": "", "currentValue": "这是一个弹性布局容器"}, {"field": "fontSize", "label": "字体大小", "uiType": "InputNumber", "defaultValue": 16, "currentValue": 18, "unit": "px", "min": 12, "max": 72, "step": 1}, {"field": "color", "label": "文字颜色", "uiType": "ColorPicker", "defaultValue": "#000000", "currentValue": "#333333"}]}], "children": [], "parentId": 1, "isLocked": false, "isVisible": true}], "parentId": 0, "isLocked": false, "isVisible": true}'::json
+  '首页',
+  '低代码平台首页，提供可视化拖拽开发、组件库、模板市场等功能',
+  ARRAY['低代码', '首页', '可视化开发', '拖拽']::text[]
 ),
 (
-  (SELECT id FROM page_metadata WHERE title = '示例页面'), 
-  '{"comSchemaId": 3, "metadata": {"componentId": 1, "componentName": "根节点", "componentType": "Root", "category": "root", "tags": [], "version": "1.0.0"}, "config": [], "children": [{"comSchemaId": 4, "metadata": {"componentId": 2, "componentName": "弹性布局", "componentType": "Flex", "category": "layout", "tags": [], "version": "1.0.0"}, "config": [{"areaName": "布局", "configItem": [{"field": "flexDirection", "label": "方向", "uiType": "Select", "defaultValue": "row", "currentValue": "column", "options": [{"label": "水平", "value": "row"}, {"label": "垂直", "value": "column"}]}, {"field": "flexWrap", "label": "换行", "uiType": "Select", "defaultValue": "nowrap", "currentValue": "wrap", "options": [{"label": "不换行", "value": "nowrap"}, {"label": "换行", "value": "wrap"}, {"label": "正向换行", "value": "wrap-reverse"}]}, {"field": "justifyContent", "label": "主轴对齐", "uiType": "Select", "defaultValue": "flex-start", "currentValue": "center", "options": [{"label": "左对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "右对齐", "value": "flex-end"}, {"label": "两端对齐", "value": "space-between"}, {"label": "等距分布", "value": "space-around"}]}, {"field": "alignItems", "label": "交叉轴对齐", "uiType": "Select", "defaultValue": "stretch", "currentValue": "center", "options": [{"label": "上对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "下对齐", "value": "flex-end"}, {"label": "拉伸", "value": "stretch"}]}, {"field": "gap", "label": "间距", "uiType": "InputNumber", "defaultValue": 10, "currentValue": 15, "unit": "px", "min": 0, "max": 100, "step": 1}]}, {"areaName": "常规", "configItem": [{"field": "width", "label": "宽度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 100, "unit": "%", "min": 0, "max": 100, "step": 1}, {"field": "height", "label": "高度", "uiType": "InputNumber", "defaultValue": 300, "currentValue": 400, "unit": "px", "min": 0, "max": 1000, "step": 1}, {"field": "backgroundColor", "label": "背景颜色", "uiType": "ColorPicker", "defaultValue": "#ffffff", "currentValue": "#e8f4f8"}]}, {"areaName": "文字", "configItem": [{"field": "text", "label": "文本内容", "uiType": "Input", "defaultValue": "", "currentValue": "示例页面组件树"}, {"field": "fontSize", "label": "字体大小", "uiType": "InputNumber", "defaultValue": 16, "currentValue": 20, "unit": "px", "min": 12, "max": 72, "step": 1}, {"field": "color", "label": "文字颜色", "uiType": "ColorPicker", "defaultValue": "#000000", "currentValue": "#0066cc"}]}], "children": [{"comSchemaId": 5, "metadata": {"componentId": 2, "componentName": "弹性布局", "componentType": "Flex", "category": "layout", "tags": [], "version": "1.0.0"}, "config": [{"areaName": "布局", "configItem": [{"field": "flexDirection", "label": "方向", "uiType": "Select", "defaultValue": "row", "currentValue": "row", "options": [{"label": "水平", "value": "row"}, {"label": "垂直", "value": "column"}]}, {"field": "justifyContent", "label": "主轴对齐", "uiType": "Select", "defaultValue": "flex-start", "currentValue": "space-between", "options": [{"label": "左对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "右对齐", "value": "flex-end"}, {"label": "两端对齐", "value": "space-between"}, {"label": "等距分布", "value": "space-around"}]}]}, {"areaName": "常规", "configItem": [{"field": "width", "label": "宽度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 100, "unit": "%", "min": 0, "max": 100, "step": 1}, {"field": "height", "label": "高度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 100, "unit": "px", "min": 0, "max": 500, "step": 1}, {"field": "backgroundColor", "label": "背景颜色", "uiType": "ColorPicker", "defaultValue": "#ffffff", "currentValue": "#ffffff"}]}, {"areaName": "边框", "configItem": [{"field": "borderWidth", "label": "边框宽度", "uiType": "InputNumber", "defaultValue": 0, "currentValue": 1, "unit": "px", "min": 0, "max": 20, "step": 1}, {"field": "borderColor", "label": "边框颜色", "uiType": "ColorPicker", "defaultValue": "#000000", "currentValue": "#dddddd"}, {"field": "borderStyle", "label": "边框样式", "uiType": "Select", "defaultValue": "solid", "currentValue": "solid", "options": [{"label": "实线", "value": "solid"}, {"label": "虚线", "value": "dashed"}, {"label": "点线", "value": "dotted"}]}]}], "children": [], "parentId": 4, "isLocked": false, "isVisible": true}, {"comSchemaId": 6, "metadata": {"componentId": 2, "componentName": "弹性布局", "componentType": "Flex", "category": "layout", "tags": [], "version": "1.0.0"}, "config": [{"areaName": "布局", "configItem": [{"field": "flexDirection", "label": "方向", "uiType": "Select", "defaultValue": "row", "currentValue": "row", "options": [{"label": "水平", "value": "row"}, {"label": "垂直", "value": "column"}]}, {"field": "justifyContent", "label": "主轴对齐", "uiType": "Select", "defaultValue": "flex-start", "currentValue": "center", "options": [{"label": "左对齐", "value": "flex-start"}, {"label": "居中", "value": "center"}, {"label": "右对齐", "value": "flex-end"}, {"label": "两端对齐", "value": "space-between"}, {"label": "等距分布", "value": "space-around"}]}]}, {"areaName": "常规", "configItem": [{"field": "width", "label": "宽度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 100, "unit": "%", "min": 0, "max": 100, "step": 1}, {"field": "height", "label": "高度", "uiType": "InputNumber", "defaultValue": 100, "currentValue": 150, "unit": "px", "min": 0, "max": 500, "step": 1}, {"field": "backgroundColor", "label": "背景颜色", "uiType": "ColorPicker", "defaultValue": "#ffffff", "currentValue": "#ffffff"}]}, {"areaName": "边框", "configItem": [{"field": "borderWidth", "label": "边框宽度", "uiType": "InputNumber", "defaultValue": 0, "currentValue": 2, "unit": "px", "min": 0, "max": 20, "step": 1}, {"field": "borderColor", "label": "边框颜色", "uiType": "ColorPicker", "defaultValue": "#000000", "currentValue": "#0066cc"}, {"field": "borderStyle", "label": "边框样式", "uiType": "Select", "defaultValue": "solid", "currentValue": "solid", "options": [{"label": "实线", "value": "solid"}, {"label": "虚线", "value": "dashed"}, {"label": "点线", "value": "dotted"}]}, {"field": "borderRadius", "label": "圆角", "uiType": "InputNumber", "defaultValue": 0, "currentValue": 8, "unit": "px", "min": 0, "max": 50, "step": 1}]}], "children": [], "parentId": 4, "isLocked": false, "isVisible": true}], "parentId": 4, "isLocked": false, "isVisible": true}], "parentId": 0, "isLocked": false, "isVisible": true}'::json
-)
-ON CONFLICT (metadata_id) DO NOTHING;  -- 批量插入，只写一次ON CONFLICT
+  '示例页面',
+  '低代码平台示例页面，展示嵌套布局、按钮组件、表单组件的使用方法',
+  ARRAY['低代码', '示例页面', '组件演示', '嵌套布局']::text[]
+);
 
--- 查看插入结果
-SELECT CONCAT('Page metadata initialized count: ', COUNT(*)) AS result FROM page_metadata;
-SELECT CONCAT('Page model initialized count: ', COUNT(*)) AS result FROM page_model;
+-- 第二步：插入从表page_model数据（关联主表id）
+INSERT INTO public.page_model (metadata_id, com_tree)
+VALUES
+(
+  (SELECT id FROM public.page_metadata WHERE title = '首页'),
+  '{
+  "comSchemaId": 1,
+  "metadata": {
+    "componentId": 1,
+    "componentName": "根节点",
+    "componentType": "Root",
+    "category": "root",
+    "tags": [],
+    "version": "1.0.0"
+  },
+  "config": [],
+  "children": [
+    {
+      "comSchemaId": 2,
+      "metadata": {
+        "componentId": 2,
+        "componentName": "弹性布局",
+        "componentType": "Flex",
+        "category": "layout",
+        "tags": [],
+        "version": "1.0.0"
+      },
+      "config": [
+        {
+          "areaName": "布局",
+          "configItem": [
+            {
+              "field": "flexDirection",
+              "label": "方向",
+              "uiType": "Select",
+              "defaultValue": "row",
+              "currentValue": "row",
+              "options": [
+                {"label": "水平", "value": "row"},
+                {"label": "垂直", "value": "column"}
+              ]
+            },
+            {
+              "field": "gap",
+              "label": "间距",
+              "uiType": "InputNumber",
+              "defaultValue": 10,
+              "currentValue": 20,
+              "unit": "px",
+              "min": 0,
+              "max": 100,
+              "step": 1
+            }
+          ]
+        },
+        {
+          "areaName": "常规",
+          "configItem": [
+            {
+              "field": "width",
+              "label": "宽度",
+              "uiType": "InputNumber",
+              "defaultValue": 100,
+              "currentValue": 80,
+              "unit": "%",
+              "min": 0,
+              "max": 100,
+              "step": 1
+            },
+            {
+              "field": "backgroundColor",
+              "label": "背景颜色",
+              "uiType": "ColorPicker",
+              "defaultValue": "#ffffff",
+              "currentValue": "#f5f5f5"
+            }
+          ]
+        },
+        {
+          "areaName": "文字",
+          "configItem": [
+            {
+              "field": "text",
+              "label": "文本内容",
+              "uiType": "Input",
+              "defaultValue": "",
+              "currentValue": "低代码平台首页 - 一站式可视化开发"
+            },
+            {
+              "field": "fontSize",
+              "label": "字体大小",
+              "uiType": "InputNumber",
+              "defaultValue": 16,
+              "currentValue": 18,
+              "unit": "px",
+              "min": 12,
+              "max": 72,
+              "step": 1
+            }
+          ]
+        }
+      ],
+      "children": [],
+      "parentId": 1,
+      "isLocked": false,
+      "isVisible": true
+    }
+  ],
+  "parentId": 0,
+  "isLocked": false,
+  "isVisible": true
+}'::json
+),
+(
+  (SELECT id FROM public.page_metadata WHERE title = '示例页面'),
+  '{
+  "comSchemaId": 3,
+  "metadata": {
+    "componentId": 1,
+    "componentName": "根节点",
+    "componentType": "Root",
+    "category": "root",
+    "tags": [],
+    "version": "1.0.0"
+  },
+  "config": [],
+  "children": [
+    {
+      "comSchemaId": 4,
+      "metadata": {
+        "componentId": 2,
+        "componentName": "弹性布局",
+        "componentType": "Flex",
+        "category": "layout",
+        "tags": [],
+        "version": "1.0.0"
+      },
+      "config": [
+        {
+          "areaName": "布局",
+          "configItem": [
+            {
+              "field": "flexDirection",
+              "label": "方向",
+              "uiType": "Select",
+              "defaultValue": "row",
+              "currentValue": "column",
+              "options": [
+                {"label": "水平", "value": "row"},
+                {"label": "垂直", "value": "column"}
+              ]
+            },
+            {
+              "field": "justifyContent",
+              "label": "主轴对齐",
+              "uiType": "Select",
+              "defaultValue": "flex-start",
+              "currentValue": "center",
+              "options": [
+                {"label": "左对齐", "value": "flex-start"},
+                {"label": "居中", "value": "center"},
+                {"label": "右对齐", "value": "flex-end"}
+              ]
+            }
+          ]
+        },
+        {
+          "areaName": "常规",
+          "configItem": [
+            {
+              "field": "height",
+              "label": "高度",
+              "uiType": "InputNumber",
+              "defaultValue": 300,
+              "currentValue": 400,
+              "unit": "px",
+              "min": 0,
+              "max": 1000,
+              "step": 1
+            },
+            {
+              "field": "backgroundColor",
+              "label": "背景颜色",
+              "uiType": "ColorPicker",
+              "defaultValue": "#ffffff",
+              "currentValue": "#e8f4f8"
+            }
+          ]
+        }
+      ],
+      "children": [
+        {
+          "comSchemaId": 5,
+          "metadata": {
+            "componentId": 3,
+            "componentName": "按钮",
+            "componentType": "Button",
+            "category": "basic",
+            "tags": [],
+            "version": "1.0.0"
+          },
+          "config": [
+            {
+              "areaName": "常规",
+              "configItem": [
+                {
+                  "field": "text",
+                  "label": "按钮文字",
+                  "uiType": "Input",
+                  "defaultValue": "点击按钮",
+                  "currentValue": "查看示例代码"
+                },
+                {
+                  "field": "size",
+                  "label": "按钮大小",
+                  "uiType": "Select",
+                  "defaultValue": "middle",
+                  "currentValue": "middle",
+                  "options": [
+                    {"label": "小", "value": "small"},
+                    {"label": "中", "value": "middle"},
+                    {"label": "大", "value": "large"}
+                  ]
+                },
+                {
+                  "field": "type",
+                  "label": "按钮类型",
+                  "uiType": "Select",
+                  "defaultValue": "primary",
+                  "currentValue": "primary",
+                  "options": [
+                    {"label": "主按钮", "value": "primary"},
+                    {"label": "次按钮", "value": "default"},
+                    {"label": "危险按钮", "value": "danger"}
+                  ]
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "parentId": 4,
+          "isLocked": false,
+          "isVisible": true
+        }
+      ],
+      "parentId": 4,
+      "isLocked": false,
+      "isVisible": true
+    }
+  ],
+  "parentId": 0,
+  "isLocked": false,
+  "isVisible": true
+}'::json
+)
+ON CONFLICT (metadata_id) DO UPDATE SET  -- 修复点：移除对updated_at的更新
+  com_tree = EXCLUDED.com_tree;
+
+-- 验证插入结果
+SELECT '主表数据：' AS type, id, title FROM public.page_metadata;
+SELECT '从表数据：' AS type, pm.id, pm.metadata_id, pmt.title FROM public.page_model pm
+JOIN public.page_metadata pmt ON pm.metadata_id = pmt.id;
 
 -- 提交事务
 COMMIT;

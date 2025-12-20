@@ -1,123 +1,161 @@
-import React, { useState } from 'react';
-import { Button, Table, Tag, Flex } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Table, Tag, Flex, Spin, message } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
+import pageApi from '@/api/pageApi';
+import { PageModel } from '@type/PageModel';
 
-interface User {
+// 页面数据接口
+interface PageData {
   key: number;
-  name: string;
-  status: string;
+  id: number;
+  title: string;
+  description: string;
+  keywords: string[];
   createTime: string;
-  remark: string;
-  tags: string[];
+  updateTime: string;
   operation: string[];
 }
 
-
-
-const data: User[] = [
-  {
-    key: 0,
-    name: 'Jack',
-    status: 'active',
-    createTime: '2023-01-01',
-    remark: '这是一个备注',
-    tags: ['active', 'loser'],
-    operation: ['编辑', '删除'],
-  },
-];
-
-
 const Lists: React.FC = () => {
   const navigate = useNavigate();
-  const [list, setList] = useState<User[]>(data);
+  const [list, setList] = useState<PageData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const columns: TableColumnsType<User> = [
+  // 获取页面列表
+  const fetchPages = async () => {
+    setLoading(true);
+    try {
+      const pages = await pageApi.getPages();
+      // 修复数据结构不匹配问题：后端返回的页面对象直接包含id、title等属性
+      const formattedPages = pages.map((page: any) => ({
+        key: page.id,
+        id: page.id,
+        title: page.title,
+        description: page.description || '',
+        keywords: page.keywords || [],
+        createTime: new Date(page.createdAt).toLocaleString(),
+        updateTime: new Date(page.updatedAt).toLocaleString(),
+        operation: ['编辑', '删除'],
+      }));
+      setList(formattedPages);
+    } catch (error) {
+      console.error('获取页面列表失败:', error);
+      message.error('获取页面列表失败，请稍后重试');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 组件挂载时获取页面列表
+  useEffect(() => {
+    fetchPages();
+  }, []);
+
+  const columns: TableColumnsType<PageData> = [
     {
-      key: 'name',
-      title: 'Name',
-      dataIndex: 'name',
+      key: 'id',
+      title: 'ID',
+      dataIndex: 'id',
+      width: 80,
     },
     {
-      key: 'status',
-      title: 'Status',
-      dataIndex: 'status',
+      key: 'title',
+      title: '页面标题',
+      dataIndex: 'title',
     },
     {
-      key: 'createTime',
-      title: 'Create Time',
-      dataIndex: 'createTime',
+      key: 'description',
+      title: '页面描述',
+      dataIndex: 'description',
+      ellipsis: true,
     },
     {
-      key: 'remark',
-      title: 'Remark',
-      dataIndex: 'remark',
-    },
-    {
-      key: 'tags',
-      title: 'Tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
+      key: 'keywords',
+      title: '关键词',
+      dataIndex: 'keywords',
+      render: (_, { keywords }) => (
         <Flex gap="small" align="center" wrap>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
+          {keywords.map((keyword) => (
+            <Tag color="geekblue" key={keyword}>
+              {keyword}
+            </Tag>
+          ))}
         </Flex>
       ),
     },
     {
+      key: 'createTime',
+      title: '创建时间',
+      dataIndex: 'createTime',
+    },
+    {
+      key: 'updateTime',
+      title: '更新时间',
+      dataIndex: 'updateTime',
+    },
+    {
       key: 'operation',
-      title: 'Operation',
+      title: '操作',
       dataIndex: 'operation',
-      render: (_, { operation }) => {
+      render: (_, record) => {
         const handleClick = (item: string) => {
           if (item === '编辑') {
-            // window.location.href = `/marker`;
-            navigate('/marker');
+            navigate('/marker', { state: { pageId: record.id } });
+          } else if (item === '删除') {
+            handleDeletePage(record.id);
           }
-        }
+        };
         return (
           <Flex gap="small" align="center" wrap>
-            {operation.map((item) => (
+            {record.operation.map((item) => (
               <Button key={item} onClick={() => handleClick(item)}>{item}</Button>
             ))}
           </Flex>
-        )
+        );
       },
     },
   ];
-  const handleClick = () => {
-    setList([
-      ...list,
-      {
-        key: list.length,
-        name: '新用户',
-        status: 'active',
-        createTime: '2023-01-01',
-        remark: '这是一个备注',
-        tags: ['active', 'loser'],
-        operation: ['编辑', '删除'],
-      },
-    ]);
-  }
+  // 添加新页面
+  const handleAddPage = async () => {
+    try {
+      const newPage = await pageApi.createPage({
+        title: '新页面',
+        description: '这是一个新创建的页面',
+        keywords: ['新页面'],
+        comTree: {},
+      });
+      message.success('页面创建成功');
+      fetchPages(); // 重新获取页面列表
+    } catch (error) {
+      console.error('创建页面失败:', error);
+      message.error('创建页面失败，请稍后重试');
+    }
+  };
+
+  // 删除页面
+  const handleDeletePage = async (id: number) => {
+    try {
+      await pageApi.deletePage(id);
+      message.success('页面删除成功');
+      fetchPages(); // 重新获取页面列表
+    } catch (error) {
+      console.error('删除页面失败:', error);
+      message.error('删除页面失败，请稍后重试');
+    }
+  };
 
   return (
     <div className="container">
       <Button
         type="primary"
-        style={{ marginLeft: '16px', marginBottom: '16px' }}
-        onClick={handleClick}
-      >添加组件</Button>
-      <Table<User> columns={columns} dataSource={list} />
+        style={{ marginBottom: '16px' }}
+        onClick={handleAddPage}
+      >添加页面</Button>
+      <Spin spinning={loading} tip="加载中...">
+        <Table<PageData> columns={columns} dataSource={list} />
+      </Spin>
     </div>
   )
 }

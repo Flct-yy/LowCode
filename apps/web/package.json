@@ -31,6 +31,7 @@
     "@ant-design/icons": "6.x",
     "@wect/utils": "workspace:*",
     "antd": "^6.0.0",
+    "axios": "^1.13.2",
     "react": "^19.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",

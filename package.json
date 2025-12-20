@@ -14,7 +14,7 @@
     "build:packages": "yarn workspaces foreach -A --include 'packages/*' -p run build",
     "dev:web": "yarn workspace @wect/web dev",
     "dev:api": "yarn workspace @wect/api start:dev",
-    "dev:all": "concurrently \"yarn workspace @wect/web dev\" \"yarn workspace @wect/api start:dev\"",
+    "dev:all": "concurrently \"yarn workspace @wect/api start:dev\" \"yarn workspace @wect/web dev\"",
     "clean": "yarn workspaces foreach -A -p run clean",
     "add": "yarn workspace",
     "remove": "yarn workspace",

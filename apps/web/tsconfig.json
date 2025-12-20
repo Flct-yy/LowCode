@@ -24,5 +24,5 @@
       "@utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "api/pageApi.ts", "api/api.ts"]
 }
