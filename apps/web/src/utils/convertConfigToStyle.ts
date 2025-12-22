@@ -2,6 +2,7 @@ import { ComponentSchema } from "@/type/ComponentSchema";
 import { InputNumberConfigItem } from "@type/ConfigItem";
 import { ConfigItemFieldEnum } from "@type/Config";
 
+// 将组件配置转换为React样式对象
 const convertConfigToStyle = (config: ComponentSchema['config']): React.CSSProperties => {
   const style: React.CSSProperties = {};
 

@@ -7,7 +7,7 @@ export enum ComponentCategoryEnum {
   // 布局组件
   LAYOUT = 'layout',
   // // 基础组件
-  // BASIC = 'basic',
+  BASIC = 'basic',
   // // 表单组件
   // FORM = 'form',
   // // 显示组件
@@ -22,10 +22,10 @@ export enum ComponentTypeEnum {
   ROOT = 'Root',
   // 布局组件
   FLEX = 'Flex',
-  // BUTTON = 'Button',
+  BUTTON = 'Button',
   // INPUT = 'Input',
   // IMAGE = 'Image',
-  // TEXT = 'Text',
+  TEXT = 'Text',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

@@ -12,6 +12,26 @@ const initComponentList: ComponentMetadata[] = [
     description: '用于布局的Flex组件',
     icon: 'flex-icon',
   },
+  {
+    componentId: 2,
+    componentName: 'Text',
+    componentType: ComponentTypeEnum.TEXT,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['文本', 'Text'],
+    version: '1.0.0',
+    description: '用于显示文本的组件',
+    icon: 'text-icon',
+  },
+  {
+    componentId: 3,
+    componentName: 'Button',
+    componentType: ComponentTypeEnum.BUTTON,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['按钮', 'Button'],
+    version: '1.0.0',
+    description: '用于触发操作的按钮组件',
+    icon: 'button-icon',
+  },
 
 ]
 

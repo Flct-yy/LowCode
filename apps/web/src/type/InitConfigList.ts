@@ -45,6 +45,38 @@ const initConfigList: InitConfigItem[] = [
       },
     ],
   },
+  {
+    componentName: 'Text',
+    componentType: ComponentTypeEnum.TEXT,
+    config: [
+      {
+        areaName: ConfigAreaEnum.layout,
+        configItem: [
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.border,
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.text,
+        configItem: [
+          ConfigItemFieldEnum.text,
+          ConfigItemFieldEnum.fontSize,
+          ConfigItemFieldEnum.fontWeight,
+          ConfigItemFieldEnum.lineHeight,
+          ConfigItemFieldEnum.color,
+        ]
+      },
+    ],
+  },
 
 ]
 

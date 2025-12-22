@@ -3,6 +3,7 @@ import { ConfigItemFieldEnum } from "@type/Config";
 
 
 const initConfigItem: ConfigItem[] = [
+  // 背景颜色
   {
     field: ConfigItemFieldEnum.backgroundColor,
     label: '背景颜色',
@@ -10,6 +11,7 @@ const initConfigItem: ConfigItem[] = [
     defaultValue: '#ffffff',
     currentValue: '#ffffff',
   },
+  // 换行
   {
     field: ConfigItemFieldEnum.flexWrap,
     label: '换行',
@@ -21,6 +23,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '不换行', value: 'nowrap' },
     ],
   },
+  // 主轴方向
   {
     field: ConfigItemFieldEnum.flexDirection,
     label: '主轴方向',
@@ -32,6 +35,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '垂直方向', value: 'column' },
     ],
   },
+  // 主轴对齐
   {
     field: ConfigItemFieldEnum.justifyContent,
     label: '主轴对齐',
@@ -46,6 +50,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '两侧分布', value: 'space-between' },
     ],
   },
+  // 多行对齐
   {
     field: ConfigItemFieldEnum.alignContent,
     label: '多行对齐',
@@ -60,6 +65,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '两侧分布', value: 'space-between' },
     ],
   },
+  // 侧轴对齐
   {
     field: ConfigItemFieldEnum.alignItems,
     label: '侧轴对齐',
@@ -74,6 +80,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '拉伸', value: 'stretch' },
     ],
   },
+  // 间距
   {
     field: ConfigItemFieldEnum.gap,
     label: '间距',
@@ -91,6 +98,7 @@ const initConfigItem: ConfigItem[] = [
     step: 1,
     unit: 'px',
   },
+  // 边距
   {
     field: ConfigItemFieldEnum.MarginPadding,
     label: '边距',
@@ -125,6 +133,7 @@ const initConfigItem: ConfigItem[] = [
     },
     unit: 'px',
   },
+  // 边框颜色
   {
     field: ConfigItemFieldEnum.borderColor,
     label: '边框颜色',
@@ -132,6 +141,7 @@ const initConfigItem: ConfigItem[] = [
     defaultValue: '#000000',
     currentValue: '#000000',
   },
+  // 边框宽度
   {
     field: ConfigItemFieldEnum.borderWidth,
     label: '边框宽度',
@@ -143,6 +153,7 @@ const initConfigItem: ConfigItem[] = [
     step: 1,
     unit: 'px',
   },
+  // 边框圆角
   {
     field: ConfigItemFieldEnum.borderRadius,
     label: '边框圆角',
@@ -154,6 +165,7 @@ const initConfigItem: ConfigItem[] = [
     step: 1,
     unit: 'px',
   },
+  // 边框样式
   {
     field: ConfigItemFieldEnum.borderStyle,
     label: '边框样式',
@@ -166,6 +178,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '点线', value: 'dotted' },
     ],
   },
+  // 宽度
   {
     field: ConfigItemFieldEnum.width,
     label: '宽度',
@@ -181,6 +194,7 @@ const initConfigItem: ConfigItem[] = [
     mins: [0, 0],
     maxs: [1000, 100],
   },
+  // 高度
   {
     field: ConfigItemFieldEnum.height,
     label: '高度',
@@ -196,14 +210,16 @@ const initConfigItem: ConfigItem[] = [
     mins: [0, 0],
     maxs: [1000, 100],
   },
+  // 文字
   {
     field: ConfigItemFieldEnum.text,
     label: '文字',
     uiType: UiTypeEnum.INPUT,
     placeholder: '请输入文字',
-    defaultValue: '',
-    currentValue: '',
+    defaultValue: 'Text',
+    currentValue: 'Text',
   },
+  // 字体大小
   {
     field: ConfigItemFieldEnum.fontSize,
     label: '字体大小',
@@ -215,6 +231,7 @@ const initConfigItem: ConfigItem[] = [
     step: 1,
     unit: 'px',
   },
+  // 字体粗细
   {
     field: ConfigItemFieldEnum.fontWeight,
     label: '字体粗细',
@@ -226,6 +243,7 @@ const initConfigItem: ConfigItem[] = [
       { label: '加粗', value: 'bold' },
     ],
   },
+  // 行高
   {
     field: ConfigItemFieldEnum.lineHeight,
     label: '行高',
@@ -237,6 +255,7 @@ const initConfigItem: ConfigItem[] = [
     step: 1,
     unit: 'px',
   },
+  // 字体颜色
   {
     field: ConfigItemFieldEnum.color,
     label: '字体颜色',

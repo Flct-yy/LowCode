@@ -3,9 +3,8 @@ import { TreeDataNode } from "antd"
 import { CarryOutOutlined } from '@ant-design/icons';
 import { ComponentSchema } from "@/type/ComponentSchema";
 
+// 生成组件树视图节点
 const getComTreeNode = (comSchema: ComponentSchema): TreeDataNode => {
-  // 添加调试信息
-  console.log('getComTreeNode called with comSchema:', comSchema);
   
   // 添加防御性检查，避免undefined访问错误
   if (!comSchema) {

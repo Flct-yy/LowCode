@@ -27,7 +27,6 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
       let dropped = false;
       // 使用shallow选项确保只有最上层的放置目标处理drop事件
       if (monitor.isOver({ shallow: true }) && monitor.canDrop() && monitor.didDrop() === false) {
-        console.log('drop item', item.type);
         if (item.type === DnDTypes.COMMETA) {
           const comMeta = item as { type: string, comMeta: { id: number } };
           // 生成组件Schema
@@ -38,7 +37,6 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
         } else if (item.type === DnDTypes.COMSCHEMA) {
           const comSchema = item as { type: string, comSchemaId: number };
           // 拖拽组件到组件上时，更新选中组件
-          console.log('拖拽组件到组件上时，更新选中组件', comSchema.comSchemaId, comRoot);
           actions.handle_drag_drop(comSchema.comSchemaId, comRoot.comSchemaId, -1);
           dropped = true;
         }

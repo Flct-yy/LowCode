@@ -29,7 +29,6 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     actions.edit_change_value(areaName as ConfigAreaEnum, field, value);
   };
   const handleChangeUnit = (field: ConfigItemFieldEnum, unit: string) => {
-    console.log('unit', unit);
     actions.edit_change_unit(areaName as ConfigAreaEnum, field, unit);
   };
 

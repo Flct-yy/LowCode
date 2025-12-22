@@ -11,6 +11,7 @@ import ComTree from '@/type/ComTree';
 interface PageData {
   key: number;
   id: number;
+  metaID: number;
   title: string;
   description: string;
   keywords: string[];
@@ -29,9 +30,10 @@ const Lists: React.FC = () => {
     setLoading(true);
     try {
       const pages = await pageApi.getPages();
-      const formattedPages = pages.map((page: any) => ({
+      const formattedPages = pages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((page: any, index) => ({
         key: page.id,
-        id: page.id,
+        id: index + 1,
+        metaID: page.id,
         title: page.title,
         description: page.description || '',
         keywords: page.keywords || [],
@@ -39,6 +41,7 @@ const Lists: React.FC = () => {
         updateTime: new Date(page.updatedAt).toLocaleString(),
         operation: ['编辑', '删除'],
       }));
+      console.log(formattedPages);
       setList(formattedPages);
     } catch (error) {
       console.error('获取页面列表失败:', error);
@@ -102,9 +105,9 @@ const Lists: React.FC = () => {
       render: (_, record) => {
         const handleClick = (item: string) => {
           if (item === '编辑') {
-            navigate('/marker', { state: { pageId: record.id } });
+            navigate('/marker', { state: { pageId: record.metaID } });
           } else if (item === '删除') {
-            handleDeletePage(record.id);
+            handleDeletePage(record.metaID);
           }
         };
         return (

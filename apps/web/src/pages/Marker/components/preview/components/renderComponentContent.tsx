@@ -92,12 +92,26 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
           }}>
-          {text !== '' && text}
           {children && children.length > 0 && children.map((child) => (
             <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
           ))}
         </div>
       );
+    case ComponentTypeEnum.TEXT:
+      return (
+        <div ref={divRef}
+          className={`component-preview__default component-preview__text ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={newStyle}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            actions?.edit_select_com?.(component.comSchemaId);
+          }}
+        >
+          {text !== '' && text}
+          {children && children.length > 0 && children.map((child) => (
+            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
+          ))}
+        </div>
+      )
     default:
       return (
         <div ref={divRef} className={`component-preview__default ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={newStyle}

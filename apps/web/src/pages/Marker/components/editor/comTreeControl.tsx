@@ -27,8 +27,6 @@ const ComTreeControl = ({ selectedComponentId, comTree, onSelect, onDragDrop }: 
     }
     onDragDrop(Number(info.dragNode.key), dropNode.parentId, info.dropPosition || 0);
   };
-  console.log('comTreeControl', comTree);
-  console.log('TreeData', TreeData);
   return (
     <div className='com-tree'>
       <Tree
