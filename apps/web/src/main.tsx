@@ -6,11 +6,11 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <DndProvider backend={HTML5Backend}>
         <App />
       </DndProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 );

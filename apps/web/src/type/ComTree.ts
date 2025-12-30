@@ -1,37 +1,59 @@
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
 import { UiTypeEnum } from '@type/ConfigItem';
+
+
+const defaultRoot: ComponentSchema = {
+  comSchemaId: new Date().getTime(),
+  metadata: {
+    componentId: 0,
+    componentName: '根节点',
+    componentType: ComponentTypeEnum.ROOT,
+    category: ComponentCategoryEnum.ROOT,
+    tags: [],
+    version: '1.0.0',
+  },
+  config: [],
+  children: [],
+  parentId: -1,
+  isLocked: false,
+  isVisible: true,
+};
+
 /**
- * ComponentSchema 树结构的 CRUD 实现
+ * ComponentSchema 树结构的 CRUD 实现（单例模式）
  */
 class ComTree {
-  root: ComponentSchema
-  constructor(comTree?: ComponentSchema) {
+  private static instance: ComTree;
+  private root: ComponentSchema;
+
+  // 私有构造函数，防止外部实例化
+  private constructor(comTree?: ComponentSchema) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
-      this.root = {
-        comSchemaId: new Date().getTime(),
-        metadata: {
-          componentId: 0,
-          componentName: '根节点',
-          componentType: ComponentTypeEnum.ROOT,
-          category: ComponentCategoryEnum.ROOT,
-          tags: [],
-          version: '1.0.0',
-        },
-        config: [],
-        children: [],
-        parentId: -1,
-        isLocked: false,
-        isVisible: true,
-      };
+      this.root = defaultRoot;
     } else {
       this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
   }
 
+  // 公共静态方法获取唯一实例
+  public static getInstance(comTree?: ComponentSchema): ComTree {
+    if (!ComTree.instance) {
+      ComTree.instance = new ComTree(comTree);
+    }
+    return ComTree.instance;
+  }
+
+  public static getRoot(): ComponentSchema {
+    if (!ComTree.instance) {
+      ComTree.getInstance();
+    }
+    return ComTree.instance.root;
+  }
+
   // 递归查找节点（核心辅助方法）
-  findNode(targetId: number, node = this.root): ComponentSchema | undefined {
+  public findNode(targetId: number, node = this.root): ComponentSchema | undefined {
     // 找到目标节点，直接返回
     if (node.comSchemaId === targetId) {
       return node;
@@ -50,12 +72,11 @@ class ComTree {
   }
 
   // 添加子节点
-  addNode(newNode: ComponentSchema, parentId: number, childrenArrIndex: number) {
+  public addNode(newNode: ComponentSchema, parentId: number, childrenArrIndex: number) {
     if (!newNode.comSchemaId || !newNode.metadata.componentName) {
       console.error('新节点必须包含 comSchemaId 和 metadata.componentName 属性');
       return false;
     }
-
 
     // 查找父节点
     const parentNode = this.findNode(parentId);
@@ -82,7 +103,7 @@ class ComTree {
   }
 
   // 删除节点（包含其子节点）
-  removeNode(targetId: number) {
+  public removeNode(targetId: number) {
 
     // 查找节点
     const currentNode = this.findNode(targetId);
@@ -103,7 +124,7 @@ class ComTree {
   }
 
   // 更新节点配置
-  updateNodeConfig(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: string) {
+  public updateNodeConfig(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: string) {
     const targetNode = this.findNode(targetId);
     if (!targetNode) {
       console.error(`节点 ${targetId} 不存在`);
@@ -125,7 +146,7 @@ class ComTree {
     return true;
   }
   // 更新节点单位
-  updateNodeUnit(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) {
+  public updateNodeUnit(targetId: number, areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) {
     const targetNode = this.findNode(targetId);
     if (!targetNode) {
       console.error(`节点 ${targetId} 不存在`);
@@ -148,7 +169,7 @@ class ComTree {
   }
 
   // 拖拽函数
-  dropDrag(sourceId: number, targetParentId: number, childrenIndex: number) {
+  public dropDrag(sourceId: number, targetParentId: number, childrenIndex: number) {
     // 1. 验证参数有效性
     if (!sourceId || !targetParentId) {
       throw new Error('缺少必要参数');
@@ -191,7 +212,7 @@ class ComTree {
   }
 
   // 打印树形结构（辅助方法，便于调试）
-  printTree(node = this.root, level = 0) {
+  public printTree(node = ComTree.instance.root, level = 0) {
     const indent = '  '.repeat(level);
     console.log(`${indent}├── ${node.comSchemaId} - ${node.metadata.componentName}`);
     if (node.children && node.children.length > 0) {
@@ -201,3 +222,9 @@ class ComTree {
 }
 
 export default ComTree;
+export const comTreeInstance = ComTree.getInstance();
+ 
+// 导出工具函数
+export const findNode = (componentID: number): ComponentSchema | undefined => {
+  return comTreeInstance.findNode(componentID);
+};

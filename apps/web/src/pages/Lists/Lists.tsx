@@ -129,7 +129,7 @@ const Lists: React.FC = () => {
         title: uniqueTitle,
         description: '这是一个新创建的页面',
         keywords: ['新页面'],
-        comTree: new ComTree(),
+        comTree: ComTree.getInstance(),
       });
       message.success('页面创建成功');
       fetchPages(); // 重新获取页面列表

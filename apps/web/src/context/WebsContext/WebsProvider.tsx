@@ -17,7 +17,7 @@ import ComTree from '@/type/ComTree';
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-    comTree: new ComTree(),
+    comTree: ComTree.getInstance(),
     showIframe: true,
     selectedComponentId: -1,
     aspectRatio: AspectRatioEnum.RATIO_16_9,
@@ -142,7 +142,7 @@ function WebsReducer(state: PageModel, action: {
     case Actions.EDIT_COM_TREE:
       return {
         ...state,
-        comTree: new ComTree(action.payload.comTree!),
+        comTree: ComTree.getInstance(action.payload.comTree!),
       }
     case Actions.EDIT_CHANGE_VALUE:
       state.comTree.updateNodeConfig(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentValue!)
@@ -247,7 +247,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
             updatedAt: new Date(res.pageMetadata.updatedAt),
           },
           // 将API返回的com_tree对象转换为ComTree类的实例
-          comTree: new ComTree(res.com_tree),
+          comTree: ComTree.getInstance(res.com_tree),
         };
 
         if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
