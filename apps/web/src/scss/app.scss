@@ -1,3 +1,6 @@
+// 引入全局CSS变量
+@import './variables.scss';
+
 .container {
   position: absolute;
   top: 0;
@@ -5,8 +8,8 @@
   bottom: 0;
   left: 0;
   z-index: 0;
-  background-color: #f7f8fa;
-  padding: 16px;
+  background-color: var(--bg-color);
+  padding: var(--spacing-md);
 }
 
 /* 针对 Chrome, Safari 和 Opera */
