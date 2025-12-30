@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { type ComponentSchema } from '@type/ComponentSchema';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
-import convertConfigToStyle from '@utils/convertConfigToStyle';
 import RenderComponentContent from './RenderComponentContent';
 import './ComponentPreview.scss';
 import { useDrop, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
 import { generateComSchema } from '@/utils/generateComSchema';
 import { handleWheel } from '@wect/utils';
+import '@scss/variables.scss'
 
 
 
@@ -68,14 +68,13 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
   });
   drag(previewRef);
 
-  const style = convertConfigToStyle(comRoot.config);
-  const positionStyle: React.CSSProperties = {
+  // 使用CSS变量管理画布样式
+  const canvasStyle: React.CSSProperties = {
     aspectRatio: aspectRatio,
     transform: `translateY(-50%) scale(${zoomRatio})`,
     transformOrigin: 'center center',
     translate: `${previewScrollLeft}px ${previewScrollTop}px`
   };
-  const newStyle = { ...style, ...positionStyle };
 
   // 鼠标滚轮缩放事件处理
   const handleWheelZoom = (e: React.WheelEvent) => {
@@ -89,7 +88,7 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
   return (
     <div ref={previewRef}
       className={`component-preview__root ${isSliding ? 'component-preview__sliding' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`
-      } style={{ ...newStyle, aspectRatio, }}
+      } style={canvasStyle}
       onMouseDown={(e) => {
         e.stopPropagation();
         actions?.edit_select_com?.(comRoot.comSchemaId);

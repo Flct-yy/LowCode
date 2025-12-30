@@ -7,6 +7,7 @@ import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema } from "@utils/generateComSchema";
 import './RenderComponentContent.scss'
+import '@scss/variables.scss'
 
 // 根据组件类型渲染不同的DOM元素
 const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: boolean }> = ({ component, Selected }) => {
@@ -26,15 +27,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   // 获得组件文本
   const text = getConfigText(config);
 
-  // 获得样式
-  const positionStyle: React.CSSProperties = {
-    position: component.position?.position,
-    left: component.position?.x || 0,
-    top: component.position?.y || 0,
-    zIndex: component.position?.zIndex || 0,
-  };
-  const style = convertConfigToStyle(component.config);
-  const newStyle = { ...positionStyle, ...style };
+  // 获得样式：包含动态生成的className和位置相关的内联样式
+  const { style: inlineStyle, className } = convertConfigToStyle(component);
 
 
   type ItemType =
@@ -87,7 +81,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
     case ComponentTypeEnum.FLEX:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__flex ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`} style={newStyle}
+          className={`component-preview__default component-preview__flex ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`} 
+          style={inlineStyle}
           onMouseDown={(e) => {
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
@@ -100,7 +95,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
     case ComponentTypeEnum.TEXT:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__text ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={newStyle}
+          className={`component-preview__default component-preview__text ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} 
+          style={inlineStyle}
           onMouseDown={(e) => {
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
@@ -114,7 +110,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
       )
     default:
       return (
-        <div ref={divRef} className={`component-preview__default ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} style={newStyle}
+        <div ref={divRef} className={`component-preview__default ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`} 
+          style={inlineStyle}
           onMouseDown={(e) => {
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);

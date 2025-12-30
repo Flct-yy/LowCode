@@ -1,17 +1,46 @@
 .component-preview__default {
 
   &:hover {
-    /* 悬停时只改变边框颜色，不改变元素尺寸 */
-    border-color: #007bff;
+    background-color: rgba(64, 158, 255, 0.04);
+    // 添加过渡动画
+    transition: all 0.2s ease;
   }
 
   &.component-preview__selected {
-    background-color: rgba(111, 113, 115, 0.1) !important;
+    // 使用全局主题变量
+    border: 2px solid var(--border-hover);
+    background-color: rgba(64, 158, 255, 0.08);
+    // 添加阴影增强视觉层次
+    box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.2);
+    // 添加过渡动画
+    transition: all 0.2s ease;
+    // 提高层级确保选中状态可见
+    z-index: 10;
   }
 
   &.component-preview__can-drop {
-    border: 2px dashed #007bff !important;
-    background-color: rgba(0, 123, 255, 0.1) !important;
+    // 使用全局主题变量
+    border: 2px dashed var(--primary-color);
+    background-color: rgba(21, 91, 212, 0.08);
+    // 添加动画效果增强交互感
+    animation: pulse 1.5s infinite;
+    // 添加过渡动画
+    transition: all 0.2s ease;
+    // 提高层级确保可放置状态可见
+    z-index: 10;
+  }
+}
+
+// 添加脉冲动画
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
   }
 }
 
