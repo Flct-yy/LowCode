@@ -200,7 +200,8 @@ class ComTree {
     if (!removeResult) {
       throw new Error(`移除源组件 ${sourceId} 失败`);
     }
-    const childrenArrIndex = childrenIndex || -1;
+    const childrenArrIndex = childrenIndex !== undefined ? childrenIndex : -1;
+
 
     const addResult = this.addNode(sourceComponent, targetParentId, childrenArrIndex);
 
