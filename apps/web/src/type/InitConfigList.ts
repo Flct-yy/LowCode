@@ -77,6 +77,39 @@ const initConfigList: InitConfigItem[] = [
       },
     ],
   },
+  {
+    componentName: 'Image',
+    componentType: ComponentTypeEnum.IMAGE,
+    config: [
+      {
+        areaName: ConfigAreaEnum.layout,
+        configItem: [
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.border,
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.image,
+        configItem: [
+          ConfigItemFieldEnum.imageUrl,
+          ConfigItemFieldEnum.imageWidth,
+          ConfigItemFieldEnum.imageHeight,
+          ConfigItemFieldEnum.objectFit,
+          ConfigItemFieldEnum.objectPosition,
+          ConfigItemFieldEnum.opacity,
+        ]
+      },
+    ],
+  }
 
 ]
 

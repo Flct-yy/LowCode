@@ -1,5 +1,4 @@
 import React from 'react';
-import { Radio, } from 'antd';
 import { ConfigItem, UiTypeEnum } from '@type/ConfigItem';
 import Input from './components/Input';
 import Select from './components/Select';
@@ -7,10 +6,10 @@ import ColorPicker from './components/ColorPicker';
 import InputNumber from './components/InputNumber';
 import MarginPadding from './components/MarginPadding';
 import Group from './components/Group';
+import DoubleInputNumber from './components/DoubleInputNumber';
+import ImageUpload from './components/ImageUpload';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
-import DoubleInputNumber from './components/DoubleInputNumber';
-
 
 
 interface ConvertConfigToDomProps {
@@ -99,7 +98,14 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
           </div>
         </div>
       );
-
+      
+    case UiTypeEnum.IMAGE_UPLOAD:
+      return (
+        <ImageUpload
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
+      );
     default:
       return (
         <div className="config-item">

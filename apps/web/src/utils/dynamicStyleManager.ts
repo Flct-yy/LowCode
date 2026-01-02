@@ -101,6 +101,22 @@ class DynamicStyleManager {
               break;
             case ConfigItemFieldEnum.color:
               cssVariables += `  --${componentId}-color: ${configItem.currentValue};\n`;
+            case ConfigItemFieldEnum.imageWidth:
+              const imageWidthUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
+              cssVariables += `  --${componentId}-image-width: ${configItem.currentValue}${imageWidthUnit};\n`;
+              break;
+            case ConfigItemFieldEnum.imageHeight:
+              const imageHeightUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
+              cssVariables += `  --${componentId}-image-height: ${configItem.currentValue}${imageHeightUnit};\n`;
+              break;
+            case ConfigItemFieldEnum.objectFit:
+              cssVariables += `  --${componentId}-object-fit: ${configItem.currentValue};\n`;
+              break;
+            case ConfigItemFieldEnum.objectPosition:
+              cssVariables += `  --${componentId}-object-position: ${configItem.currentValue};\n`;
+              break;
+            case ConfigItemFieldEnum.opacity:
+              cssVariables += `  --${componentId}-opacity: ${configItem.currentValue};\n`;
               break;
             default:
               break;
@@ -140,6 +156,13 @@ class DynamicStyleManager {
     css += `  line-height: var(--${componentId}-line-height);\n`;
     css += `  color: var(--${componentId}-color);\n`;
     css += `  border: var(--${componentId}-border-width) var(--${componentId}-border-style) var(--${componentId}-border-color);\n`;
+    css += `}\n\n`;
+    css += `.component-instance-${componentId} img {\n`;
+    css += `  width: var(--${componentId}-image-width);\n`;
+    css += `  height: var(--${componentId}-image-height);\n`;
+    css += `  object-fit: var(--${componentId}-object-fit);\n`;
+    css += `  object-position: var(--${componentId}-object-position);\n`;
+    css += `  opacity: var(--${componentId}-opacity);\n`;
     css += `}\n\n`;
 
     return css;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ComponentSchema, ComponentTypeEnum } from "@type/ComponentSchema";
-import getConfigText from "@utils/getConfigText";
+import { getConfigText, getConfigImageUrl } from "@utils/getConfig";
 import convertConfigToStyle from "@utils/convertConfigToStyle";
 import { useDrop, useDrag } from "react-dnd";
 import { message } from "antd";
@@ -29,6 +29,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
 
   // 获得组件文本
   const text = getConfigText(config);
+  // 获得组件图片
+  const imageUrl = getConfigImageUrl(config);
 
   // 获得样式：包含动态生成的className和位置相关的内联样式
   const { style: inlineStyle, className } = convertConfigToStyle(component);
@@ -139,60 +141,8 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
       // 这样可以实现"上面的识别而下面的不识别"的效果
 
       if (isLayoutComponent() && monitor.isOver({ shallow: true }) && monitor.canDrop() && monitor.didDrop() === false) {
-        const curCom = findNode(component.comSchemaId);
-        if (curCom) {
-          const parentCom = findNode(curCom.parentId);
-          if (parentCom) {
-            // 获取拖拽位置信息
-            const clientOffset = monitor.getClientOffset();
-            const dropRect = divRef.current?.getBoundingClientRect();
 
-            // 基于位置的放置策略：中心区域放当前组件，边缘区域放父组件
-            if (clientOffset && dropRect) {
-              const relativeX = clientOffset.x - dropRect.left;
-              const relativeY = clientOffset.y - dropRect.top;
-              const dropZoneWidth = dropRect.width;
-              const dropZoneHeight = dropRect.height;
-
-              // 定义区域划分：
-              // - 垂直方向：顶部1/3和底部1/3区域
-              // - 水平方向：左侧1/3和右侧1/3区域
-              // 边缘区域（任意边缘方向）放置到父组件，中心区域放置到当前组件
-              const topZone = dropZoneHeight / 3;
-              const bottomZone = dropZoneHeight * 2 / 3;
-              const leftZone = dropZoneWidth / 3;
-              const rightZone = dropZoneWidth * 2 / 3;
-
-              // 判断是否在边缘区域
-              const isInVerticalEdge = relativeY < topZone || relativeY > bottomZone;
-              const isInHorizontalEdge = relativeX < leftZone || relativeX > rightZone;
-
-              // 如果在任意边缘区域，放置到父组件
-              if (isInVerticalEdge || isInHorizontalEdge) {
-                let direction = 'row';
-
-                parentCom.config?.forEach((item, index) => {
-                  item.configItem.forEach((configItem) => {
-                    if (configItem.field === ConfigItemFieldEnum.flexDirection) {
-                      direction = configItem.currentValue as string;
-                    }
-                  })
-                })
-                if (direction === 'row') {
-                  if (relativeX > rightZone) {
-
-                  }
-                } else {
-                  if (relativeY > bottomZone) {
-
-                  }
-                }
-              }
-            }
-          }
-        }
       }
-
     },
     collect: (monitor) => ({
       canDrop: monitor.canDrop() && isLayoutComponent(),
@@ -234,11 +184,45 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
           }}
         >
           {text !== '' && text}
-          {children && children.length > 0 && children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
-          ))}
         </div>
-      )
+      );
+    case ComponentTypeEnum.BUTTON:
+      return (
+        <div ref={divRef}
+          className={`component-preview__default component-preview__button ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          style={inlineStyle}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            actions?.edit_select_com?.(component.comSchemaId);
+          }}>
+          {text !== '' && text}
+        </div>
+      );
+    case ComponentTypeEnum.IMAGE:
+      return (
+        <div ref={divRef}
+          className={`component-preview__default component-preview__image ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          style={inlineStyle}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            actions?.edit_select_com?.(component.comSchemaId);
+          }}>
+          {text !== '' && text}
+          <img className="img" src={imageUrl} alt={text} />
+        </div>
+      );
+    case ComponentTypeEnum.INPUT:
+      return (
+        <div ref={divRef}
+          className={`component-preview__default component-preview__input ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          style={inlineStyle}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            actions?.edit_select_com?.(component.comSchemaId);
+          }}>
+          {text !== '' && text}
+        </div>
+      );
     default:
       return (
         <div ref={divRef} className={`component-preview__default ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}

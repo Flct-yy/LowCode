@@ -263,6 +263,85 @@ const initConfigItem: ConfigItem[] = [
     defaultValue: '#000000',
     currentValue: '#000000',
   },
+  // 图片
+  {
+    field: ConfigItemFieldEnum.imageUrl,
+    label: '图片',
+    uiType: UiTypeEnum.IMAGE_UPLOAD,
+    defaultValue: '',
+    currentValue: '',
+  },
+  // 图片宽度
+  {
+    field: ConfigItemFieldEnum.imageWidth,
+    label: '图片宽度',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 100,
+    currentValue: 100,
+    step: 1,
+    currentUnit: '%',
+    units: [
+      { label: 'px', value: 'px' },
+      { label: '%', value: '%' },
+    ],
+    mins: [0, 0],
+    maxs: [1000, 100],
+  },
+  // 图片高度
+  {
+    field: ConfigItemFieldEnum.imageHeight,
+    label: '图片高度',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 100,
+    currentValue: 100,
+    step: 1,
+    currentUnit: '%',
+    units: [
+      { label: 'px', value: 'px' },
+      { label: '%', value: '%' },
+    ],
+    mins: [0, 0],
+    maxs: [1000, 100],
+  },
+  // 图片缩放模式
+  {
+    field: ConfigItemFieldEnum.objectFit,
+    label: '图片缩放模式',
+    uiType: UiTypeEnum.SELECT,
+    defaultValue: 'contain',
+    currentValue: 'contain',
+    options: [
+      { label: '包含', value: 'contain' },
+      { label: '填充', value: 'cover' },
+    ],
+  },
+  // 图片位置
+  {
+    field: ConfigItemFieldEnum.objectPosition,
+    label: '图片位置',
+    uiType: UiTypeEnum.SELECT,
+    defaultValue: 'center',
+    currentValue: 'center',
+    options: [
+      { label: '居中', value: 'center' },
+      { label: '顶部', value: 'top' },
+      { label: '底部', value: 'bottom' },
+      { label: '左侧', value: 'left' },
+      { label: '右侧', value: 'right' },
+    ],
+  },
+  // 图片透明度
+  {
+    field: ConfigItemFieldEnum.opacity,
+    label: '图片透明度',
+    uiType: UiTypeEnum.INPUT_NUMBER,
+    defaultValue: 1,
+    currentValue: 1,
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
 ]
 
 export default initConfigItem;

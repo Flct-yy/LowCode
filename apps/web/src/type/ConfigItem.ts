@@ -7,6 +7,8 @@ export enum UiTypeEnum {
   COLOR_PICKER = 'ColorPicker',
   GROUP = 'Group',
   MARGIN_PADDING = 'MarginPadding',
+  // 图片上传
+  IMAGE_UPLOAD = 'ImageUpload',
 }
 
 /**
@@ -151,6 +153,15 @@ export interface MarginPaddingConfigItem extends BaseConfigItem {
 }
 
 /**
+ * 图片上传配置项
+ */
+export interface ImageUploadConfigItem extends BaseConfigItem {
+  uiType: UiTypeEnum.IMAGE_UPLOAD;
+}
+
+
+
+/**
  * 所有可视化配置项的联合类型
  */
 export type ConfigItem =
@@ -160,4 +171,5 @@ export type ConfigItem =
   | DoubleInputNumberConfigItem
   | ColorPickerConfigItem
   | GroupConfigItem
-  | MarginPaddingConfigItem;
+  | MarginPaddingConfigItem
+  | ImageUploadConfigItem;
