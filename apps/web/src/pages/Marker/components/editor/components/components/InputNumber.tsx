@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Select } from "antd";
 import { InputNumberConfigItem } from "@/type/ConfigItem";
+import { ConfigItemFieldEnum } from "@/type/Config";
 
 const InputNumber = ({
   configItem,
@@ -8,7 +9,7 @@ const InputNumber = ({
   setCurrentUnit,
 }: {
   configItem: InputNumberConfigItem;
-  setCurrentValue: (value: number) => void;
+  setCurrentValue: (value: any) => void;
   setCurrentUnit: (unit: string) => void;
 }) => {
   const {
@@ -85,9 +86,16 @@ const InputNumber = ({
       setCurrentNumber(currentValue);
     }
   }
+  const handleAuto = () => {
+    if(currentValue !== 'auto') {
+      setCurrentValue('auto');
+    }else{
+      handleChange(defaultValue.toString());
+    }
+  }
 
   return (
-    <div className="config-item">
+    <div className="config-item" style={{ display: 'flex' }}>
       <label className="config-item__label">{label}</label>
       <div className="input_number-container config-item__ui border padding noOutline">
         <input
@@ -123,6 +131,11 @@ const InputNumber = ({
           </div>
         }
       </div>
+      {field === ConfigItemFieldEnum.width || field === ConfigItemFieldEnum.height ? (
+        <div className="input_number-auto no-select" onClick={() => handleAuto()}>
+          {currentValue !== 'auto' ? '设置auto' : '取消auto'}
+        </div>
+      ) : null}
     </div>
   );
 }
