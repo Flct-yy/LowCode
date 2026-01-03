@@ -91,7 +91,7 @@ const TopBar: React.FC = () => {
       }} justify={'space-between'} align={'center'}>
         <Button type="text" onClick={() => navigate(-1)}>返回</Button>
         <Flex justify={'space-between'} align={'center'} gap={10}>
-          <Button>预览</Button>
+          <Button onClick={() => navigate('/preview')}>预览</Button>
           <Button onClick={handleSave}>保存</Button>
           <Button type="primary" onClick={handleImport}>导入</Button>
           <Button type="primary" onClick={handleExport}>导出</Button>
