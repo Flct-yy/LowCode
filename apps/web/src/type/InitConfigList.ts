@@ -71,8 +71,82 @@ const initConfigList: InitConfigItem[] = [
           ConfigItemFieldEnum.text,
           ConfigItemFieldEnum.fontSize,
           ConfigItemFieldEnum.fontWeight,
+          ConfigItemFieldEnum.textAlign,
           ConfigItemFieldEnum.lineHeight,
           ConfigItemFieldEnum.color,
+        ]
+      },
+    ],
+  },
+  {
+    componentName: 'Image',
+    componentType: ComponentTypeEnum.IMAGE,
+    config: [
+      {
+        areaName: ConfigAreaEnum.layout,
+        configItem: [
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.border,
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.image,
+        configItem: [
+          ConfigItemFieldEnum.imageUrl,
+          ConfigItemFieldEnum.width,
+          ConfigItemFieldEnum.height,
+          ConfigItemFieldEnum.objectFit,
+          ConfigItemFieldEnum.objectPosition,
+          ConfigItemFieldEnum.opacity,
+        ]
+      },
+    ],
+  },
+  {
+    componentName: 'Button',
+    componentType: ComponentTypeEnum.BUTTON,
+    config: [
+      {
+        areaName: ConfigAreaEnum.layout,
+        configItem: [
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.border,
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.text,
+        configItem: [
+          ConfigItemFieldEnum.text,
+          ConfigItemFieldEnum.fontSize,
+          ConfigItemFieldEnum.fontWeight,
+          ConfigItemFieldEnum.textAlign,
+          ConfigItemFieldEnum.lineHeight,
+          ConfigItemFieldEnum.color,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.regular,
+        configItem: [
+          ConfigItemFieldEnum.width,
+          ConfigItemFieldEnum.height,
         ]
       },
     ],

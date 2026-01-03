@@ -36,12 +36,30 @@ const InputNumber = ({
     handleChange(currentValue.toString());
   }, [currentValue, currentUnit]);
 
-  // 移除不必要的useEffect，当前单位变化时不需要立即调用handleChange
-  // 单位变化由父组件通过setCurrentUnit处理，值变化在失焦或按Enter时提交
+  // 获取步长的小数位数
+  const getDecimalPlaces = (step: number): number => {
+    if (step === 0) {
+      return 0;
+    }
+
+    // 处理负数步长的情况
+    const absStep = Math.abs(step);
+    if (absStep % 1 === 0) {
+      return 0; // 整数步长，无小数位
+    }
+
+    const stepStr = absStep.toString();
+    const decimalIndex = stepStr.indexOf('.');
+    if (decimalIndex === -1) {
+      return 0;
+    }
+
+    return stepStr.length - decimalIndex - 1; // 计算小数位数
+  };
 
   const handleChange = (value: string) => {
     const trimmedValue = value.trim();
-    let numValue = Number(trimmedValue);
+    let numValue = +Number(trimmedValue).toFixed(getDecimalPlaces(step || 0));
     // 检查是否为有效数字
     if (!Number.isNaN(numValue)) {
       // 修复单位索引查找逻辑
@@ -60,7 +78,7 @@ const InputNumber = ({
       if (typeof maxValue === 'number' && numValue > maxValue) {
         numValue = maxValue;
       }
-      
+
       setCurrentNumber(numValue);
       setCurrentValue(numValue);
     } else {

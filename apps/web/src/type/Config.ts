@@ -5,6 +5,7 @@ export enum ConfigAreaEnum {
   border = '边框',
   regular = '常规',
   text = '文字',
+  image = '图片',
 }
 
 export enum ConfigItemFieldEnum {
@@ -29,8 +30,20 @@ export enum ConfigItemFieldEnum {
   text = 'text',
   fontSize = 'fontSize',
   fontWeight = 'fontWeight',
+  textAlign = 'textAlign',
   lineHeight = 'lineHeight',
   color = 'color',
+  // 图片
+  imageUrl = 'imageUrl',
+  imageWidth = 'imageWidth',
+  imageHeight = 'imageHeight',
+  objectFit = 'objectFit',
+  objectPosition = 'objectPosition',
+  opacity = 'opacity',
+  // 按钮
+  buttonWidth = 'buttonWidth',
+  buttonHeight = 'buttonHeight',
+
 }
 
 interface ConfigArea {

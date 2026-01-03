@@ -23,8 +23,8 @@ export enum ComponentTypeEnum {
   // 布局组件
   FLEX = 'Flex',
   BUTTON = 'Button',
-  // INPUT = 'Input',
-  // IMAGE = 'Image',
+  INPUT = 'Input',
+  IMAGE = 'Image',
   TEXT = 'Text',
   // SELECT = 'Select',
   // RADIO = 'Radio',

@@ -31,7 +31,7 @@ const Editor: React.FC = () => {
 
   return (
     <div className='editor'>
-      <Tabs defaultActiveKey="1" items={items} onChange={(key) => console.log(key)} />
+      <Tabs defaultActiveKey="1" items={items} />
     </div>
   );
 }

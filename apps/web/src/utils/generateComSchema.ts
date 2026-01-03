@@ -2,7 +2,8 @@ import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, Compon
 import { ConfigItemFieldEnum } from "@type/Config";
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
-import { InputNumberConfigItem } from '@/type/ConfigItem';
+import { initDynamicParams } from '@/type/InitDynamicParams';
+import DynamicParams from '@/type/DynamicParams';
 
 /**
  * 初始化 组件的默认 Schema 配置
@@ -12,7 +13,9 @@ let schemaIdCounter = 0;
 export const generateComSchema: (componentId: number, parentId: number) => ComponentSchema = (componentId, parentId) => {
   const componentMeta: ComponentMetadata | undefined = InitComponentMetadata.find((item) => item.componentId === componentId);
   const componentType = componentMeta?.componentType;
-  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum);
+  const dynamicParams = initDynamicParams.find((item) => item.componentType === componentType) || {};
+
+  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum, dynamicParams as DynamicParams);
   if (!componentMeta) {
     throw new Error(`组件 ID ${componentId} 不存在`);
   }
