@@ -5,6 +5,7 @@ import { type ComponentSchema } from '@/type/ComponentSchema';
 import { type TotesConfig } from '@/type/Config';
 import { Empty } from 'antd';
 import useWebsContext from "@/context/WebsContext/useWebsContext";
+import ComTree from "@/type/ComTree";
 
 const ComConfig: React.FC = () => {
 
@@ -27,7 +28,7 @@ const ComConfig: React.FC = () => {
         </div>
       </div>
       {
-        selectedComponent.comSchemaId !== comTree.root.comSchemaId ?
+        selectedComponent.comSchemaId !== ComTree.getRoot().comSchemaId ?
           (selectedComponent.config || []).map((item: TotesConfig, index: number) => (
             <ConfigComArea key={item.areaName || index.toString()} config={item} />
           )) :
