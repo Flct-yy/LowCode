@@ -353,6 +353,40 @@
     }
   }
 
+  // 图片上传
+  .custom-image-upload{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    .custom-image-button {
+      width: 5rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      background-color: #40a9ff;
+      color: #fff;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      &:hover {
+        background-color: #3091e6;
+      }
+    }
+    .custom-image-name {
+      width: 6rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+  }
 }
 
 .page-config {

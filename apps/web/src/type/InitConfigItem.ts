@@ -199,10 +199,10 @@ const initConfigItem: ConfigItem[] = [
     field: ConfigItemFieldEnum.height,
     label: '高度',
     uiType: UiTypeEnum.INPUT_NUMBER,
-    defaultValue: 60,
-    currentValue: 60,
+    defaultValue: 100,
+    currentValue: 100,
     step: 1,
-    currentUnit: 'px',
+    currentUnit: '%',
     units: [
       { label: 'px', value: 'px' },
       { label: '%', value: '%' },

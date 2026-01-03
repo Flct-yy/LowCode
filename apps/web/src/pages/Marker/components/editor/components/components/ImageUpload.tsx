@@ -9,16 +9,27 @@ const ImageUpload = ({ configItem, setCurrentValue }: {
   return (
     <div className="config-item">
       <label className="config-item__label">{label}</label>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            setCurrentValue(URL.createObjectURL(file));
-          }
-        }}
-      />
+      <div className="custom-image-upload">
+        <label htmlFor="image-upload" className="custom-image-button no-select">
+          {currentValue ? '更换图片' : '选择图片'}
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              console.log('file', file);
+              setCurrentValue(URL.createObjectURL(file));
+            }
+          }}
+        />
+        <div className="custom-image-name no-select">
+          {currentValue ? '已选择图片' : '未选择图片'}
+        </div>
+      </div>
     </div>
   );
 };
