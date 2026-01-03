@@ -47,7 +47,7 @@ class ComTree {
 
   public static getRoot(): ComponentSchema {
     if (!ComTree.instance) {
-      ComTree.getInstance();
+      ComTree.instance = new ComTree();
     }
     return ComTree.instance.root;
   }
