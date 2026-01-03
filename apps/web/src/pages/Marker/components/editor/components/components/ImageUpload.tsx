@@ -21,7 +21,6 @@ const ImageUpload = ({ configItem, setCurrentValue }: {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {
-              console.log('file', file);
               setCurrentValue(URL.createObjectURL(file));
             }
           }}

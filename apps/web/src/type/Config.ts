@@ -30,6 +30,7 @@ export enum ConfigItemFieldEnum {
   text = 'text',
   fontSize = 'fontSize',
   fontWeight = 'fontWeight',
+  textAlign = 'textAlign',
   lineHeight = 'lineHeight',
   color = 'color',
   // 图片
@@ -39,6 +40,9 @@ export enum ConfigItemFieldEnum {
   objectFit = 'objectFit',
   objectPosition = 'objectPosition',
   opacity = 'opacity',
+  // 按钮
+  buttonWidth = 'buttonWidth',
+  buttonHeight = 'buttonHeight',
 
 }
 

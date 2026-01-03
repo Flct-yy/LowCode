@@ -207,8 +207,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
           }}>
-          {text !== '' && text}
-          <img className="img" src={imageUrl} alt={text} />
+          {imageUrl ? <img className="img" src={imageUrl} alt='图片' />:'未上传图片'}
         </div>
       );
     case ComponentTypeEnum.INPUT:

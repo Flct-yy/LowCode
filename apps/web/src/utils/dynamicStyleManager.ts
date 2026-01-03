@@ -95,19 +95,15 @@ class DynamicStyleManager {
             case ConfigItemFieldEnum.fontWeight:
               cssVariables += `  --${componentId}-font-weight: ${configItem.currentValue};\n`;
               break;
+            case ConfigItemFieldEnum.textAlign:
+              cssVariables += `  --${componentId}-text-align: ${configItem.currentValue};\n`;
+              break;
             case ConfigItemFieldEnum.lineHeight:
               const lineHeightUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-line-height: ${configItem.currentValue}${lineHeightUnit};\n`;
               break;
             case ConfigItemFieldEnum.color:
               cssVariables += `  --${componentId}-color: ${configItem.currentValue};\n`;
-            case ConfigItemFieldEnum.imageWidth:
-              const imageWidthUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
-              cssVariables += `  --${componentId}-image-width: ${configItem.currentValue}${imageWidthUnit};\n`;
-              break;
-            case ConfigItemFieldEnum.imageHeight:
-              const imageHeightUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
-              cssVariables += `  --${componentId}-image-height: ${configItem.currentValue}${imageHeightUnit};\n`;
               break;
             case ConfigItemFieldEnum.objectFit:
               cssVariables += `  --${componentId}-object-fit: ${configItem.currentValue};\n`;
@@ -153,13 +149,13 @@ class DynamicStyleManager {
     css += `  height: var(--${componentId}-height);\n`;
     css += `  font-size: var(--${componentId}-font-size);\n`;
     css += `  font-weight: var(--${componentId}-font-weight);\n`;
+    css += `  text-align: var(--${componentId}-text-align);\n`;
     css += `  line-height: var(--${componentId}-line-height);\n`;
     css += `  color: var(--${componentId}-color);\n`;
-    css += `  border: var(--${componentId}-border-width) var(--${componentId}-border-style) var(--${componentId}-border-color);\n`;
     css += `}\n\n`;
     css += `.component-instance-${componentId} img {\n`;
-    css += `  width: var(--${componentId}-image-width);\n`;
-    css += `  height: var(--${componentId}-image-height);\n`;
+    css += `  width: 100%;\n`;
+    css += `  height: 100%;\n`;
     css += `  object-fit: var(--${componentId}-object-fit);\n`;
     css += `  object-position: var(--${componentId}-object-position);\n`;
     css += `  opacity: var(--${componentId}-opacity);\n`;

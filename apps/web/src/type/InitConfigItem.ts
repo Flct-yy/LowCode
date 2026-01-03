@@ -202,7 +202,7 @@ const initConfigItem: ConfigItem[] = [
     defaultValue: 100,
     currentValue: 100,
     step: 1,
-    currentUnit: '%',
+    currentUnit: 'px',
     units: [
       { label: 'px', value: 'px' },
       { label: '%', value: '%' },
@@ -243,13 +243,26 @@ const initConfigItem: ConfigItem[] = [
       { label: '加粗', value: 'bold' },
     ],
   },
+  // 字体居中
+  {
+    field: ConfigItemFieldEnum.textAlign,
+    label: '字体居中',
+    uiType: UiTypeEnum.SELECT,
+    defaultValue: 'center',
+    currentValue: 'center',
+    options: [
+      { label: '左对齐', value: 'left' },
+      { label: '居中', value: 'center' },
+      { label: '右对齐', value: 'right' },
+    ],
+  },
   // 行高
   {
     field: ConfigItemFieldEnum.lineHeight,
     label: '行高',
     uiType: UiTypeEnum.INPUT_NUMBER,
-    defaultValue: 0,
-    currentValue: 0,
+    defaultValue: 16,
+    currentValue: 16,
     min: 0,
     max: 100,
     step: 1,
@@ -270,38 +283,6 @@ const initConfigItem: ConfigItem[] = [
     uiType: UiTypeEnum.IMAGE_UPLOAD,
     defaultValue: '',
     currentValue: '',
-  },
-  // 图片宽度
-  {
-    field: ConfigItemFieldEnum.imageWidth,
-    label: '图片宽度',
-    uiType: UiTypeEnum.INPUT_NUMBER,
-    defaultValue: 100,
-    currentValue: 100,
-    step: 1,
-    currentUnit: '%',
-    units: [
-      { label: 'px', value: 'px' },
-      { label: '%', value: '%' },
-    ],
-    mins: [0, 0],
-    maxs: [1000, 100],
-  },
-  // 图片高度
-  {
-    field: ConfigItemFieldEnum.imageHeight,
-    label: '图片高度',
-    uiType: UiTypeEnum.INPUT_NUMBER,
-    defaultValue: 100,
-    currentValue: 100,
-    step: 1,
-    currentUnit: '%',
-    units: [
-      { label: 'px', value: 'px' },
-      { label: '%', value: '%' },
-    ],
-    mins: [0, 0],
-    maxs: [1000, 100],
   },
   // 图片缩放模式
   {
