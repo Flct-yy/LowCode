@@ -8,25 +8,25 @@ import { useNavigate } from 'react-router-dom';
 import pageApi from '@/api/pageApi';
 import ComTree from '@/type/ComTree';
 
-  const initialPageState: PageModel = {
-    metadata: {
-      id: 0,
-      title: '',
-      description: '',
-      keywords: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    comTree: ComTree.getInstance(),
-    showIframe: true,
-    selectedComponentId: -1,
-    aspectRatio: AspectRatioEnum.RATIO_16_9,
-    zoomRatio: 1,
-    previewScrollTop: 0,
-    previewScrollLeft: 0,
-    isDragCom: false,
-    isSliding: false,
-  };
+const initialPageState: PageModel = {
+  metadata: {
+    id: 0,
+    title: '',
+    description: '',
+    keywords: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  comTree: ComTree.getInstance(),
+  showIframe: true,
+  selectedComponentId: -1,
+  aspectRatio: AspectRatioEnum.RATIO_16_9,
+  zoomRatio: 1,
+  previewScrollTop: 0,
+  previewScrollLeft: 0,
+  isDragCom: false,
+  isSliding: false,
+};
 
 interface ActionType {
   // 编辑Page源

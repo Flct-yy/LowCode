@@ -54,7 +54,7 @@ const TopBar: React.FC = () => {
     // 要导出的数据内容
     const exportData = {
       pageMetadata: metadata, // 页面元信息
-      componentTree: comTree.root, // 组件树结构
+      componentTree: comTree, // 组件树结构
       exportTime: new Date().toISOString(),
       version: '1.0.0'
     };
