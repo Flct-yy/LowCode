@@ -12,4 +12,8 @@ export default interface DynamicParams {
     defaultValue: any;
     currentUnit: string;
   };
+  [ConfigItemFieldEnum.text]?: {
+    currentValue: any;
+    defaultValue: any;
+  };
 }

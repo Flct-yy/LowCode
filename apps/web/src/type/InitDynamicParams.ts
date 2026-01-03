@@ -27,5 +27,22 @@ export const initDynamicParams: DynamicParams[] = [
       defaultValue: 24,
       currentUnit: 'px',
     },
-  }
+  },
+  {
+    componentType: ComponentTypeEnum.INPUT,
+    [ConfigItemFieldEnum.width]: {
+      currentValue: 400,
+      defaultValue: 400,
+      currentUnit: 'px',
+    },
+    [ConfigItemFieldEnum.height]: {
+      currentValue: 36,
+      defaultValue: 36,
+      currentUnit: 'px',
+    },
+    [ConfigItemFieldEnum.text]: {
+      currentValue: '请输入文字...',
+      defaultValue: '请输入文字...',
+    },
+  },
 ]

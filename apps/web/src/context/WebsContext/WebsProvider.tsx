@@ -151,7 +151,6 @@ function WebsReducer(state: PageModel, action: {
         comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_UNIT:
-      console.log(state.selectedComponentId);
       state.comTree.updateNodeUnit(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentUnit!)
       return {
         ...state,

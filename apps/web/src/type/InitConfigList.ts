@@ -151,6 +151,47 @@ const initConfigList: InitConfigItem[] = [
       },
     ],
   },
+  {
+    componentName: 'Input',
+    componentType: ComponentTypeEnum.INPUT,
+    config: [
+      {
+        areaName: ConfigAreaEnum.layout,
+        configItem: [
+          ConfigItemFieldEnum.backgroundColor,
+          ConfigItemFieldEnum.MarginPadding,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.border,
+        configItem: [
+          ConfigItemFieldEnum.borderColor,
+          ConfigItemFieldEnum.borderWidth,
+          ConfigItemFieldEnum.borderRadius,
+          ConfigItemFieldEnum.borderStyle,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.text,
+        configItem: [
+          ConfigItemFieldEnum.text,
+          ConfigItemFieldEnum.fontSize,
+          ConfigItemFieldEnum.fontWeight,
+          ConfigItemFieldEnum.textAlign,
+          ConfigItemFieldEnum.lineHeight,
+          ConfigItemFieldEnum.color,
+        ]
+      },
+      {
+        areaName: ConfigAreaEnum.regular,
+        configItem: [
+          ConfigItemFieldEnum.width,
+          ConfigItemFieldEnum.height,
+        ]
+      },
+    ],
+
+  }
 
 ]
 

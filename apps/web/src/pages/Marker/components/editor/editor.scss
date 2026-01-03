@@ -246,21 +246,32 @@
 
   // 颜色选择器
   .color-picker {
-    min-width: 0;
-    min-height: 0;
-
-    width: 2rem;
-    aspect-ratio: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 6rem;
+    height: 2rem;
     padding: 0;
     border: none;
     cursor: pointer;
 
     .color-picker-input {
-      width: 100%;
-      height: 100%;
+      width: 2rem;
+      height: 2rem;
       cursor: pointer;
     }
 
+    .transparent-btn {
+      margin: 0 .375rem;
+      width: 6rem;
+      height: 2rem;
+      border: 1px solid #d9d9d9;
+      border-radius: .375rem;
+      cursor: pointer;
+      background-color: transparent;
+      font-size: .875rem;
+      color: #333;
+    }
   }
 
   .margin-padding-container {
@@ -354,12 +365,13 @@
   }
 
   // 图片上传
-  .custom-image-upload{
+  .custom-image-upload {
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
     justify-content: center;
     align-items: center;
+
     .custom-image-button {
       width: 5rem;
       height: 2rem;
@@ -371,10 +383,12 @@
       border-radius: 0.25rem;
       cursor: pointer;
       transition: all 0.3s;
+
       &:hover {
         background-color: #3091e6;
       }
     }
+
     .custom-image-name {
       width: 6rem;
       height: 2rem;
@@ -387,45 +401,46 @@
       cursor: pointer;
     }
   }
-}
 
-.page-config {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  justify-content: space-around;
-  align-items: center;
-
-  .page-config-item {
-    width: 100%;
+  .page-config {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.5rem;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin: 0.5rem 0;
 
-    .page-config-item__label {
-      width: 5rem;
-      min-width: auto;
-      text-align: center;
-    }
-
-    .page-config-item__tag-container {
+    .page-config-item {
       width: 100%;
-      .page-config-item__tag {
-        width: auto;
-        padding: 0.25rem 0.5rem;
-        margin: 0.25rem 0.5rem;
-        border: 1px solid transparent;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.5rem 0;
+
+      .page-config-item__label {
+        width: 5rem;
         min-width: auto;
         text-align: center;
+      }
 
-        &:hover {
-          border-color: #40a9ff;
+      .page-config-item__tag-container {
+        width: 100%;
+
+        .page-config-item__tag {
+          width: auto;
+          padding: 0.25rem 0.5rem;
+          margin: 0.25rem 0.5rem;
+          border: 1px solid transparent;
+          min-width: auto;
+          text-align: center;
+
+          &:hover {
+            border-color: #40a9ff;
+          }
         }
       }
     }
-  }
 
+  }
 }

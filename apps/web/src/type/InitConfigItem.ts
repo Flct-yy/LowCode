@@ -9,7 +9,7 @@ const initConfigItem: ConfigItem[] = [
     label: '背景颜色',
     uiType: UiTypeEnum.COLOR_PICKER,
     defaultValue: '#ffffff',
-    currentValue: '#ffffff',
+    currentValue: 'transparent',
   },
   // 换行
   {

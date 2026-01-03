@@ -219,7 +219,23 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
             e.stopPropagation();
             actions?.edit_select_com?.(component.comSchemaId);
           }}>
-          {text !== '' && text}
+          <input 
+            type="text" 
+            placeholder={text || '请输入文字...'} 
+            className="input-field"
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              border: 'none', 
+              background: 'transparent', 
+              outline: 'none',
+              color: 'inherit',
+              fontSize: 'inherit',
+              fontWeight: 'inherit',
+              textAlign: 'inherit',
+              lineHeight: 'inherit'
+            }}
+          />
         </div>
       );
     default:

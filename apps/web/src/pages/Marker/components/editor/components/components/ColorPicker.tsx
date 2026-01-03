@@ -35,6 +35,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           onChange={handleColorChange}
           onBlur={handleColorChange}
         />
+        {/* 设置为透明 */}
+        <button className="transparent-btn" onClick={() => setCurrentValue(currentValue === 'transparent' ? defaultValue : 'transparent')}>
+          {currentValue === 'transparent' ? '取消透明' : '设置透明'}
+        </button>
       </div>
     </div>
   );
