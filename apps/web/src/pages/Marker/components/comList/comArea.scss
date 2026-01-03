@@ -1,0 +1,13 @@
+.com-area__title {
+  min-width: 6rem;
+  margin: 0.75rem;
+  padding: 0 1rem;
+  background-color: #e8ebee;
+
+  & h3 {
+    font-size: 1rem;
+    line-height: 2rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
