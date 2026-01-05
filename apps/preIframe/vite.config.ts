@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { resolve } from 'dns'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   server: {
     port: 5174, // 修改端口号为 5174
     host: true, // 允许外部访问
