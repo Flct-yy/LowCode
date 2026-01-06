@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useCallback } from 'react';
 import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
-import {  useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
