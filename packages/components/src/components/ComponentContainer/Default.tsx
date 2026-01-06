@@ -13,7 +13,7 @@ function Default({
   component: ComponentSchema;
   componentClassName: string;
   children?: React.ReactNode;
-  handleDnD: (ref: React.RefObject<HTMLDivElement | null>) => { canDrop: boolean; isOverShallow: boolean; };
+  handleDnD: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect: (e: React.MouseEvent) => void;
 }) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -22,13 +22,13 @@ function Default({
   const text = getConfigText(component.config);
 
   // 处理拖拽
-  const { canDrop, isOverShallow } = handleDnD(divRef);
+  handleDnD(divRef);
 
   // 转换组件配置为 内联样式和类名
   const { style: inlineStyle, className } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
-    return `${componentClassName}  ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''} ${className}`
-  }, [componentClassName, className, canDrop, isOverShallow])
+    return `${componentClassName} ${className}`
+  }, [componentClassName, className])
 
   return (
     <div
