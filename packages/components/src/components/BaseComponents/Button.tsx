@@ -3,7 +3,7 @@ import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 
-function Text({
+function Button({
   component,
   componentClassName,
   handleDnD,
@@ -27,16 +27,17 @@ function Text({
   const newClassName = useMemo(() => {
     return `${componentClassName}  ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''} ${className}`
   }, [componentClassName, className, canDrop, isOverShallow])
-
+  
   return (
     <div
       ref={divRef}
-      className={`component-preview__default ${newClassName}`}
+      className={`component-preview__default component-preview__button ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={handleComponentSelect}>
+      onMouseDown={handleComponentSelect}
+    >
       {text !== '' && text}
     </div>
   );
 }
 
-export { Text };
+export { Button };

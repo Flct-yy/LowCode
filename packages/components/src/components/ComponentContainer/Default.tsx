@@ -3,14 +3,16 @@ import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 
-function Text({
+function Default({
   component,
   componentClassName,
+  children,
   handleDnD,
   handleComponentSelect,
 }: {
   component: ComponentSchema;
   componentClassName: string;
+  children?: React.ReactNode;
   handleDnD: (ref: React.RefObject<HTMLDivElement | null>) => { canDrop: boolean; isOverShallow: boolean; };
   handleComponentSelect: (e: React.MouseEvent) => void;
 }) {
@@ -35,8 +37,9 @@ function Text({
       style={inlineStyle}
       onMouseDown={handleComponentSelect}>
       {text !== '' && text}
+      {children}
     </div>
   );
 }
 
-export { Text };
+export { Default };

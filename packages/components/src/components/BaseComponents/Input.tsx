@@ -3,7 +3,7 @@ import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 
-function Text({
+function Input({
   component,
   componentClassName,
   handleDnD,
@@ -29,14 +29,29 @@ function Text({
   }, [componentClassName, className, canDrop, isOverShallow])
 
   return (
-    <div
-      ref={divRef}
-      className={`component-preview__default ${newClassName}`}
+    <div ref={divRef}
+      className={`component-preview__default component-preview__input ${newClassName}`}
       style={inlineStyle}
       onMouseDown={handleComponentSelect}>
-      {text !== '' && text}
+      <input
+        type="text"
+        placeholder={text || '请输入文字...'}
+        className="input-field"
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          background: 'transparent',
+          outline: 'none',
+          color: 'inherit',
+          fontSize: 'inherit',
+          fontWeight: 'inherit',
+          textAlign: 'inherit',
+          lineHeight: 'inherit'
+        }}
+      />
     </div>
   );
 }
 
-export { Text };
+export { Input };

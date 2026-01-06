@@ -1,9 +1,9 @@
 import React, { useRef, useMemo } from 'react';
 import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
-import { getConfigText } from '@/utils/index';
+import { getConfigImageUrl } from '@/utils/index';
 
-function Text({
+function Image({
   component,
   componentClassName,
   handleDnD,
@@ -16,8 +16,8 @@ function Text({
 }) {
   const divRef = useRef<HTMLDivElement>(null);
 
-  // 获得组件文本
-  const text = getConfigText(component.config);
+  // 获得组件图片url
+  const imageUrl = getConfigImageUrl(component.config);
 
   // 处理拖拽
   const { canDrop, isOverShallow } = handleDnD(divRef);
@@ -29,14 +29,13 @@ function Text({
   }, [componentClassName, className, canDrop, isOverShallow])
 
   return (
-    <div
-      ref={divRef}
-      className={`component-preview__default ${newClassName}`}
+    <div ref={divRef}
+      className={`component-preview__default component-preview__image ${newClassName}`}
       style={inlineStyle}
       onMouseDown={handleComponentSelect}>
-      {text !== '' && text}
+      {imageUrl ? <img className="img" src={imageUrl} alt='图片' /> : '未上传图片'}
     </div>
   );
 }
 
-export { Text };
+export { Image };
