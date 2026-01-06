@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { ComponentSchema, ComponentTypeEnum } from "@type/ComponentSchema";
 import { getConfigText, getConfigImageUrl } from "@utils/getConfig";
 import convertConfigToStyle from "@utils/convertConfigToStyle";
@@ -33,19 +33,26 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   const imageUrl = getConfigImageUrl(config);
 
   // 获得样式：包含动态生成的className和位置相关的内联样式
-  const { style: inlineStyle, className } = convertConfigToStyle(component);
+  const { style: inlineStyle, className } = convertConfigToStyle(component)
+
+  // 组件选中处理函数 - 使用useCallback缓存
+  const handleComponentSelect = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    actions?.edit_select_com?.(component.comSchemaId);
+  }, [actions, component.comSchemaId]);
 
 
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
     | { type: DnDTypes.COMSCHEMA; comSchemaId: number };
-  // 拖拽放置事件处理
-  const isLayoutComponent = () => {
+  // 拖拽放置事件处理 - 使用useCallback缓存
+  const isLayoutComponent = useCallback(() => {
     // 允许接收拖拽组件类型列表
     const layoutComponentTypes = [ComponentTypeEnum.ROOT, ComponentTypeEnum.FLEX];
     return layoutComponentTypes.includes(metadata.componentType);
-  };
+  }, [metadata.componentType]);
 
+  // 拖拽放置事件处理
   const [{ canDrop, isOverShallow }, dropComItem] = useDrop({
     accept: [DnDTypes.COMMETA, DnDTypes.COMSCHEMA],
     drop: (item: ItemType, monitor) => {
@@ -55,6 +62,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
           let goalID = component.comSchemaId;
           let parChIndex = -1;
           const curCom = findNode(component.comSchemaId);
+          console.log(curCom);
           if (curCom) {
             const parentCom = findNode(curCom.parentId);
             if (parentCom) {
@@ -141,7 +149,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
       // 这样可以实现"上面的识别而下面的不识别"的效果
 
       if (isLayoutComponent() && monitor.isOver({ shallow: true }) && monitor.canDrop() && monitor.didDrop() === false) {
-
+        // 可以添加视觉反馈
       }
     },
     collect: (monitor) => ({
@@ -157,31 +165,36 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   });
   dragComItem(divRef.current);
 
+  // 渲染子组件 - 使用useMemo缓存
+  const renderedChildren = useMemo(() => {
+    if (!children || children.length === 0) return null;
+    return children.map((child) => (
+      <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
+    ));
+  }, [children, isSelected]);
+
+  // 生成className - 使用useMemo缓存
+  const componentClassName = useMemo(() => {
+    return `${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`;
+  }, [className, isSelected, canDrop, isOverShallow]);
+
   // 渲染组件内容
   switch (metadata.componentType) {
     case ComponentTypeEnum.FLEX:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__flex ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          className={`component-preview__default component-preview__flex ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}>
-          {children && children.length > 0 && children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
-          ))}
+          onMouseDown={handleComponentSelect}>
+          {renderedChildren}
         </div>
       );
     case ComponentTypeEnum.TEXT:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__text ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          className={`component-preview__default component-preview__text ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}
+          onMouseDown={handleComponentSelect}
         >
           {text !== '' && text}
         </div>
@@ -189,45 +202,36 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
     case ComponentTypeEnum.BUTTON:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__button ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          className={`component-preview__default component-preview__button ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}>
+          onMouseDown={handleComponentSelect}>
           {text !== '' && text}
         </div>
       );
     case ComponentTypeEnum.IMAGE:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__image ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          className={`component-preview__default component-preview__image ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}>
-          {imageUrl ? <img className="img" src={imageUrl} alt='图片' />:'未上传图片'}
+          onMouseDown={handleComponentSelect}>
+          {imageUrl ? <img className="img" src={imageUrl} alt='图片' /> : '未上传图片'}
         </div>
       );
     case ComponentTypeEnum.INPUT:
       return (
         <div ref={divRef}
-          className={`component-preview__default component-preview__input ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+          className={`component-preview__default component-preview__input ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}>
-          <input 
-            type="text" 
-            placeholder={text || '请输入文字...'} 
+          onMouseDown={handleComponentSelect}>
+          <input
+            type="text"
+            placeholder={text || '请输入文字...'}
             className="input-field"
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              border: 'none', 
-              background: 'transparent', 
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              background: 'transparent',
               outline: 'none',
               color: 'inherit',
               fontSize: 'inherit',
@@ -240,19 +244,17 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
       );
     default:
       return (
-        <div ref={divRef} className={`component-preview__default ${className} ${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`}
+        <div ref={divRef} className={`component-preview__default ${componentClassName}`}
           style={inlineStyle}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            actions?.edit_select_com?.(component.comSchemaId);
-          }}>
+          onMouseDown={handleComponentSelect}>
           {text && <div className="component-preview__text">{text}</div>}
-          {children && children.length > 0 && children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
-          ))}
+          {renderedChildren}
         </div>
       );
   };
 };
+
+// 为组件添加显示名称，便于调试
+RenderComponentContent.displayName = 'RenderComponentContent';
 
 export default RenderComponentContent;

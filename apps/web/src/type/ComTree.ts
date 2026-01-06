@@ -39,7 +39,8 @@ class ComTree {
 
   // 公共静态方法获取唯一实例
   public static getInstance(comTree?: ComponentSchema): ComTree {
-    if (ComTree) {
+    // TODO comTree有什么情况
+    if (!ComTree.instance) {
       ComTree.instance = new ComTree(comTree);
     }
     return ComTree.instance;

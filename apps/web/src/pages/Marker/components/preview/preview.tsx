@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo, useCallback } from 'react';
 import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
@@ -50,8 +50,8 @@ const Preview: React.FC = () => {
     actions.edit_zoom_ratio(clampedValue);
   };
 
-  // 缩放比例 和 宽高比例 选择器
-  const zoomRatioIItems = [
+  // 缩放比例 和 宽高比例 选择器 - 使用useMemo缓存
+  const zoomRatioIItems = useMemo(() => [
     {
       key: '1',
       label: (
@@ -67,21 +67,21 @@ const Preview: React.FC = () => {
     {
       key: '2',
       label: (
-
         <InputNumber
           min={0.1}
           max={3.0}
           step={0.1}
           precision={1}
-
           style={{ margin: '0 16px' }}
           value={zoomRatio}
           onChange={(value) => handleZoom(value || 0)}
         />
       ),
     },
-  ];
-  const aspectRatioItems = [
+  ], [zoomRatio, handleZoom]);
+
+  // 宽高比例选择器 - 使用useMemo缓存
+  const aspectRatioItems = useMemo(() => [
     {
       key: '1',
       label: (
@@ -112,34 +112,36 @@ const Preview: React.FC = () => {
         <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(1)}>1 : 1</div>
       ),
     },
-  ];
+  ], [actions]);
   // 重置画布位置缩放
   const confirm = () => {
     actions.edit_zoom_ratio(1);
     actions.edit_aspect_ratio(16 / 9);
     actions.edit_preview_scroll(0, 0);
   };
-  // 组件操作按钮-删除组件
-  const handleDeleteComponent = () => {
+  // 组件操作按钮-删除组件 - 使用useCallback缓存
+  const handleDeleteComponent = useCallback(() => {
     if (selectedComponentId !== -1) {
       actions.remove_component(selectedComponentId!);
       const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
       actions.edit_select_com(comSchemaId as number);
     }
-  };
-  // 组件操作按钮-移动组件
-  const handleMoveUpComponent = () => {
+  }, [selectedComponentId, actions, state.comTree]);
+
+  // 组件操作按钮-移动组件 - 使用useCallback缓存
+  const handleMoveUpComponent = useCallback(() => {
     if (selectedComponentId !== -1) {
       actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.parentId || -1);
     }
-  };
-  const handleMoveDownComponent = () => {
+  }, [selectedComponentId, actions, state.comTree]);
+
+  // 组件操作按钮-移动组件 - 使用useCallback缓存
+  const handleMoveDownComponent = useCallback(() => {
     if (selectedComponentId !== -1) {
       actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
     }
-  };
+  }, [selectedComponentId, actions, state.comTree]);
 
-  console.log(ComTree.getRoot());
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>
