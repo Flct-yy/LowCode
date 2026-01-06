@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ConfigComArea from './components/configComArea';
 import PageConfig from './components/pageConfig';
-import { type ComponentSchema } from '@/type/ComponentSchema';
-import { type TotesConfig } from '@/type/Config';
+import { type ComponentSchema } from '@wect/type';
+import { type TotesConfig } from '@wect/type';
 import { Empty } from 'antd';
 import useWebsContext from "@/context/WebsContext/useWebsContext";
 import ComTree from "@/type/ComTree";

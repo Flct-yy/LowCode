@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DoubleInputNumberConfigItem } from '@type/ConfigItem';
+import { DoubleInputNumberConfigItem } from '@wect/type';
 
 const DoubleInputNumber = ({
   configItem,

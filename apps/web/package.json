@@ -31,6 +31,7 @@
   "dependencies": {
     "@ant-design/icons": "6.x",
     "@wect/components": "workspace:*",
+    "@wect/type": "workspace:*",
     "@wect/utils": "workspace:*",
     "antd": "^6.0.0",
     "axios": "^1.13.2",

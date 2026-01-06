@@ -1,4 +1,4 @@
-import { GroupConfigItem } from "@/type/ConfigItem";
+import { GroupConfigItem } from "@wect/type";
 import React from "react";
 
 const Group = ({ configItem,

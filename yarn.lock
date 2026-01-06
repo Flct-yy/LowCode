@@ -3328,12 +3328,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wect/config@workspace:packages/config":
-  version: 0.0.0-use.local
-  resolution: "@wect/config@workspace:packages/config"
-  languageName: unknown
-  linkType: soft
-
 "@wect/pre_iframe@workspace:apps/preIframe":
   version: 0.0.0-use.local
   resolution: "@wect/pre_iframe@workspace:apps/preIframe"
@@ -3354,6 +3348,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@wect/type@workspace:*, @wect/type@workspace:packages/type":
+  version: 0.0.0-use.local
+  resolution: "@wect/type@workspace:packages/type"
+  languageName: unknown
+  linkType: soft
+
 "@wect/utils@workspace:*, @wect/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@wect/utils@workspace:packages/utils"
@@ -3371,6 +3371,7 @@ __metadata:
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:^5.1.1"
     "@wect/components": "workspace:*"
+    "@wect/type": "workspace:*"
     "@wect/utils": "workspace:*"
     antd: "npm:^6.0.0"
     axios: "npm:^1.13.2"

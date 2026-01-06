@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MarginPaddingConfigItem } from "@/type/ConfigItem";
+import { MarginPaddingConfigItem } from "@wect/type";
 
 interface MarginPaddingProps {
   configItem: MarginPaddingConfigItem;

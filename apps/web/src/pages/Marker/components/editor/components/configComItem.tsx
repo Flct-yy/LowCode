@@ -1,5 +1,5 @@
 import React from 'react';
-import { type ConfigItem, UiTypeEnum } from '@type/ConfigItem';
+import { type ConfigItem, UiTypeEnum } from '@wect/type';
 import ConvertConfigToDom from './convertConfigToDom';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 

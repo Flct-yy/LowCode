@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { type ComponentSchema } from '@type/ComponentSchema';
+import { type ComponentSchema } from '@wect/type';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import RenderComponentContent from './RenderComponentContent';
 import './ComponentPreview.scss';

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
-import { SelectConfigItem } from "@type/ConfigItem";
+import { SelectConfigItem } from "@wect/type";
 import { useState } from "react";
 
 const Select = ({

@@ -1,5 +1,5 @@
-import { type ComponentSchema } from "@type/ComponentSchema";
-import { ConfigItemFieldEnum, ConfigAreaEnum, type TotesConfig } from "@type/Config";
+import { type ComponentSchema } from "@wect/type";
+import { ConfigItemFieldEnum, ConfigAreaEnum, type TotesConfig } from "@wect/type";
 
 // 从组件配置中提取文字内容
 export const getConfigText = (config: ComponentSchema['config']): string => {

@@ -1,6 +1,6 @@
-import { ComponentTypeEnum } from './ComponentSchema';
-import { UiTypeEnum } from './ConfigItem';
-import { type ShortConfig, ConfigItemFieldEnum, ConfigAreaEnum } from './Config';
+import { ComponentTypeEnum } from '@wect/type';
+import { UiTypeEnum } from '@wect/type';
+import { type ShortConfig, ConfigItemFieldEnum, ConfigAreaEnum } from '@wect/type';
 
 export interface InitConfigItem {
   componentName: string;

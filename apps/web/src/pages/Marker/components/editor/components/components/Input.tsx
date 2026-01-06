@@ -1,6 +1,5 @@
 import React from "react";
-import { InputConfigItem } from "@type/ConfigItem";
-import { text } from "stream/consumers";
+import { InputConfigItem } from "@wect/type";
 
 
 const Input = ({

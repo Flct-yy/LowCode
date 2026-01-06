@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConfigItem, UiTypeEnum } from '@type/ConfigItem';
+import { ConfigItem, UiTypeEnum } from '@wect/type';
 import Input from './components/Input';
 import Select from './components/Select';
 import ColorPicker from './components/ColorPicker';
@@ -9,7 +9,7 @@ import Group from './components/Group';
 import DoubleInputNumber from './components/DoubleInputNumber';
 import ImageUpload from './components/ImageUpload';
 import useWebsContext from '@context/WebsContext/useWebsContext';
-import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 
 
 interface ConvertConfigToDomProps {

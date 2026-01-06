@@ -1,9 +1,9 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
 import PageModel, { AspectRatioEnum, PageMetadata } from '@type/PageModel';
-import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
-import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@type/Config';
-import { type ConfigItem } from '@type/ConfigItem';
+import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
+import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@wect/type';
+import { type ConfigItem } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
 import pageApi from '@/api/pageApi';
 import ComTree from '@/type/ComTree';

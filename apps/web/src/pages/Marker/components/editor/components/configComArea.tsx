@@ -1,6 +1,6 @@
 import React from 'react';
-import { type TotesConfig } from '@type/Config';
-import { type ConfigItem } from '@type/ConfigItem';
+import { type TotesConfig } from '@wect/type';
+import { type ConfigItem } from '@wect/type';
 import ConfigComItem from './configComItem';
 
 

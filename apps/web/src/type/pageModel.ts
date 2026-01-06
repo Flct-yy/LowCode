@@ -1,4 +1,3 @@
-import type { ComponentSchema } from './ComponentSchema';
 import ComTree from '@/type/ComTree';
 
 // 页面元信息接口

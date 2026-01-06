@@ -1,8 +1,8 @@
 import initConfigItem from "@type/InitConfigItem";
 import initConfigList from '@type/InitConfigList';
-import { ConfigItemFieldEnum, type TotesConfig } from "@type/Config";
-import { type ConfigItem } from "@type/ConfigItem";
-import { ComponentTypeEnum } from "@type/ComponentSchema";
+import { type TotesConfig } from "@wect/type";
+import { type ConfigItem } from "@wect/type";
+import { ComponentTypeEnum } from "@wect/type";
 import type DynamicParams from "@type/DynamicParams";
 
 // 生成组件的配置
@@ -13,7 +13,7 @@ export default function generateComConfig(componentType: ComponentTypeEnum, dyna
   if (configList) {
     config = configList.config.map((item) => ({
       ...item,
-      configItem: item.configItem.map((field) => {
+      configItem: item.configItem.map((field: any) => {
         const configItem = initConfigItem.find((configItem) => configItem.field === field);
         const params = dynamicParamsFields.includes(field) ? dynamicParams[field as keyof DynamicParams] ?? {} : {};
         return (

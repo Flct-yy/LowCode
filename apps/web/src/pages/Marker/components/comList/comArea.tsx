@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import type { ComponentMetadata } from '@/type/ComponentSchema';
+import type { ComponentMetadata } from '@wect/type';
 import ComItem from './comItem';
-import { ComponentCategoryEnum } from '@/type/ComponentSchema';
+import { ComponentCategoryEnum } from '@wect/type';
 import './comArea.scss';
 
 // 组件类别名称映射

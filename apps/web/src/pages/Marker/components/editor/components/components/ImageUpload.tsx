@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageUploadConfigItem, UiTypeEnum } from '@type/ConfigItem';
+import { ImageUploadConfigItem, UiTypeEnum } from '@wect/type';
 
 const ImageUpload = ({ configItem, setCurrentValue }: {
   configItem: ImageUploadConfigItem,

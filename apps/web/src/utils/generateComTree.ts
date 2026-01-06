@@ -1,7 +1,7 @@
 import React from "react";
 import { TreeDataNode } from "antd"
 import { CarryOutOutlined } from '@ant-design/icons';
-import { ComponentSchema } from "@/type/ComponentSchema";
+import { ComponentSchema } from "@wect/type";
 
 // 生成组件树视图节点
 const getComTreeNode = (comSchema: ComponentSchema): TreeDataNode => {

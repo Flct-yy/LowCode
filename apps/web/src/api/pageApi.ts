@@ -1,6 +1,6 @@
 import api from './api';
 import { PageMetadata } from '@/type/PageModel';
-import { ComponentSchema } from '@/type/ComponentSchema';
+import { ComponentSchema } from '@wect/type';
 
 
 

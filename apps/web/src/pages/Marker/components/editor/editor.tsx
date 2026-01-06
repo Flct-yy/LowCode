@@ -1,7 +1,6 @@
 import React from 'react';
 import { Empty, Tabs, TabsProps } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
-import { type ComponentSchema } from '@/type/ComponentSchema';
 import ComConfig from './comConfig';
 import ComTreeControl from './comTreeControl';
 import './editor.scss';

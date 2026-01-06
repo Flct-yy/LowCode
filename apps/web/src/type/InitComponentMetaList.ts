@@ -1,4 +1,4 @@
-import { ComponentTypeEnum, ComponentCategoryEnum, type ComponentMetadata } from '@/type/ComponentSchema';
+import { ComponentTypeEnum, ComponentCategoryEnum, type ComponentMetadata } from '@wect/type';
 
 // 组件列表 默认组件
 const initComponentList: ComponentMetadata[] = [

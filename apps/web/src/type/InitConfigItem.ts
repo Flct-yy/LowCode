@@ -1,5 +1,5 @@
-import { type ConfigItem, UiTypeEnum } from "@type/ConfigItem";
-import { ConfigItemFieldEnum } from "@type/Config";
+import { type ConfigItem, UiTypeEnum } from "@wect/type";
+import { ConfigItemFieldEnum } from "@wect/type";
 
 
 const initConfigItem: ConfigItem[] = [

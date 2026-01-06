@@ -1,6 +1,6 @@
-import { ComponentSchema } from "@type/ComponentSchema";
-import { ConfigItemFieldEnum } from "@type/Config";
-import { InputNumberConfigItem } from "@type/ConfigItem";
+import { ComponentSchema } from "@wect/type";
+import { ConfigItemFieldEnum } from "@wect/type";
+import { InputNumberConfigItem } from "@wect/type";
 
 // 动态样式管理器类
 class DynamicStyleManager {

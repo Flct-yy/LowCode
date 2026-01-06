@@ -1,6 +1,6 @@
-import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@type/ComponentSchema';
-import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
-import { UiTypeEnum } from '@type/ConfigItem';
+import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
+import { UiTypeEnum } from '@wect/type';
 
 
 const defaultRoot: ComponentSchema = {

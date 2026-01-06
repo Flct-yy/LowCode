@@ -1,5 +1,5 @@
-import { ConfigItemFieldEnum,ConfigAreaEnum } from "@type/Config";
-import { ComponentTypeEnum } from "@type/ComponentSchema";
+import { ConfigItemFieldEnum,ConfigAreaEnum } from "@wect/type";
+import { ComponentTypeEnum } from "@wect/type";
 export default interface DynamicParams {
   componentType: ComponentTypeEnum;
   [ConfigItemFieldEnum.width]?: {

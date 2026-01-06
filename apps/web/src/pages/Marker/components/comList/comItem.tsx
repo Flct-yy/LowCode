@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ComponentMetadata } from '@/type/ComponentSchema';
+import type { ComponentMetadata } from '@wect/type';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
 

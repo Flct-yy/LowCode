@@ -1,5 +1,5 @@
-import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '../type/ComponentSchema';
-import { ConfigItemFieldEnum } from "@type/Config";
+import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
+import { ConfigItemFieldEnum } from "@wect/type";
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
 import { initDynamicParams } from '@/type/InitDynamicParams';

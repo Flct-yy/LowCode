@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
-import { ComponentSchema, ComponentTypeEnum } from "@type/ComponentSchema";
+import { ComponentSchema, ComponentTypeEnum } from "@wect/type";
 import { getConfigText, getConfigImageUrl } from "@utils/getConfig";
 import convertConfigToStyle from "@utils/convertConfigToStyle";
 import { useDrop, useDrag } from "react-dnd";
 import { message } from "antd";
 import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
-import { ConfigItemFieldEnum } from "@type/Config";
+import { ConfigItemFieldEnum } from "@wect/type";
 import { findNode } from "@/type/ComTree";
 import { generateComSchema } from "@utils/generateComSchema";
 import './RenderComponentContent.scss'

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import PageModel, { PageMetadata } from '@type/PageModel';
-import type { ComponentSchema } from '@type/ComponentSchema';
-import { ConfigAreaEnum, ConfigItemFieldEnum } from '@type/Config';
+import type { ComponentSchema } from '@wect/type';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 
 
 

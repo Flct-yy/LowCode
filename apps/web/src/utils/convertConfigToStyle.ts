@@ -1,4 +1,4 @@
-import { ComponentSchema } from "@/type/ComponentSchema";
+import { ComponentSchema } from "@wect/type";
 import { updateComponentStyle, generateComponentClasses } from "./dynamicStyleManager";
 
 // 将组件配置转换为React样式对象

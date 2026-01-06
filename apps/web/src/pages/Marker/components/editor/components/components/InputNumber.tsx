@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Select } from "antd";
-import { InputNumberConfigItem } from "@/type/ConfigItem";
-import { ConfigItemFieldEnum } from "@/type/Config";
+import { InputNumberConfigItem } from "@wect/type";
+import { ConfigItemFieldEnum } from "@wect/type";
 
 const InputNumber = ({
   configItem,

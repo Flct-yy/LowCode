@@ -1,5 +1,5 @@
-import { ComponentTypeEnum } from "@type/ComponentSchema";
-import { ConfigItemFieldEnum } from "@type/Config";
+import { ComponentTypeEnum } from "@wect/type";
+import { ConfigItemFieldEnum } from "@wect/type";
 import DynamicParams from "@type/DynamicParams";
 export const initDynamicParams: DynamicParams[] = [
   {

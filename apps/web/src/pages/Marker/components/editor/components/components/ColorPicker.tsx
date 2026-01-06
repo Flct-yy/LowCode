@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ColorPickerConfigItem } from "@/type/ConfigItem";
+import { ColorPickerConfigItem } from "@wect/type";
 
 interface ColorPickerProps {
   configItem: ColorPickerConfigItem;
