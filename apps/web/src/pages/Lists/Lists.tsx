@@ -4,8 +4,8 @@ import type { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import pageApi from '@/api/pageApi';
-import { PageModel } from '@type/PageModel';
 import ComTree from '@/type/ComTree';
+import { Input } from '@wect/components';
 
 // 页面数据接口
 interface PageData {
@@ -41,7 +41,6 @@ const Lists: React.FC = () => {
         updateTime: new Date(page.updatedAt).toLocaleString(),
         operation: ['编辑', '删除'],
       }));
-      console.log(formattedPages);
       setList(formattedPages);
     } catch (error) {
       console.error('获取页面列表失败:', error);
@@ -158,6 +157,7 @@ const Lists: React.FC = () => {
         style={{ marginBottom: '16px' }}
         onClick={handleAddPage}
       >添加页面</Button>
+      <Input placeholder="搜索页面标题" />
       <Spin spinning={loading} tip="加载中...">
         <Table<PageData> columns={columns} dataSource={list} />
       </Spin>

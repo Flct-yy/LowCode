@@ -20,6 +20,7 @@
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.2",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
+    "@wect/components": "workspace:*",
     "@wect/utils": "workspace:*",
     "antd": "^6.0.0",
     "axios": "^1.13.2",

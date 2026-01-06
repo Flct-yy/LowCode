@@ -1,4 +1,40 @@
 {
   "name": "@wect/components",
-  "packageManager": "yarn@4.9.1"
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "yarn@4.9.1",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./index.css": "./dist/index.css"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "echo '运行components测试...'"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dnd": "^3.0.2",
+    "@types/react-dnd-html5-backend": "^3.0.2",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "sass": "^1.97.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.0.3"
+  }
 }
