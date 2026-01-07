@@ -5,7 +5,7 @@ import { message } from "antd";
 import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
 import { ConfigItemFieldEnum } from "@wect/type";
-import { findNode } from "@/type/ComTree";
+import { findNode } from "@wect/type";
 import { generateComSchema } from "@utils/generateComSchema";
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -60,7 +60,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
               const clientOffset = monitor.getClientOffset();
               const dropRect = componentRef.current?.getBoundingClientRect();
 
-              console.log(clientOffset, dropRect);
               // 基于位置的放置策略：中心区域放当前组件，边缘区域放父组件
               if (clientOffset && dropRect) {
                 const relativeX = clientOffset.x - dropRect.left;
@@ -84,7 +83,6 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
                 // 如果在任意边缘区域，放置到父组件
                 if (isInVerticalEdge || isInHorizontalEdge) {
                   let direction = 'row';
-                  console.log(1);
 
                   goalID = parentCom.comSchemaId;
                   parChIndex = parentCom.children.findIndex(child => child.comSchemaId === component.comSchemaId);

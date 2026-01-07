@@ -1,7 +1,6 @@
-import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
-import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
-import { UiTypeEnum } from '@wect/type';
-
+import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from './ComponentSchema';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from './Config';
+import { UiTypeEnum } from './ConfigItem';
 
 const defaultRoot: ComponentSchema = {
   comSchemaId: new Date().getTime(),
@@ -223,7 +222,7 @@ class ComTree {
   }
 }
 
-export default ComTree;
+export { ComTree };
 export const comTreeInstance = ComTree.getInstance();
  
 // 导出工具函数

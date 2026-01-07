@@ -1,12 +1,12 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
-import PageModel, { AspectRatioEnum, PageMetadata } from '@type/PageModel';
-import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
-import { ConfigAreaEnum, ConfigItemFieldEnum, type TotesConfig } from '@wect/type';
-import { type ConfigItem } from '@wect/type';
+import PageModel, { AspectRatioEnum } from '@type/PageModel';
+import { type PageMetadata } from '@wect/type';
+import { type ComponentSchema } from '@wect/type';
+import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
 import pageApi from '@/api/pageApi';
-import ComTree from '@/type/ComTree';
+import { ComTree, comTreeInstance } from '@wect/type';
 
 const initialPageState: PageModel = {
   metadata: {
@@ -17,7 +17,7 @@ const initialPageState: PageModel = {
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  comTree: ComTree.getInstance(),
+  comTree: comTreeInstance,
   showIframe: true,
   selectedComponentId: -1,
   aspectRatio: AspectRatioEnum.RATIO_16_9,

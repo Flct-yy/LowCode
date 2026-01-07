@@ -6,7 +6,7 @@ import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
-import ComTree from '@/type/ComTree';
+import { ComTree } from '@wect/type';
 
 
 const Preview: React.FC = () => {

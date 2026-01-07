@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { type PageMetadata } from "@/type/PageModel";
+import { type PageMetadata } from "@wect/type";
 import { Input, Tag,message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import pageApi from '@/api/pageApi';

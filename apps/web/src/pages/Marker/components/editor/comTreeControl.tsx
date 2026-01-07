@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tree } from 'antd';
-import ComTree from '@/type/ComTree';
 import generateComTree from '@/utils/generateComTree';
 
 import type { TreeProps } from 'antd';
+import { ComTree } from '@wect/type';
 
 
 const ComTreeControl = ({ selectedComponentId, comTree, onSelect, onDragDrop }: { selectedComponentId: number, comTree: ComTree, onSelect: (compActiveIndex: number) => void, onDragDrop: (sourceId: number, targetParentId: number, childrenIndex: number) => void }) => {

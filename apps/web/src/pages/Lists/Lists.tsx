@@ -4,7 +4,7 @@ import type { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import pageApi from '@/api/pageApi';
-import ComTree from '@/type/ComTree';
+import {ComTree} from '@wect/type';
 
 // 页面数据接口
 interface PageData {
