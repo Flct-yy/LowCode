@@ -1,5 +1,6 @@
 import { type ComponentSchema, ComponentTypeEnum } from "@wect/type";
 import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
+import '@wect/components/index.css';
 
 const RenderComponentContent = ({ component }: { component: ComponentSchema }) => {
   const { children } = component;

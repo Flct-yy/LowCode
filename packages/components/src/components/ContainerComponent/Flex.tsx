@@ -1,6 +1,7 @@
-import React, { useRef, useMemo, Children } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import '@/scss/ContainerScss/Flex.scss';
 
 function Flex({
   component,

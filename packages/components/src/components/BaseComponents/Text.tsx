@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { ComponentSchema } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
+import '@/scss/BaseScss/Text.scss';
 
 function Text({
   component,

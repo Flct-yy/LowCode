@@ -7,9 +7,10 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { ConfigItemFieldEnum } from "@wect/type";
 import { findNode } from "@wect/type";
 import { generateComSchema } from "@utils/generateComSchema";
+import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
-import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
+import '@wect/components/index.css';
 
 // 根据组件类型渲染不同的DOM元素
 const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: boolean }> = ({ component, Selected }) => {

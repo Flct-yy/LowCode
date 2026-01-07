@@ -31,7 +31,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         <input
           className="color-picker-input border"
           type="color"
-          value={currentValue}
+          value={currentValue === 'transparent' ? defaultValue : currentValue}
           onChange={handleColorChange}
           onBlur={handleColorChange}
         />
