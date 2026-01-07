@@ -3337,6 +3337,7 @@ __metadata:
     "@types/react": "npm:^19.2.5"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:^5.1.1"
+    "@wect/components": "workspace:*"
     "@wect/type": "workspace:*"
     axios: "npm:^1.13.2"
     eslint: "npm:^9.39.2"

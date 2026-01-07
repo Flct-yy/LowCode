@@ -6,7 +6,6 @@ import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
-import { ComTree } from '@wect/type';
 
 
 const Preview: React.FC = () => {
@@ -194,7 +193,7 @@ const Preview: React.FC = () => {
 
       </div>
       {/* 组件渲染区域 */}
-      <ComponentPreview comRoot={ComTree.getRoot()} />
+      <ComponentPreview comRoot={comTree.getRoot()} />
     </div>
   );
 }

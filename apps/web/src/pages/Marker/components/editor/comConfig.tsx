@@ -28,7 +28,7 @@ const ComConfig: React.FC = () => {
         </div>
       </div>
       {
-        selectedComponent.comSchemaId !== ComTree.getRoot().comSchemaId ?
+        selectedComponent.comSchemaId !== comTree.getRoot().comSchemaId ?
           (selectedComponent.config || []).map((item: TotesConfig, index: number) => (
             <ConfigComArea key={item.areaName || index.toString()} config={item} />
           )) :

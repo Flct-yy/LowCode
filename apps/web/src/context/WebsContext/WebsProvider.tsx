@@ -140,9 +140,10 @@ function WebsReducer(state: PageModel, action: {
         comTree: state.comTree,
       }
     case Actions.EDIT_COM_TREE:
+      state.comTree.setRoot(action.payload.comTree!)
       return {
         ...state,
-        comTree: ComTree.getInstance(action.payload.comTree!),
+        comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_VALUE:
       state.comTree.updateNodeConfig(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentValue!)
@@ -246,9 +247,10 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
             updatedAt: new Date(res.pageMetadata.updatedAt),
           },
           // 将API返回的com_tree对象转换为ComTree类的实例
-          comTree: ComTree.getInstance(res.com_tree),
+          comTree: ComTree.getInstance(),
         };
-
+        console.log('transformedData', res.com_tree);
+        transformedData.comTree.setRoot(res.com_tree.root);
         if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
           dispatch({ type: Actions.SET_PAGE_DATA, payload: { pageData: transformedData } });
         }
@@ -361,6 +363,8 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     state,
     actions,
   }
+
+  console.log('comTree', state.comTree);
   return (
     <WebsContext.Provider value={contextValue}>
       {children}

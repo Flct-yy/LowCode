@@ -11,6 +11,13 @@ const TopBar: React.FC = () => {
   const { state, actions } = useWebsContext();
   const { metadata, comTree } = state;
 
+  const handlePreview = () => {
+    // 先保存当前页面配置
+    handleSave();
+    // 处理预览逻辑
+    navigate(`/preview/${metadata.id}`);
+  };
+
   const handleSave = async () => {
     // 处理保存逻辑
     try {
@@ -91,7 +98,7 @@ const TopBar: React.FC = () => {
       }} justify={'space-between'} align={'center'}>
         <Button type="text" onClick={() => navigate(-1)}>返回</Button>
         <Flex justify={'space-between'} align={'center'} gap={10}>
-          <Button onClick={() => navigate(`/preview/${metadata.id}`)}>预览</Button>
+          <Button onClick={handlePreview}>预览</Button>
           <Button onClick={handleSave}>保存</Button>
           <Button type="primary" onClick={handleImport}>导入</Button>
           <Button type="primary" onClick={handleExport}>导出</Button>

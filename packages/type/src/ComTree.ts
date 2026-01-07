@@ -37,19 +37,19 @@ class ComTree {
   }
 
   // 公共静态方法获取唯一实例
-  public static getInstance(comTree?: ComponentSchema): ComTree {
-    // TODO comTree有什么情况
+  public static getInstance(): ComTree {
     if (!ComTree.instance) {
-      ComTree.instance = new ComTree(comTree);
+      ComTree.instance = new ComTree();
     }
     return ComTree.instance;
   }
 
-  public static getRoot(): ComponentSchema {
-    if (!ComTree.instance) {
-      ComTree.instance = new ComTree();
-    }
-    return ComTree.instance.root;
+  public setRoot(root: ComponentSchema): void {
+    this.root = (root as any).root ? (root as any).root : root;;
+  }
+
+  public getRoot(): ComponentSchema {
+    return this.root;
   }
 
   // 递归查找节点（核心辅助方法）
@@ -84,8 +84,9 @@ class ComTree {
       console.error(`父节点 ${parentId} 不存在`);
       return false;
     }
+    parentNode.children = parentNode.children || [];
     // 处理 childrenArrIndex 参数
-    const insertIndex = childrenArrIndex !== -1 ? childrenArrIndex : parentNode.children.length;
+    const insertIndex = childrenArrIndex !== -1 ? childrenArrIndex : parentNode.children?.length || 0;
 
     // 校验子节点 ID 唯一性
     // 在 main.tsx 中启用了 React.StrictMode ，这会导致组件在开发模式下进行双重渲染，包括 useDrop 钩子的设置和事件处理函数。 所以会暂时报错
@@ -224,7 +225,7 @@ class ComTree {
 
 export { ComTree };
 export const comTreeInstance = ComTree.getInstance();
- 
+
 // 导出工具函数
 export const findNode = (componentID: number): ComponentSchema | undefined => {
   return comTreeInstance.findNode(componentID);

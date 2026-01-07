@@ -7,7 +7,7 @@ import { ComTree } from '@wect/type';
 
 
 const ComTreeControl = ({ selectedComponentId, comTree, onSelect, onDragDrop }: { selectedComponentId: number, comTree: ComTree, onSelect: (compActiveIndex: number) => void, onDragDrop: (sourceId: number, targetParentId: number, childrenIndex: number) => void }) => {
-  const TreeData = generateComTree(ComTree.getRoot());
+  const TreeData = generateComTree(comTree.getRoot());
   const handleSelect = (selectedKeys: React.Key[], info: any) => {
     if (info.selected) {
       onSelect(Number(selectedKeys[0]));
@@ -21,7 +21,7 @@ const ComTreeControl = ({ selectedComponentId, comTree, onSelect, onDragDrop }: 
       console.error(`目标节点 ${info.node.key} 不存在`);
       return;
     }
-    if (dropNode.comSchemaId === ComTree.getRoot().comSchemaId) {
+    if (dropNode.comSchemaId === comTree.getRoot().comSchemaId) {
       console.error(`根节点保持唯一`);
       return;
     }

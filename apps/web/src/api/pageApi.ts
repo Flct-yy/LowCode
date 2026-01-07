@@ -6,7 +6,7 @@ import { type ComponentSchema } from '@wect/type';
 
 interface PageModelResponse {
   pageMetadata: PageMetadata;
-  com_tree: ComponentSchema;
+  com_tree: { root: ComponentSchema };
 }
 // 创建页面接口参数
 interface CreatePageParams {
