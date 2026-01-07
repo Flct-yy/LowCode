@@ -21,7 +21,7 @@ const TopBar: React.FC = () => {
   const handleSave = async () => {
     // 处理保存逻辑
     try {
-      await pageApi.updatePage(metadata.id, { comTree });
+      await pageApi.updatePage(metadata.id, { comTree, aspect_ratio: `${state.aspectRatio}` });
       message.success('保存成功');
     } catch (error) {
       message.error('保存失败');

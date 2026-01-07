@@ -26,9 +26,9 @@ interface CreatePageDto {
    */
   comTree: any;
   /**
-   * 缩放比例
+   * 宽高比
    */
-  zoomRatio?: string;
+  aspectRatio?: string;
 }
 
 /**
@@ -54,7 +54,7 @@ interface UpdatePageDto {
   /**
    * 缩放比例
    */
-  zoomRatio?: string;
+  aspectRatio?: string;
 }
 
 /**
@@ -93,7 +93,7 @@ export class PageService {
     // 创建页面模型
     const pageModel = this.pageModelRepository.create({
       com_tree: createPageDto.comTree,
-      zoom_ratio: createPageDto.zoomRatio || '16/9',
+      aspect_ratio: createPageDto.aspectRatio || '16/9',
     });
 
     // 建立双向关联
@@ -123,7 +123,7 @@ export class PageService {
     return {
       pageMetadata: page,
       com_tree: page.pageModel.com_tree,
-      zoom_ratio: page.pageModel.zoom_ratio,
+      aspect_ratio: page.pageModel.aspect_ratio,
     };
   }
 
@@ -145,7 +145,7 @@ export class PageService {
     // 返回用户指定的数据结构
     return {
       com_tree: page.pageModel.com_tree,
-      zoom_ratio: page.pageModel.zoom_ratio,
+      aspect_ratio: page.pageModel.aspect_ratio,
     };
   }
 
@@ -179,8 +179,8 @@ export class PageService {
     // 获取当前的组件树，默认为原有组件树
     let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
-    // 如果有组件树或缩放比例更新，也更新页面模型
-    if (updatePageDto.comTree || updatePageDto.zoomRatio) {
+    // 如果有组件树或宽高比更新，也更新页面模型
+    if (updatePageDto.comTree || updatePageDto.aspectRatio) {
       // 查找关联的页面模型
       const pageModel = await this.pageModelRepository.findOne({
         where: { pageMetadata: { id: updatedMetadata.id } },
@@ -191,8 +191,8 @@ export class PageService {
           pageModel.com_tree = updatePageDto.comTree;
           updatedComTree = updatePageDto.comTree;
         }
-        if (updatePageDto.zoomRatio) {
-          pageModel.zoom_ratio = updatePageDto.zoomRatio;
+        if (updatePageDto.aspectRatio) {
+          pageModel.aspect_ratio = updatePageDto.aspectRatio;
         }
         await this.pageModelRepository.save(pageModel);
       }
@@ -202,7 +202,7 @@ export class PageService {
     return {
       pageMetadata: updatedMetadata,
       com_tree: updatedComTree,
-      zoom_ratio: updatedMetadata.pageModel?.zoom_ratio,
+      aspect_ratio: updatedMetadata.pageModel?.aspect_ratio,
     };
   }
 

@@ -1,9 +1,8 @@
 import { createContext } from 'react';
-import PageModel from '@type/PageModel';
+import PageModel,{ AspectRatioEnum } from '@type/PageModel';
 import { type PageMetadata } from '@wect/type';
 import type { ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
-
 
 
 export interface WebsContextType {
@@ -22,7 +21,7 @@ export interface WebsContextType {
 
     edit_show_iframe: (showIframe: boolean) => void;
     edit_select_com: (compActiveIndex: number) => void;
-    edit_aspect_ratio: (aspectRatio: number) => void;
+    edit_aspect_ratio: (aspectRatio: AspectRatioEnum) => void;
     edit_zoom_ratio: (zoomRatio: number) => void;
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
     edit_is_drag_com: (isDragCom: boolean) => void;

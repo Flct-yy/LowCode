@@ -6,6 +6,7 @@ import { type ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
 import pageApi from '@/api/pageApi';
+import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
 import { ComTree, comTreeInstance } from '@wect/type';
 
 const initialPageState: PageModel = {
@@ -91,7 +92,7 @@ function WebsReducer(state: PageModel, action: {
     id?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
     comSchemaId?: number, component?: ComponentSchema,
     showIframe?: boolean, selectedComponentId?: number,
-    aspectRatio?: number, zoomRatio?: number,
+    aspectRatio?: AspectRatioEnum, zoomRatio?: number,
     previewScrollTop?: number, previewScrollLeft?: number,
     isDragCom?: boolean, areaName?: ConfigAreaEnum,
     field?: ConfigItemFieldEnum, currentValue?: any,
@@ -248,8 +249,8 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
           },
           // 将API返回的com_tree对象转换为ComTree类的实例
           comTree: ComTree.getInstance(),
+          aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
         };
-        console.log('transformedData', res.com_tree);
         transformedData.comTree.setRoot(res.com_tree.root);
         if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
           dispatch({ type: Actions.SET_PAGE_DATA, payload: { pageData: transformedData } });
@@ -326,7 +327,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
       dispatch({ type: Actions.EDIT_SELECT_COM, payload: { selectedComponentId } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
-    edit_aspect_ratio: (aspectRatio: number) => {
+    edit_aspect_ratio: (aspectRatio: AspectRatioEnum) => {
       dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio } })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
@@ -364,7 +365,6 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     actions,
   }
 
-  console.log('comTree', state.comTree);
   return (
     <WebsContext.Provider value={contextValue}>
       {children}

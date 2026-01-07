@@ -6,6 +6,7 @@ import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
+import { AspectRatioEnum } from '@type/PageModel';
 
 
 const Preview: React.FC = () => {
@@ -84,38 +85,38 @@ const Preview: React.FC = () => {
     {
       key: '1',
       label: (
-        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(16 / 9)}>16 : 9</div>
+        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(AspectRatioEnum.RATIO_16_9)}>16 : 9</div>
       ),
     },
     {
       key: '2',
       label: (
-        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(9 / 16)}>9 : 16</div>
+        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(AspectRatioEnum.RATIO_9_16)}>9 : 16</div>
       ),
     },
     {
       key: '3',
       label: (
-        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(4 / 3)}>4 : 3</div>
+        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(AspectRatioEnum.RATIO_4_3)}>4 : 3</div>
       ),
     },
     {
       key: '4',
       label: (
-        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(3 / 4)}>3 : 4</div>
+        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(AspectRatioEnum.RATIO_3_4)}>3 : 4</div>
       ),
     },
     {
       key: '5',
       label: (
-        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(1)}>1 : 1</div>
+        <div style={{ width: '100%', textAlign: 'center' }} onClick={() => actions.edit_aspect_ratio(AspectRatioEnum.RATIO_1_1)}>1 : 1</div>
       ),
     },
   ], [actions]);
   // 重置画布位置缩放
   const confirm = () => {
     actions.edit_zoom_ratio(1);
-    actions.edit_aspect_ratio(16 / 9);
+    actions.edit_aspect_ratio(AspectRatioEnum.RATIO_16_9);
     actions.edit_preview_scroll(0, 0);
   };
   // 组件操作按钮-删除组件 - 使用useCallback缓存

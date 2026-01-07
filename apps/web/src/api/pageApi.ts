@@ -7,6 +7,7 @@ import { type ComponentSchema } from '@wect/type';
 interface PageModelResponse {
   pageMetadata: PageMetadata;
   com_tree: { root: ComponentSchema };
+  aspect_ratio: string;
 }
 // 创建页面接口参数
 interface CreatePageParams {
@@ -14,6 +15,7 @@ interface CreatePageParams {
   description?: string;
   keywords?: string[];
   comTree: any;
+  aspect_ratio: string;
 }
 
 // 更新页面接口参数
@@ -22,6 +24,7 @@ interface UpdatePageParams {
   description?: string;
   keywords?: string[];
   comTree?: any;
+  aspect_ratio?: string;
 }
 
 // 页面API服务
