@@ -20,7 +20,7 @@ const routes: RouteObject[] = [
     element: React.createElement(Marker),
   },
   {
-    path: '/preview',
+    path: '/preview/:pageId',
     element: React.createElement(PreIframe),
   },
 ];

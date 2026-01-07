@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { type ComponentSchema, ComTree } from '@wect/type';
+import { useParams } from 'react-router-dom';
+import { ComTree } from '@wect/type';
 import pageApi from '@/api/pageApi';
 
 
@@ -9,17 +9,17 @@ interface transformedData {
 }
 
 function Preview() {
-  const [searchParams] = useSearchParams();
-  const [pageId, setPageId] = useState<number>(0);
+  const { pageId } = useParams<{ pageId: string }>();
+  const [pageIdNum, setPageIdNum] = useState<number>(0);
   const [componentTree, setComponentTree] = useState<ComTree | null>(null);
 
   useEffect(() => {
     // 解析查询参数
-    const id = searchParams.get('pageId');
+    const id = Number(pageId);
 
     if (id) {
-      setPageId(Number(id));
-      pageApi.getPageById(Number(id))
+      setPageIdNum(id);
+      pageApi.getPageById(id)
         .then((res) => {
           if (!res || !res.com_tree) {
             throw new Error('API返回数据格式不正确');
@@ -38,9 +38,9 @@ function Preview() {
           console.error('获取页面详情失败:', error);
         })
     }
-  }, [searchParams]);
 
-  // 这里可以根据需要使用componentTree渲染预览内容
+    console.log('componentTree', componentTree);
+  }, [pageIdNum]);
 
   return (
     <div>

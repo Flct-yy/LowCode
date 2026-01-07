@@ -1,11 +1,16 @@
-import React from 'react';
-import useWebsContext from '@context/WebsContext/useWebsContext';
+import React, { useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const PreIframe: React.FC = () => {
-  const { state } = useWebsContext();
-  const { metadata } = state;
+  const { pageId } = useParams<{ pageId: string }>();
+  const navigate = useNavigate();
 
-  const previewUrl = `http://localhost:5174/preview?pageId=${metadata.id}`;
+  const previewUrl = useMemo(() => {
+    if (!pageId) {
+      navigate('/lists');
+    }
+    return `http://localhost:5174/preview/${pageId}`;
+  }, [pageId]);
   return (
     <div style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
       <iframe
