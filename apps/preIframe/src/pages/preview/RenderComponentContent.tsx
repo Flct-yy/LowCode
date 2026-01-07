@@ -1,17 +1,49 @@
-import { useMemo } from 'react';
-import type { ComponentSchema } from "@wect/type";
+import { type ComponentSchema, ComponentTypeEnum } from "@wect/type";
+import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
 
 const RenderComponentContent = ({ component }: { component: ComponentSchema }) => {
-  console.log(component);
   const { children } = component;
-  return (
-    <div>
-      {children && children.length > 0 &&
-        children.map((child) => (
-          <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} />
-        ))}
-    </div>
-  )
+  const renderedChildren = children?.map(child => (
+    <RenderComponentContent key={child.comSchemaId} component={child} />
+  ));
+  switch (component.metadata.componentType) {
+    case ComponentTypeEnum.FLEX:
+      return (
+        <Flex
+          component={component}
+        >{renderedChildren}</Flex>
+      );
+    case ComponentTypeEnum.TEXT:
+      return (
+        <Text
+          component={component}
+        />
+      );
+    case ComponentTypeEnum.BUTTON:
+      return (
+        <Button
+          component={component}
+        />
+      );
+    case ComponentTypeEnum.IMAGE:
+      return (
+        <Image
+          component={component}
+        />
+      );
+    case ComponentTypeEnum.INPUT:
+      return (
+        <Input
+          component={component}
+        />
+      );
+    default:
+      return (
+        <Default
+          component={component}
+        >{renderedChildren}</Default>
+      );
+  };
 }
 
 export default RenderComponentContent;

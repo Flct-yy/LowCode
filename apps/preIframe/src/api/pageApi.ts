@@ -2,7 +2,7 @@ import api from './api';
 import { type ComponentSchema } from '@wect/type';
 
 interface PageModelResponse {
-  com_tree: ComponentSchema;
+  com_tree: {root: ComponentSchema};
   aspect_ratio: string;
 }
 

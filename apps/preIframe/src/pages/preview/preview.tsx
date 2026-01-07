@@ -12,7 +12,7 @@ interface transformedData {
 function Preview() {
   const { pageId } = useParams<{ pageId: string }>();
   const [pageIdNum, setPageIdNum] = useState<number>(0);
-  const [componentTree, setComponentTree] = useState<ComponentSchema>();
+  const [componentRoot, setComponentRoot] = useState<ComponentSchema>();
   const [aspectRatio, setAspectRatio] = useState<string>('16/9');
   useEffect(() => {
     // 解析查询参数
@@ -34,8 +34,8 @@ function Preview() {
           };
 
           if (transformedData.comTree !== null) { // 确保只有当页面数据加载完成后才更新
-            transformedData.comTree.setRoot(res.com_tree);
-            setComponentTree(transformedData.comTree.getRoot());
+            transformedData.comTree.setRoot(res.com_tree.root);
+            setComponentRoot(transformedData.comTree.getRoot());
           }
         })
         .catch((error) => {
@@ -44,11 +44,12 @@ function Preview() {
         })
     }
   }, [pageIdNum]);
-
   return (
     <main className='main'>
       <div className='preview-container' style={{ aspectRatio }}>
-        {componentTree && <RenderComponentContent component={componentTree} />}
+        {componentRoot?.children?.map(child => (
+          <RenderComponentContent key={child.comSchemaId} component={child} />
+        ))}
       </div>
     </main>
   );
