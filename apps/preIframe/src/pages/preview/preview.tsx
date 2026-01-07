@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ComTree, comTreeInstance, type ComponentSchema } from '@wect/type';
+import { ComTree, type ComponentSchema } from '@wect/type';
 import pageApi from '@/api/pageApi';
 import RenderComponentContent from './RenderComponentContent';
-
+import './preview.scss';
 
 interface transformedData {
   comTree: ComTree;
@@ -13,7 +13,7 @@ function Preview() {
   const { pageId } = useParams<{ pageId: string }>();
   const [pageIdNum, setPageIdNum] = useState<number>(0);
   const [componentTree, setComponentTree] = useState<ComponentSchema>();
-
+  const [aspectRatio, setAspectRatio] = useState<string>('16/9');
   useEffect(() => {
     // 解析查询参数
     const id = Number(pageId);
@@ -24,6 +24,9 @@ function Preview() {
         .then((res) => {
           if (!res || !res.com_tree) {
             throw new Error('API返回数据格式不正确');
+          }
+          if (res.aspect_ratio) {
+            setAspectRatio(res.aspect_ratio);
           }
           // 数据转换
           const transformedData: transformedData = {
@@ -43,8 +46,10 @@ function Preview() {
   }, [pageIdNum]);
 
   return (
-    <main>
-      {componentTree && <RenderComponentContent component={componentTree} />}
+    <main className='main'>
+      <div className='preview-container' style={{ aspectRatio }}>
+        {componentTree && <RenderComponentContent component={componentTree} />}
+      </div>
     </main>
   );
 }

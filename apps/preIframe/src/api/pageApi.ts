@@ -3,6 +3,7 @@ import { type ComponentSchema } from '@wect/type';
 
 interface PageModelResponse {
   com_tree: ComponentSchema;
+  aspect_ratio: string;
 }
 
 // 页面API服务
