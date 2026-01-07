@@ -25,6 +25,10 @@ interface CreatePageDto {
    * 组件树结构
    */
   comTree: any;
+  /**
+   * 缩放比例
+   */
+  zoomRatio?: string;
 }
 
 /**
@@ -47,6 +51,10 @@ interface UpdatePageDto {
    * 组件树结构
    */
   comTree?: any;
+  /**
+   * 缩放比例
+   */
+  zoomRatio?: string;
 }
 
 /**
@@ -85,6 +93,7 @@ export class PageService {
     // 创建页面模型
     const pageModel = this.pageModelRepository.create({
       com_tree: createPageDto.comTree,
+      zoom_ratio: createPageDto.zoomRatio || '16/9',
     });
 
     // 建立双向关联
@@ -114,11 +123,12 @@ export class PageService {
     return {
       pageMetadata: page,
       com_tree: page.pageModel.com_tree,
+      zoom_ratio: page.pageModel.zoom_ratio,
     };
   }
 
   /**
-   * 根据ID获取组件树
+   * 根据ID获取组件树和缩放比例
    * @param id 页面ID
    * @returns 组件树
    */
@@ -135,6 +145,7 @@ export class PageService {
     // 返回用户指定的数据结构
     return {
       com_tree: page.pageModel.com_tree,
+      zoom_ratio: page.pageModel.zoom_ratio,
     };
   }
 
@@ -168,16 +179,21 @@ export class PageService {
     // 获取当前的组件树，默认为原有组件树
     let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
-    // 如果有组件树更新，也更新页面模型
-    if (updatePageDto.comTree) {
+    // 如果有组件树或缩放比例更新，也更新页面模型
+    if (updatePageDto.comTree || updatePageDto.zoomRatio) {
       // 查找关联的页面模型
       const pageModel = await this.pageModelRepository.findOne({
         where: { pageMetadata: { id: updatedMetadata.id } },
       });
 
       if (pageModel) {
-        pageModel.com_tree = updatePageDto.comTree;
-        updatedComTree = updatePageDto.comTree;
+        if (updatePageDto.comTree) {
+          pageModel.com_tree = updatePageDto.comTree;
+          updatedComTree = updatePageDto.comTree;
+        }
+        if (updatePageDto.zoomRatio) {
+          pageModel.zoom_ratio = updatePageDto.zoomRatio;
+        }
         await this.pageModelRepository.save(pageModel);
       }
     }
@@ -186,6 +202,7 @@ export class PageService {
     return {
       pageMetadata: updatedMetadata,
       com_tree: updatedComTree,
+      zoom_ratio: updatedMetadata.pageModel?.zoom_ratio,
     };
   }
 

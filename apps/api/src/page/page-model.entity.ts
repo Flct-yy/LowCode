@@ -20,6 +20,12 @@ export class PageModel {
   com_tree!: JSON;
 
   /**
+   * 缩放比例
+   */
+  @Column({name:'zoom_ratio', type:'varchar', length:20, nullable:false, default:'16/9'})
+  zoom_ratio!:string;
+
+  /**
    * 一对一关联到PageMetadata
    */
   @OneToOne(() => PageMetadata, (metadata) => metadata.pageModel, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
