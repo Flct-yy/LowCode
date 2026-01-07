@@ -11,8 +11,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/preview',
-    element: <Preview />,
+    path: '/preview/:pageId', 
+    element: <Preview />, // 匹配路径后渲染 Preview 组件
   },
 ]);
 
