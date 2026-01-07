@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PageMetadata } from './page-metadata.entity';
 import { PageModel } from './page-model.entity';
 import { Repository } from 'typeorm';
+import { InternalServerErrorException } from '@nestjs/common';
 
 /**
  * 创建页面的DTO接口
@@ -117,13 +118,33 @@ export class PageService {
   }
 
   /**
+   * 根据ID获取组件树
+   * @param id 页面ID
+   * @returns 组件树
+   */
+  async getComTreeById(id: bigint): Promise<any> {
+    const page = await this.pageMetadataRepository.findOne({
+      where: { id },
+      relations: ['pageModel'],
+    });
+
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+
+    // 返回用户指定的数据结构
+    return {
+      com_tree: page.pageModel.com_tree,
+    };
+  }
+
+  /**
    * 获取所有页面
    * @returns 所有页面的列表
    */
   async getAllPages(): Promise<any[]> {
     // 使用pageMetadataRepository查询所有页面元信息
     return await this.pageMetadataRepository.find();
-
   }
 
   /**
@@ -170,12 +191,23 @@ export class PageService {
 
   /**
    * 删除页面
-   * @param id 页面ID
+   * @param id 页面元信息ID
    */
   async deletePage(id: bigint): Promise<void> {
-    const result = await this.pageMetadataRepository.delete(Number(id));
-    if (result.affected === 0) {
-      throw new NotFoundException(`Page with ID ${id} not found`);
+    try {
+      // 删除页面元信息（会级联删除页面模型）
+      const modelResult = await this.pageModelRepository.delete(Number(id));
+
+      // 检查是否有任一删除操作成功
+      if (modelResult.affected === 0) {
+        throw new NotFoundException(`Page with ID ${id} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('Failed to delete page');
+      }
     }
   }
 }

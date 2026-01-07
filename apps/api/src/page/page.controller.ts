@@ -7,7 +7,7 @@ import { PageService } from './page.service';
  */
 @Controller('pages')
 export class PageController {
-  constructor(private readonly pageService: PageService) {}
+  constructor(private readonly pageService: PageService) { }
 
   /**
    * 创建新页面
@@ -36,6 +36,16 @@ export class PageController {
   @Get(':id')
   getPageById(@Param('id') id: string) {
     return this.pageService.getPageById(BigInt(id));
+  }
+  
+  /**
+ * 根据ID获取组件树
+ * @param id 页面ID
+ * @returns 组件树
+ */
+  @Get(':id/com_tree')
+  getComTreeById(@Param('id') id: string) {
+    return this.pageService.getComTreeById(BigInt(id));
   }
 
   /**

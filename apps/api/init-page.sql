@@ -20,6 +20,7 @@ DROP SEQUENCE IF EXISTS public.page_metadata_id_seq;
 CREATE TABLE public.page_model (
     id bigint NOT NULL, -- 先只定义主键字段，不设置默认值
     com_tree json NOT NULL,  -- 组件树JSON数据
+    zoom_ratio varchar(20) NOT NULL DEFAULT '16/9', -- 缩放比例（字符串类型，长度限制20足够）
     CONSTRAINT page_model_pkey PRIMARY KEY (id)
 );
 
@@ -71,7 +72,7 @@ ALTER COLUMN id SET DEFAULT nextval('public.page_metadata_id_seq'::regclass);
 -- =============================================
 -- 4. 插入主表page_model数据（组件树）
 -- =============================================
-INSERT INTO public.page_model (com_tree)
+INSERT INTO public.page_model (com_tree, zoom_ratio)
 VALUES
 -- 首页组件树
 (
@@ -181,7 +182,8 @@ VALUES
     "parentId": 0,
     "isLocked": false,
     "isVisible": true
-  }'::json
+  }'::json,
+  '16/9' -- zoom_ratio 默认值
 ),
 -- 示例页面组件树
 (
@@ -853,7 +855,8 @@ VALUES
     "parentId": -1,
     "isLocked": false,
     "isVisible": true
-  }'::json
+  }'::json,
+  '16/9' -- zoom_ratio 默认值
 );
 
 -- =============================================
