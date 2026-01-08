@@ -13,10 +13,14 @@ import '@scss/variables.scss'
 import '@wect/components/index.css';
 
 // 根据组件类型渲染不同的DOM元素
-const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: boolean }> = ({ component, Selected }) => {
+const RenderComponentContent: React.FC<{
+  component: ComponentSchema;
+  Selected: boolean;
+  onSetSelectedComponentRef: (component: ComponentSchema, ref: HTMLDivElement | null) => void;
+}> = ({ component, Selected, onSetSelectedComponentRef }) => {
   const { metadata, children } = component;
   const { state, actions } = useWebsContext();
-  const { selectedComponentId } = state;
+  const { selectedComponentId,isDragCom } = state;
 
   // 是否选中
   const [isSelected, setIsSelected] = useState(Selected || selectedComponentId === component.comSchemaId);
@@ -31,9 +35,9 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   const handleComponentSelect = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     actions?.edit_select_com?.(component.comSchemaId);
-  }, [actions, component.comSchemaId]);
-  
-  
+  }, [actions]);
+
+
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
     | { type: DnDTypes.COMSCHEMA; comSchemaId: number };
@@ -153,6 +157,7 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
   // 拖拽组件事件处理
   const [, dragComItem] = useDrag({
     type: DnDTypes.COMSCHEMA,
+    canDrag: () => isDragCom,
     item: { type: DnDTypes.COMSCHEMA, comSchemaId: component.comSchemaId },
   });
 
@@ -162,15 +167,36 @@ const RenderComponentContent: React.FC<{ component: ComponentSchema, Selected: b
     componentRef.current = ref.current;
     dropComItem(ref.current);
     dragComItem(ref.current);
+
+    // 如果当前组件被选中，将ref传递给父组件
+    if (isSelected && onSetSelectedComponentRef) {
+      onSetSelectedComponentRef(component, ref.current);
+    }
   }
+
+  // 当选中状态变化时，传递或清除ref
+  useEffect(() => {
+    if (onSetSelectedComponentRef) {
+      if (isSelected && componentRef.current) {
+        onSetSelectedComponentRef(component, componentRef.current);
+      } else {
+        onSetSelectedComponentRef(component, null);
+      }
+    }
+  }, [isSelected, componentRef, component, onSetSelectedComponentRef]);
 
   // 渲染子组件 - 使用useMemo缓存
   const renderedChildren = useMemo(() => {
     if (!children || children.length === 0) return null;
     return children.map((child) => (
-      <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={isSelected} />
+      <RenderComponentContent
+        key={child.comSchemaId}
+        component={child as ComponentSchema}
+        Selected={isSelected}
+        onSetSelectedComponentRef={onSetSelectedComponentRef}
+      />
     ));
-  }, [children.length, isSelected]);
+  }, [children.length, isSelected, onSetSelectedComponentRef]);
 
   // 生成className - 使用useMemo缓存
   const componentClassName = useMemo(() => {

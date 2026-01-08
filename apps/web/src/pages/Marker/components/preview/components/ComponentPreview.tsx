@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
 import { type ComponentSchema } from '@wect/type';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import RenderComponentContent from './RenderComponentContent';
@@ -7,16 +7,22 @@ import { useDrop, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
 import { generateComSchema } from '@/utils/generateComSchema';
 import { handleWheel } from '@wect/utils';
+import { Button, message } from 'antd';
+import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import '@scss/variables.scss'
 
 
-
-
-const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) => {
+const ComponentPreview: React.FC<{
+  comRoot: ComponentSchema;
+}> = ({ comRoot }) => {
   const { state, actions } = useWebsContext();
-  const { aspectRatio, selectedComponentId, previewScrollLeft, previewScrollTop, zoomRatio, isSliding, isDragCom } = state;
+  const { comTree, aspectRatio, selectedComponentId, previewScrollLeft, previewScrollTop, zoomRatio, isSliding, isDragCom } = state;
   const previewRef = useRef<HTMLDivElement>(null);
+  const selectedComponentRef = useRef<HTMLDivElement>(null);
+  const operationButtonsRef = useRef<HTMLDivElement>(null);
 
+  // 用于跟踪ref变化的状态
+  const [selectedComponentRefState, setSelectedComponentRefState] = useState<HTMLDivElement | null>(null);
 
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
@@ -85,6 +91,86 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
       actions.edit_zoom_ratio(newZoomRatio);
     }
   };
+
+  // 组件操作按钮-删除组件 - 使用useCallback缓存
+  const handleDeleteComponent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedComponentId !== -1) {
+      if (selectedComponentId === comRoot.comSchemaId) {
+        message.error('不能删除根组件');
+        return;
+      }
+      actions.remove_component(selectedComponentId!);
+      const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
+      actions.edit_select_com(comSchemaId as number);
+    }
+  }
+  // 组件操作按钮-移动组件 - 使用useCallback缓存
+  const handleMoveUpComponent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedComponentId !== -1) {
+      actions.edit_select_com(comTree.findNode(selectedComponentId!)?.parentId || -1);
+    }
+  }
+  // 组件操作按钮-移动组件 - 使用useCallback缓存
+  const handleMoveDownComponent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedComponentId !== -1) {
+      actions.edit_select_com(comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
+    }
+  }
+
+  // 跨组件传递Ref给选中的组件
+  const handleSetSelectedComponentRef = useCallback((component: ComponentSchema, ref: HTMLDivElement | null) => {
+    if (component.comSchemaId === selectedComponentId && ref) {
+      selectedComponentRef.current = ref;
+      setSelectedComponentRefState(ref);
+    }
+  }, [selectedComponentId, comTree]);
+
+  // 获取选中组件的相对于Root的位置和尺寸信息
+  // 不使用useMemo，因为ref.current变化不会触发重渲染
+  const getSelectedComponentPosition = () => {
+    if (!selectedComponentRef.current) return null;
+    if (!previewRef.current) return null;
+
+    // 获取组件在视口中的位置和尺寸
+    const componentRect = selectedComponentRef.current;
+    // 获取预览容器在视口中的位置
+    const componentRoot = previewRef.current;
+
+    // 计算组件相对于预览容器的位置
+    const relativeX = (componentRect.offsetLeft - componentRoot.offsetLeft);
+    const relativeY = (componentRect.offsetTop);
+    return {
+      x: relativeX,
+      y: relativeY,
+      width: componentRect.scrollWidth,
+      height: componentRect.scrollHeight,
+    };
+  };
+
+  // 计算操作按钮组的位置
+  const operationButtonsStyle = useMemo(() => {
+    // 每次都调用函数获取最新位置
+    const position = getSelectedComponentPosition();
+    if (!position) {
+      return {
+        top: '0px',
+        left: '0px',
+      };
+    }
+    const containerWidth = previewRef.current?.clientWidth || Infinity;
+
+    const operationButtonsRect = operationButtonsRef.current;
+    const buttonHeight = operationButtonsRect?.clientHeight || 0;
+    const buttonWidth = operationButtonsRect?.clientWidth || 0;
+    return {
+      top: `${position.y > buttonHeight ? position.y - buttonHeight : position.y}px`,
+      left: `${position.width > buttonWidth ? position.x + position.width - buttonWidth : (position.y > buttonHeight ? (position.x + buttonWidth < containerWidth ? position.x : position.x + position.width - buttonWidth) : (position.x + position.width + buttonWidth < containerWidth ? position.x + position.width : position.x - buttonWidth))}px`,
+    };
+  }, [selectedComponentRefState]);
+
   return (
     <div ref={previewRef}
       className={`component-preview__root ${isSliding ? 'component-preview__sliding' : ''} ${canDrop ? 'component-preview__can-drop' : ''}`
@@ -95,11 +181,21 @@ const ComponentPreview: React.FC<{ comRoot: ComponentSchema }> = ({ comRoot }) =
       }}
       onWheel={handleWheelZoom}
     >
+      <div ref={operationButtonsRef} className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={operationButtonsStyle}>
+        <Button style={{ marginRight: 8 }} danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} onMouseDown={(e) => e.stopPropagation()} />
+        <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} onMouseDown={(e) => e.stopPropagation()} />
+        <Button type="primary" icon={<ArrowDownOutlined />} onClick={handleMoveDownComponent} onMouseDown={(e) => e.stopPropagation()} />
+      </div>
       <div className="preview__content">
         <div className="preview__bg"></div>
         {
           comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
-            <RenderComponentContent key={child.comSchemaId} component={child as ComponentSchema} Selected={selectedComponentId === child.comSchemaId} />
+            <RenderComponentContent
+              key={child.comSchemaId}
+              component={child as ComponentSchema}
+              Selected={selectedComponentId === child.comSchemaId}
+              onSetSelectedComponentRef={handleSetSelectedComponentRef}
+            />
           ))
         }
       </div>

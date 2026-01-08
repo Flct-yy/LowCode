@@ -1,18 +1,20 @@
-import React, { useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
 import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, message, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
+import { RedoOutlined } from '@ant-design/icons';
 import { AspectRatioEnum } from '@type/PageModel';
+import { type ComponentSchema } from '@wect/type';
 
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
   const { metadata, comTree, showIframe, selectedComponentId, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
+
 
   // 画布拖拽事件处理
   const [, dropPageMove] = useDrop({
@@ -40,7 +42,6 @@ const Preview: React.FC = () => {
   });
   // 应用拖拽 ref 到预览元素
   dropPageMove(previewContainerRef);
-
 
   // 缩放比例输入框
   const handleZoom = (value: number) => {
@@ -77,7 +78,7 @@ const Preview: React.FC = () => {
           onChange={(value) => handleZoom(value || 0)}
         />
       ),
-    },
+    }
   ], [zoomRatio, handleZoom]);
 
   // 宽高比例选择器 - 使用useMemo缓存
@@ -119,32 +120,7 @@ const Preview: React.FC = () => {
     actions.edit_aspect_ratio(AspectRatioEnum.RATIO_16_9);
     actions.edit_preview_scroll(0, 0);
   };
-  // 组件操作按钮-删除组件 - 使用useCallback缓存
-  const handleDeleteComponent = useCallback(() => {
-    if (selectedComponentId !== -1) {
-      if(selectedComponentId === comTree.getRoot().comSchemaId){
-        message.error('不能删除根组件');
-        return;
-      }
-      actions.remove_component(selectedComponentId!);
-      const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
-      actions.edit_select_com(comSchemaId as number);
-    }
-  }, [selectedComponentId, actions, state.comTree]);
 
-  // 组件操作按钮-移动组件 - 使用useCallback缓存
-  const handleMoveUpComponent = useCallback(() => {
-    if (selectedComponentId !== -1) {
-      actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.parentId || -1);
-    }
-  }, [selectedComponentId, actions, state.comTree]);
-
-  // 组件操作按钮-移动组件 - 使用useCallback缓存
-  const handleMoveDownComponent = useCallback(() => {
-    if (selectedComponentId !== -1) {
-      actions.edit_select_com(state.comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
-    }
-  }, [selectedComponentId, actions, state.comTree]);
 
   return (
     <div className='preview__container' ref={previewContainerRef}>
@@ -189,16 +165,11 @@ const Preview: React.FC = () => {
             onChange={actions.edit_is_sliding}
           />
         </div>
-
-        <div className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={{ top: 0, right: 0 }}>
-          <Button style={{ marginRight: 8 }} danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} />
-          <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} />
-          <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowDownOutlined />} onClick={handleMoveDownComponent} />
-        </div>
-
       </div>
       {/* 组件渲染区域 */}
-      <ComponentPreview comRoot={comTree.getRoot()} />
+      <ComponentPreview
+        comRoot={comTree.getRoot()}
+      />
     </div>
   );
 }
