@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useCallback } from 'react';
-import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, } from 'antd';
+import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, message, } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrop } from 'react-dnd';
@@ -122,6 +122,10 @@ const Preview: React.FC = () => {
   // 组件操作按钮-删除组件 - 使用useCallback缓存
   const handleDeleteComponent = useCallback(() => {
     if (selectedComponentId !== -1) {
+      if(selectedComponentId === comTree.getRoot().comSchemaId){
+        message.error('不能删除根组件');
+        return;
+      }
       actions.remove_component(selectedComponentId!);
       const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
       actions.edit_select_com(comSchemaId as number);
