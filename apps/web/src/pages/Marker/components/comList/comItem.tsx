@@ -2,6 +2,7 @@ import React from 'react';
 import type { ComponentMetadata } from '@wect/type';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
+import './comItem.scss';
 
 const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componentId, componentName, componentType, category, tags, version, description, icon, itemWidth }) => {
 
@@ -23,7 +24,8 @@ const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componen
 
   return (
     <div ref={drag} className="com-item" style={{ width: `${itemWidth}px`, height: `${itemWidth}px` }}>
-      <i style={{ backgroundImage: `url(${icon})` }} className="com-item__icon" />
+      {/* <i style={{ backgroundImage: `url(${icon})` }} className="com-item__icon" /> */}
+      <span className="com-item__type">{componentType.slice(0, 2).toUpperCase()}</span>
       <span>
         {componentName}
       </span>

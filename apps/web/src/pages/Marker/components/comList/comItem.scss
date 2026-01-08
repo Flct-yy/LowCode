@@ -18,11 +18,15 @@
     height: 2.25rem;
     background-size: cover;
   } 
+  .com-item__type {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 
   &:hover {
     background: #155bd4;
     border-radius: 0.25rem;
-    font-weight: 700;
     color: white;
 
     .com-item__icon {

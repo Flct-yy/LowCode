@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './comList.scss';
 import initComponentList from '@/type/InitComponentMetaList';
 import ComArea from './comArea';
 import { ComponentCategoryEnum } from '@wect/type';
