@@ -15,7 +15,7 @@ interface CreatePageParams {
   description?: string;
   keywords?: string[];
   comTree: any;
-  aspect_ratio: string;
+  aspectRatio: string;
 }
 
 // 更新页面接口参数
@@ -24,7 +24,7 @@ interface UpdatePageParams {
   description?: string;
   keywords?: string[];
   comTree?: any;
-  aspect_ratio?: string;
+  aspectRatio?: string;
 }
 
 // 页面API服务

@@ -255,6 +255,9 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
         if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
           dispatch({ type: Actions.SET_PAGE_DATA, payload: { pageData: transformedData } });
         }
+        if (transformedData.aspectRatio) {
+          dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio: transformedData.aspectRatio } });
+        }
       })
       .catch((error) => {
         // 处理API调用错误

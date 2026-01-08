@@ -32,8 +32,8 @@ interface CreatePageDto {
 }
 
 /**
- * 更新页面的DTO接口
- */
+   * 更新页面的DTO接口
+   */
 interface UpdatePageDto {
   /**
    * 页面标题
@@ -52,7 +52,7 @@ interface UpdatePageDto {
    */
   comTree?: any;
   /**
-   * 缩放比例
+   * 宽高比
    */
   aspectRatio?: string;
 }
@@ -191,7 +191,8 @@ export class PageService {
           pageModel.com_tree = updatePageDto.comTree;
           updatedComTree = updatePageDto.comTree;
         }
-        if (updatePageDto.aspectRatio) {
+        // 兼容两种参数名格式
+        if (updatePageDto.aspectRatio !== undefined) {
           pageModel.aspect_ratio = updatePageDto.aspectRatio;
         }
         await this.pageModelRepository.save(pageModel);

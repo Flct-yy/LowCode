@@ -35,7 +35,9 @@ class ComTree {
       this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
   }
-
+  public static create(): ComTree {
+    return new ComTree();
+  }
   // 公共静态方法获取唯一实例
   public static getInstance(): ComTree {
     if (!ComTree.instance) {
