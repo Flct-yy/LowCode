@@ -45,6 +45,7 @@ const Actions = {
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
   HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
   EDIT_LOCK_COM: 'EDIT_LOCK_COM',
+  REMOVE_PREVIEW_NODE: 'REMOVE_PREVIEW_NODE',
 
   // 编辑是否显示Iframe
   EDIT_SHOW_IFRAME: 'EDIT_SHOW_IFRAME',
@@ -142,6 +143,12 @@ function WebsReducer(state: PageModel, action: {
       }
     case Actions.EDIT_LOCK_COM:
       state.comTree.updateNodeLock(action.payload.comSchemaId!)
+      return {
+        ...state,
+        comTree: state.comTree,
+      }
+    case Actions.REMOVE_PREVIEW_NODE:
+      state.comTree.removePreviewNodes()
       return {
         ...state,
         comTree: state.comTree,
@@ -306,6 +313,10 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     },
     edit_lock_com: (comSchemaId: number) => {
       dispatch({ type: Actions.EDIT_LOCK_COM, payload: { comSchemaId } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    remove_preview_node: () => {
+      dispatch({ type: Actions.REMOVE_PREVIEW_NODE, payload: {} }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
     edit_show_iframe: (showIframe: boolean) => {

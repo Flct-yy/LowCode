@@ -10,6 +10,7 @@ const defaultRoot: ComponentSchema = {
     componentType: ComponentTypeEnum.ROOT,
     category: ComponentCategoryEnum.ROOT,
     tags: [],
+    description: '修改pageModel内容，时时保持同步',
     version: '1.0.0',
   },
   config: [],
@@ -25,6 +26,7 @@ const defaultRoot: ComponentSchema = {
 class ComTree {
   private static instance: ComTree;
   private root: ComponentSchema;
+  static readonly PREVIEW_NODE_ID = 999;
 
   // 私有构造函数，防止外部实例化
   private constructor(comTree?: ComponentSchema) {
@@ -224,6 +226,13 @@ class ComTree {
     targetNode.isLocked = !targetNode.isLocked;
     return true;
   }
+  public removePreviewNodes() {
+    this.removeNode(ComTree.PREVIEW_NODE_ID);
+    return true;
+  }
+  // public addPreviewNode(newNode: ComponentSchema, parentId: number, childrenArrIndex: number) {
+  //   return this.addNode(newNode, parentId, childrenArrIndex);
+  // }
 
   // 打印树形结构（辅助方法，便于调试）
   public printTree(node = ComTree.instance.root, level = 0) {

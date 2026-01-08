@@ -2,6 +2,7 @@ import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, Compon
 import { ConfigItemFieldEnum } from "@wect/type";
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
+import { ComTree } from '@wect/type';
 import { initDynamicParams } from '@/type/InitDynamicParams';
 import DynamicParams from '@/type/DynamicParams';
 
@@ -37,3 +38,26 @@ export const generateComSchema: (componentId: number, parentId: number) => Compo
     isVisible: true,
   }
 };
+
+export const generatePreComSchema: (componentId: number, parentId: number) => ComponentSchema = (componentId, parentId) => {
+  if (componentId === ComTree.PREVIEW_NODE_ID) {
+    throw new Error(`组件 ID ${componentId} 不能作为预览组件`);
+  }
+  const componentMeta: ComponentMetadata | undefined = InitComponentMetadata.find((item) => item.componentId === componentId);
+  if (!componentMeta) {
+    throw new Error(`组件 ID ${componentId} 不存在`);
+  }
+  const componentType = componentMeta?.componentType;
+  const dynamicParams = initDynamicParams.find((item) => item.componentType === componentType) || {};
+
+  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum, dynamicParams as DynamicParams);
+  return {
+    comSchemaId: ComTree.PREVIEW_NODE_ID,
+    metadata: componentMeta,
+    config,
+    children: [],
+    parentId: parentId,
+    isLocked: false,
+    isVisible: true,
+  };
+}
