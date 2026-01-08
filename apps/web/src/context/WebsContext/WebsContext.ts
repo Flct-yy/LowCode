@@ -18,6 +18,7 @@ export interface WebsContextType {
     edit_change_value: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentValue: any) => void;
     edit_change_unit: (areaName: ConfigAreaEnum, field: ConfigItemFieldEnum, currentUnit: string) => void;
     handle_drag_drop: (sourceId: number, targetParentId: number, childrenIndex: number) => void;
+    edit_lock_com: (id: number) => void;
 
     edit_show_iframe: (showIframe: boolean) => void;
     edit_select_com: (compActiveIndex: number) => void;

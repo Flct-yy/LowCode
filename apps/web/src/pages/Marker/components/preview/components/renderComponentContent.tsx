@@ -148,6 +148,7 @@ const RenderComponentContent: React.FC<{
         // 可以添加视觉反馈
       }
     },
+    canDrop: () => !findNode(component.comSchemaId)?.isLocked,
     collect: (monitor) => ({
       canDrop: monitor.canDrop() && isLayoutComponent(),
       isOverShallow: monitor.isOver({ shallow: true })
@@ -157,7 +158,7 @@ const RenderComponentContent: React.FC<{
   // 拖拽组件事件处理
   const [, dragComItem] = useDrag({
     type: DnDTypes.COMSCHEMA,
-    canDrag: () => isDragCom,
+    canDrag: () => isDragCom && !findNode(component.comSchemaId)?.isLocked,
     item: { type: DnDTypes.COMSCHEMA, comSchemaId: component.comSchemaId },
   });
 

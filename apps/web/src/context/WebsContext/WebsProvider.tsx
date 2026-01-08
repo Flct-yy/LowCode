@@ -29,32 +29,7 @@ const initialPageState: PageModel = {
   isSliding: false,
 };
 
-interface ActionType {
-  // 编辑Page源
-  EDIT_TITLE: string,
-  EDIT_DESCRIPTION: string,
-  EDIT_KEYWORDS: string,
-  UPDATE_PAGE: string,
-  SET_PAGE_DATA: string,
-
-  // 编辑组件
-  ADD_COMPONENT: string,
-  REMOVE_COMPONENT: string,
-  EDIT_COM_TREE: string,
-  EDIT_CHANGE_VALUE: string,
-  EDIT_CHANGE_UNIT: string,
-  HANDLE_DRAG_DROP: string,
-
-  EDIT_SHOW_IFRAME: string,
-  EDIT_SELECT_COM: string,
-  EDIT_ASPECT_RATIO: string,
-  EDIT_ZOOM_RATIO: string,
-  EDIT_PREVIEW_SCROLL: string,
-  EDIT_IS_DRAG_COM: string,
-  EDIT_IS_SLIDING: string,
-}
-
-const Actions: ActionType = {
+const Actions = {
   // 编辑Page源
   EDIT_TITLE: 'EDIT_TITLE',
   EDIT_DESCRIPTION: 'EDIT_DESCRIPTION',
@@ -69,6 +44,7 @@ const Actions: ActionType = {
   EDIT_CHANGE_VALUE: 'EDIT_CHANGE_VALUE',
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
   HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
+  EDIT_LOCK_COM: 'EDIT_LOCK_COM',
 
   // 编辑是否显示Iframe
   EDIT_SHOW_IFRAME: 'EDIT_SHOW_IFRAME',
@@ -160,6 +136,12 @@ function WebsReducer(state: PageModel, action: {
       }
     case Actions.HANDLE_DRAG_DROP:
       state.comTree.dropDrag(action.payload.sourceId!, action.payload.targetParentId!, action.payload.childrenIndex!)
+      return {
+        ...state,
+        comTree: state.comTree,
+      }
+    case Actions.EDIT_LOCK_COM:
+      state.comTree.updateNodeLock(action.payload.comSchemaId!)
       return {
         ...state,
         comTree: state.comTree,
@@ -321,6 +303,10 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
         }
       })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    edit_lock_com: (comSchemaId: number) => {
+      dispatch({ type: Actions.EDIT_LOCK_COM, payload: { comSchemaId } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
     edit_show_iframe: (showIframe: boolean) => {
       dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),

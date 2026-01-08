@@ -215,6 +215,16 @@ class ComTree {
     }
   }
 
+  public updateNodeLock(targetId: number) {
+    const targetNode = this.findNode(targetId);
+    if (!targetNode) {
+      console.error(`节点 ${targetId} 不存在`);
+      return false;
+    }
+    targetNode.isLocked = !targetNode.isLocked;
+    return true;
+  }
+
   // 打印树形结构（辅助方法，便于调试）
   public printTree(node = ComTree.instance.root, level = 0) {
     const indent = '  '.repeat(level);

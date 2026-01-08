@@ -8,7 +8,7 @@ import { DnDTypes } from '@/type/DnDTypes';
 import { generateComSchema } from '@/utils/generateComSchema';
 import { handleWheel } from '@wect/utils';
 import { Button, message } from 'antd';
-import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import '@scss/variables.scss'
 
 
@@ -119,6 +119,17 @@ const ComponentPreview: React.FC<{
       actions.edit_select_com(comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
     }
   }
+  // 组件操作按钮-锁定组件 - 使用useCallback缓存
+  const handleLockComponent = (e: React.MouseEvent) => {
+    if (selectedComponentId === comRoot.comSchemaId) {
+      message.error('根组件不能锁定');
+      return;
+    }
+    e.stopPropagation();
+    if (selectedComponentId !== -1) {
+      actions.edit_lock_com(selectedComponentId!);
+    }
+  }
 
   // 跨组件传递Ref给选中的组件
   const handleSetSelectedComponentRef = useCallback((component: ComponentSchema, ref: HTMLDivElement | null) => {
@@ -181,10 +192,11 @@ const ComponentPreview: React.FC<{
       }}
       onWheel={handleWheelZoom}
     >
-      <div ref={operationButtonsRef} className={`preview__item preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={operationButtonsStyle}>
-        <Button style={{ marginRight: 8 }} danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} onMouseDown={(e) => e.stopPropagation()} />
-        <Button style={{ marginRight: 8 }} type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} onMouseDown={(e) => e.stopPropagation()} />
+      <div ref={operationButtonsRef} className={`preview__com__operation${selectedComponentId !== -1 ? ' active' : ''}`} style={operationButtonsStyle}>
+        <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} onMouseDown={(e) => e.stopPropagation()} />
+        <Button type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} onMouseDown={(e) => e.stopPropagation()} />
         <Button type="primary" icon={<ArrowDownOutlined />} onClick={handleMoveDownComponent} onMouseDown={(e) => e.stopPropagation()} />
+        <Button type="primary" icon={comTree.findNode(selectedComponentId!)?.isLocked ? <UnlockOutlined /> : <LockOutlined />} onClick={handleLockComponent} onMouseDown={(e) => e.stopPropagation()} />
       </div>
       <div className="preview__content">
         <div className="preview__bg"></div>
