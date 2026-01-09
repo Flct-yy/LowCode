@@ -80,7 +80,6 @@ const RenderComponentContent: React.FC<{
             if (timerRef.current) {
               clearTimeout(timerRef.current);
             }
-            // actions.remove_preview_node();
             const clientOffset = monitor.getClientOffset();
             const curCom = findNode(component.comSchemaId);
             let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
@@ -107,9 +106,28 @@ const RenderComponentContent: React.FC<{
               }
               actions.handle_drag_drop(comSchema.comSchemaId, goalID, parChIndex);
             }
+            if (findNode(ComTree.PREVIEW_NODE_ID)) {
+              actions.remove_preview_node();
+            }
           }
         } else {
-          message.error('非布局组件不能接收拖拽组件');
+          if (findNode(ComTree.PREVIEW_NODE_ID)) {
+            const curCom = findNode(component.comSchemaId);
+            const goalID = curCom?.parentId;
+            const parCom = findNode(curCom?.parentId!);
+            const curIndex = parCom?.children?.findIndex((item) => item.comSchemaId === component.comSchemaId);
+            const parChIndex = curIndex !== -1 ? curIndex : -1;
+            if (item.type === DnDTypes.COMMETA) {
+              const comMeta = item as { type: string, comMeta: { id: number } };
+              // 生成组件Schema
+              const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
+              // 添加预览节点到组件树
+              actions.add_component(comSchema, goalID!, parChIndex!);
+            }
+            actions.remove_preview_node();
+          } else {
+            message.error('非布局组件不能接收拖拽组件');
+          }
         }
       }
     },
@@ -153,7 +171,7 @@ const RenderComponentContent: React.FC<{
           // 添加预览节点到组件树
           timerRef.current = setTimeout(() => {
             actions.add_component(previewSchema, goalID, parChIndex);
-          }, 500);
+          }, 200);
         }
         // else if (item.type === DnDTypes.COMSCHEMA) {
         //   const comSchema = item as { type: string, comSchemaId: number };
@@ -231,12 +249,12 @@ const RenderComponentContent: React.FC<{
         onSetSelectedComponentRef={onSetSelectedComponentRef}
       />
     ));
-  }, [children.length, isSelected, onSetSelectedComponentRef]);
+  }, [children, isSelected, onSetSelectedComponentRef, JSON.stringify(children)]);
 
   // 生成className - 使用useMemo缓存
   const componentClassName = useMemo(() => {
-    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow ? 'component-preview__can-drop' : ''}`;
-  }, [isSelected, canDrop, isOverShallow]);
+    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''}`;
+  }, [isSelected, canDrop, isOverShallow, component.comSchemaId]);
 
   // 渲染组件内容
   switch (metadata.componentType) {

@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { ComponentSchema } from '@wect/type';
+import { ComponentSchema, ComTree } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
 import '@/scss/ContainerScss/Flex.scss';
 
@@ -26,7 +26,7 @@ function Flex({
   // 转换组件配置为 内联样式和类名
   const { style: inlineStyle, className } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
-    return `${componentClassName || ''} ${className}`
+    return `${componentClassName || ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
   }, [componentClassName, className])
 
   return (
@@ -34,7 +34,7 @@ function Flex({
       ref={divRef}
       className={`component-preview__default component-preview__flex ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={(e)=>handleComponentSelect?.(e)}>
+      onMouseDown={(e) => handleComponentSelect?.(e)}>
       {children}
     </div>
   );
