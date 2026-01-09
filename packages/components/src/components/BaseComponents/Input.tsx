@@ -5,12 +5,12 @@ import { getConfigText } from '@/utils/index';
 
 function Input({
   component,
-  componentClassName,
+  componentDep,
   handleDnD,
   handleComponentSelect,
 }: {
   component: ComponentSchema;
-  componentClassName?: string;
+  componentDep?: { isSelected: boolean, canDrop: boolean, isOverShallow: boolean };
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
@@ -25,16 +25,17 @@ function Input({
   }, [handleDnD]);
 
   // 转换组件配置为 内联样式和类名
+  const { isSelected, canDrop, isOverShallow } = componentDep || {}
   const { style: inlineStyle, className } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
-    return `${componentClassName || ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
-  }, [componentClassName, className, component.comSchemaId])
+    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
+  }, [isSelected, canDrop, isOverShallow, className, component.comSchemaId])
 
   return (
     <div ref={divRef}
       className={`component-preview__default component-preview__input ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={(e)=>handleComponentSelect?.(e)}>
+      onMouseDown={(e) => handleComponentSelect?.(e)}>
       <input
         type="text"
         placeholder={text || '请输入文字...'}

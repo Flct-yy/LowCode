@@ -46,7 +46,7 @@ const RenderComponentContent: React.FC<{
 
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
-    | { type: DnDTypes.COMSCHEMA; comSchemaId: number };
+    | { type: DnDTypes.COMSCHEMA; comMeta: { comSchemaId: number, commetaID: number } };
   // 拖拽放置组件
   const isLayoutComponent = useCallback(() => {
     // 允许接收拖拽组件类型列表
@@ -70,8 +70,10 @@ const RenderComponentContent: React.FC<{
           const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
           // 添加预览节点到组件树
           actions.add_component(comSchema, goalID!, parChIndex!);
+        } else if (item.type === DnDTypes.COMSCHEMA) {
+          const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
+          actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
         }
-        actions.remove_preview_node();
       } else {
         // 使用shallow选项确保只有最上层的放置目标处理drop事件
         if (isLayoutComponent()) {
@@ -91,31 +93,28 @@ const RenderComponentContent: React.FC<{
               // 拖拽组件到画布时，更新选中组件
               actions.add_component(compSchema, compSchema.parentId, parChIndex);
             } else if (item.type === DnDTypes.COMSCHEMA) {
-              const comSchema = item as { type: string, comSchemaId: number };
+              const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
               // 拖拽组件到组件上时，更新选中组件
               // 如果组件拖到到和自己父组件一样时 往后移动要减去1因为计算了自己的位置
               if (goalID === curCom?.parentId) {
                 const parentCom = findNode(curCom.parentId);
                 if (parChIndex !== -1) {
                   const dragComIndex = parentCom?.children.findIndex(child => child.comSchemaId === component.comSchemaId);
-                  const dropComIndex = parentCom?.children.findIndex(child => child.comSchemaId === comSchema.comSchemaId);
+                  const dropComIndex = parentCom?.children.findIndex(child => child.comSchemaId === comSchema.comMeta.comSchemaId);
                   if (dropComIndex !== -1 && dragComIndex !== -1 && dragComIndex! >= dropComIndex!) {
                     parChIndex -= 1;
                   }
                 }
               }
-              actions.handle_drag_drop(comSchema.comSchemaId, goalID, parChIndex);
-            }
-            if (findNode(ComTree.PREVIEW_NODE_ID)) {
-              actions.remove_preview_node();
+              actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID, parChIndex);
             }
           }
         } else {
           if (findNode(ComTree.PREVIEW_NODE_ID)) {
-            const curCom = findNode(component.comSchemaId);
+            const curCom = findNode(ComTree.PREVIEW_NODE_ID);
             const goalID = curCom?.parentId;
             const parCom = findNode(curCom?.parentId!);
-            const curIndex = parCom?.children?.findIndex((item) => item.comSchemaId === component.comSchemaId);
+            const curIndex = parCom?.children?.findIndex((item) => item.comSchemaId === ComTree.PREVIEW_NODE_ID);
             const parChIndex = curIndex !== -1 ? curIndex : -1;
             if (item.type === DnDTypes.COMMETA) {
               const comMeta = item as { type: string, comMeta: { id: number } };
@@ -123,8 +122,12 @@ const RenderComponentContent: React.FC<{
               const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
               // 添加预览节点到组件树
               actions.add_component(comSchema, goalID!, parChIndex!);
+            }else if(item.type === DnDTypes.COMSCHEMA){
+              console.log('拖拽组件到组件上时，更新选中组件',curIndex);
+              const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
+              actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
+              console.log('拖拽组件到组件上时，更新选中组件',parCom);
             }
-            actions.remove_preview_node();
           } else {
             message.error('非布局组件不能接收拖拽组件');
           }
@@ -162,7 +165,7 @@ const RenderComponentContent: React.FC<{
           actions.remove_preview_node();
         }
         const curCom = findNode(component.comSchemaId);
-        const { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
+        let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
         if (item.type === DnDTypes.COMMETA) {
           const comMeta = item as { type: string, comMeta: { id: number } };
           // 生成组件Schema
@@ -171,24 +174,16 @@ const RenderComponentContent: React.FC<{
           // 添加预览节点到组件树
           timerRef.current = setTimeout(() => {
             actions.add_component(previewSchema, goalID, parChIndex);
-          }, 200);
+          }, 300);
         }
-        // else if (item.type === DnDTypes.COMSCHEMA) {
-        //   const comSchema = item as { type: string, comSchemaId: number };
-        //   // 拖拽组件到组件上时，更新选中组件
-        //   // 如果组件拖到到和自己父组件一样时 往后移动要减去1因为计算了自己的位置
-        //   if (goalID === curCom?.parentId) {
-        //     const parentCom = findNode(curCom.parentId);
-        //     if (parChIndex !== -1) {
-        //       const dragComIndex = parentCom?.children.findIndex(child => child.comSchemaId === component.comSchemaId);
-        //       const dropComIndex = parentCom?.children.findIndex(child => child.comSchemaId === comSchema.comSchemaId);
-        //       if (dropComIndex !== -1 && dragComIndex !== -1 && dragComIndex! >= dropComIndex!) {
-        //         parChIndex -= 1;
-        //       }
-        //     }
-        //   }
-        //   actions.handle_drag_drop(comSchema.comSchemaId, goalID, parChIndex);
-        // }
+        else if (item.type === DnDTypes.COMSCHEMA) {
+          const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
+          const previewSchema = generatePreComSchema(comSchema.comMeta.commetaID, goalID);
+          // 添加预览节点到组件树
+          timerRef.current = setTimeout(() => {
+            actions.add_component(previewSchema, goalID, parChIndex);
+          }, 300);
+        }
       }
     },
     canDrop: () => !findNode(component.comSchemaId)?.isLocked,
@@ -211,7 +206,12 @@ const RenderComponentContent: React.FC<{
   const [, dragComItem] = useDrag({
     type: DnDTypes.COMSCHEMA,
     canDrag: () => isDragCom && !findNode(component.comSchemaId)?.isLocked,
-    item: { type: DnDTypes.COMSCHEMA, comSchemaId: component.comSchemaId },
+    item: { type: DnDTypes.COMSCHEMA, comMeta: { comSchemaId: component.comSchemaId, commetaID: component.metadata.componentId } },
+    end: (item, monitor) => {
+      if (findNode(ComTree.PREVIEW_NODE_ID)) {
+        actions.remove_preview_node();
+      }
+    }
   });
 
   const handleDnD = function (ref: React.RefObject<HTMLDivElement | null>) {
@@ -251,18 +251,13 @@ const RenderComponentContent: React.FC<{
     ));
   }, [children, isSelected, onSetSelectedComponentRef, JSON.stringify(children)]);
 
-  // 生成className - 使用useMemo缓存
-  const componentClassName = useMemo(() => {
-    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''}`;
-  }, [isSelected, canDrop, isOverShallow, component.comSchemaId]);
-
   // 渲染组件内容
   switch (metadata.componentType) {
     case ComponentTypeEnum.FLEX:
       return (
         <Flex
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         >{renderedChildren}</Flex>
@@ -271,7 +266,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Text
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -280,7 +275,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Button
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -289,7 +284,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Image
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -298,7 +293,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Input
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -307,7 +302,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Default
           component={component}
-          componentClassName={componentClassName}
+          componentDep={{isSelected, canDrop, isOverShallow}}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         >{renderedChildren}</Default>

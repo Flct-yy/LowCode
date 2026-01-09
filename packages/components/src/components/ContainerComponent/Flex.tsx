@@ -1,17 +1,17 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
 import convertConfigToStyle from '@/utils/convertConfigToStyle';
-import '@/scss/ContainerScss/Flex.scss';
+import styles from '@/scss/ContainerScss/Flex.module.scss';
 
 function Flex({
   component,
-  componentClassName,
+  componentDep,
   children,
   handleDnD,
   handleComponentSelect,
 }: {
   component: ComponentSchema;
-  componentClassName?: string;
+  componentDep?: { isSelected: boolean, canDrop: boolean, isOverShallow: boolean };
   children?: React.ReactNode;
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
@@ -24,15 +24,16 @@ function Flex({
   }, [handleDnD]);
 
   // 转换组件配置为 内联样式和类名
+  const { isSelected, canDrop, isOverShallow } = componentDep || {}
   const { style: inlineStyle, className } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
-    return `${componentClassName || ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
-  }, [componentClassName, className])
+    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? styles['component-preview__pre'] : ''}`
+  }, [isSelected, canDrop, isOverShallow, className, component.comSchemaId])
 
   return (
     <div
       ref={divRef}
-      className={`component-preview__default component-preview__flex ${newClassName}`}
+      className={`component-preview__default ${styles['component-preview__flex']} ${newClassName}`}
       style={inlineStyle}
       onMouseDown={(e) => handleComponentSelect?.(e)}>
       {children}
