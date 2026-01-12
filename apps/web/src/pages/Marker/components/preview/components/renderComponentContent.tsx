@@ -236,6 +236,7 @@ const RenderComponentContent: React.FC<{
         onSetSelectedComponentRef(component, null);
       }
     }
+    console.log(111);
   }, [isSelected, componentRef, component, onSetSelectedComponentRef]);
 
   // 渲染子组件 - 使用useMemo缓存

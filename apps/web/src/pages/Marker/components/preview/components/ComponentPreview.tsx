@@ -3,7 +3,7 @@ import { type ComponentSchema } from '@wect/type';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import RenderComponentContent from './RenderComponentContent';
 import './ComponentPreview.scss';
-import { useDrop, useDrag } from 'react-dnd';
+import { useDrop, useDrag, DragSourceMonitor } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';
 import { generateComSchema } from '@/utils/generateComSchema';
 import { handleWheel } from '@wect/utils';
@@ -58,7 +58,7 @@ const ComponentPreview: React.FC<{
   // 使用 react-dnd 实现画布拖拽
   const [, drag] = useDrag({
     type: DnDTypes.PAGEMOVE,
-    item: (monitor) => {
+    item: (monitor: DragSourceMonitor) => {
       // 拖拽开始时获取鼠标位置
       const clientOffset = monitor.getClientOffset();
       return {
@@ -104,6 +104,7 @@ const ComponentPreview: React.FC<{
       const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
       actions.edit_select_com(comSchemaId as number);
     }
+    message.success('删除组件成功');
   }
   // 组件操作按钮-移动组件 - 使用useCallback缓存
   const handleMoveUpComponent = (e: React.MouseEvent) => {
@@ -137,6 +138,7 @@ const ComponentPreview: React.FC<{
       selectedComponentRef.current = ref;
       setSelectedComponentRefState(ref);
     }
+    console.log(1)
   }, [selectedComponentId, comTree]);
 
   // 获取选中组件的相对于Root的位置和尺寸信息

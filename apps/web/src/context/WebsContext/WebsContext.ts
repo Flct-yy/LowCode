@@ -21,7 +21,6 @@ export interface WebsContextType {
     edit_lock_com: (id: number) => void;
     remove_preview_node: () => void;
 
-    edit_show_iframe: (showIframe: boolean) => void;
     edit_select_com: (compActiveIndex: number) => void;
     edit_aspect_ratio: (aspectRatio: AspectRatioEnum) => void;
     edit_zoom_ratio: (zoomRatio: number) => void;

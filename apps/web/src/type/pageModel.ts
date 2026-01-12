@@ -1,4 +1,4 @@
-import { ComTree } from '@wect/type';
+import { ComponentSchema, ComTree } from '@wect/type';
 import { type PageMetadata } from '@wect/type';
 
 // 页面宽高比枚举
@@ -17,7 +17,7 @@ export enum AspectRatioEnum {
 export interface PageModel {
   metadata: PageMetadata; // 页面元信息
   comTree: ComTree; // 组件树
-  showIframe: boolean; // 是否显示Iframe
+  copyComponent?: ComponentSchema; // 复制的组件ID
   selectedComponentId?: number; // 选中的组件ID
   aspectRatio: AspectRatioEnum; // 宽高比
   zoomRatio: number; // 缩放比例

@@ -7,12 +7,12 @@ import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { RedoOutlined } from '@ant-design/icons';
 import { AspectRatioEnum } from '@type/PageModel';
-import { type ComponentSchema } from '@wect/type';
+import ShortcutManager from '@components/ShortcutManager';
 
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata, comTree, showIframe, selectedComponentId, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
+  const { metadata, comTree, selectedComponentId, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
 
 
@@ -125,6 +125,7 @@ const Preview: React.FC = () => {
   return (
     <div className='preview__container' ref={previewContainerRef}>
       <div className='preview__operation'>
+        <ShortcutManager />
         <Dropdown menu={{ items: zoomRatioIItems }}>
           <div className="preview__item preview__div no-select">
             缩放比例

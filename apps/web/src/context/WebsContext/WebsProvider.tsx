@@ -19,7 +19,7 @@ const initialPageState: PageModel = {
     updatedAt: new Date(),
   },
   comTree: comTreeInstance,
-  showIframe: true,
+  copyComponent: undefined,
   selectedComponentId: -1,
   aspectRatio: AspectRatioEnum.RATIO_16_9,
   zoomRatio: 1,
@@ -46,9 +46,8 @@ const Actions = {
   HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
   EDIT_LOCK_COM: 'EDIT_LOCK_COM',
   REMOVE_PREVIEW_NODE: 'REMOVE_PREVIEW_NODE',
+  COPY_COMPONENT: 'COPY_COMPONENT',
 
-  // 编辑是否显示Iframe
-  EDIT_SHOW_IFRAME: 'EDIT_SHOW_IFRAME',
   // 编辑选中组件索引
   EDIT_SELECT_COM: 'EDIT_SELECT_COM',
   // 编辑宽高比
@@ -152,11 +151,6 @@ function WebsReducer(state: PageModel, action: {
       return {
         ...state,
         comTree: state.comTree,
-      }
-    case Actions.EDIT_SHOW_IFRAME:
-      return {
-        ...state,
-        showIframe: action.payload.showIframe!,
       }
     case Actions.EDIT_SELECT_COM:
       return {
@@ -317,10 +311,6 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     },
     remove_preview_node: () => {
       dispatch({ type: Actions.REMOVE_PREVIEW_NODE, payload: {} }),
-        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
-    },
-    edit_show_iframe: (showIframe: boolean) => {
-      dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
     edit_select_com: (selectedComponentId: number) => {
