@@ -77,6 +77,27 @@ const ShortcutManager = () => {
 
       // Ctrl/Cmd + V: 粘贴
       if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        // TODO：使用防抖（Debounce）限制处理频率  优化粘贴内容处理  减少不必要的重新渲染  优化DOM操作使用DocumentFragment批量创建DOM元素 ：减少重排和重绘
+        /**
+### 1. 使用防抖（Debounce）限制处理频率
+最有效的方法是对粘贴事件进行防抖处理，确保短时间内只执行一次处理逻辑：
+
+### 2. 优化粘贴内容处理
+- 避免在粘贴时立即进行复杂计算 ：将非紧急处理逻辑异步化
+- 批量更新状态 ：减少React重新渲染次数
+- 使用useMemo缓存计算结果 ：避免重复计算
+
+### 3. 减少不必要的重新渲染
+- 使用React.memo包装组件 ：避免子组件不必要的重新渲染
+- 使用useCallback缓存事件处理函数 ：确保函数引用稳定
+- 拆分组件 ：将粘贴处理逻辑封装在独立组件中
+
+### 4. 优化DOM操作
+如果粘贴操作涉及大量DOM更新，考虑以下优化：
+
+- 使用DocumentFragment批量创建DOM元素 ：减少重排和重绘
+- 使用requestAnimationFrame ：确保DOM更新在浏览器重绘时执行
+         */
         e.preventDefault();
         // 这里调用你的粘贴逻辑
         try {

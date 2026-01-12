@@ -7,6 +7,7 @@ import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { RedoOutlined } from '@ant-design/icons';
 import { AspectRatioEnum } from '@type/PageModel';
+import RightClickMenu from '@components/RightClickMenu';
 import ShortcutManager from '@components/ShortcutManager';
 
 
@@ -168,9 +169,11 @@ const Preview: React.FC = () => {
         </div>
       </div>
       {/* 组件渲染区域 */}
-      <ComponentPreview
-        comRoot={comTree.getRoot()}
-      />
+      <RightClickMenu exLeft={previewContainerRef.current?.offsetLeft} exTop={previewContainerRef.current?.offsetTop}>
+        <ComponentPreview
+          comRoot={comTree.getRoot()}
+        />
+      </RightClickMenu>
     </div>
   );
 }
