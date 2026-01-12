@@ -1,9 +1,10 @@
 import { ComponentSchema } from "@wect/type";
+import { ComTree } from "@wect/type";
 
 const renderCopyComNewID = (comSchema: ComponentSchema): ComponentSchema => {
   // 递归为组件和所有子组件生成新的唯一ID
   // 生成新的comSchemaId: 时间戳+随机数
-  const newId = new Date().getTime() + Math.floor(Math.random() * 1000);
+  const newId = ComTree.getInstance().getID();
   // 递归处理子组件
   const newChildren = (comSchema.children || []).map(child => {
     const newChild = renderCopyComNewID(child);

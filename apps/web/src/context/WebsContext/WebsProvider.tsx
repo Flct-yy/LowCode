@@ -234,7 +234,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
             updatedAt: new Date(res.pageMetadata.updatedAt),
           },
           // 使用API返回的com_tree数据创建ComTree实例
-          comTree: new ComTree(res.com_tree.root),
+          comTree: new ComTree(res.com_tree.root, res.com_count),
           aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
         };
         // 调用set_api_page设置页面数据

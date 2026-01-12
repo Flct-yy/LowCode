@@ -1,3 +1,4 @@
+import AutoID from './autoID';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from './ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from './Config';
 import { UiTypeEnum } from './ConfigItem';
@@ -25,11 +26,12 @@ const defaultRoot: ComponentSchema = {
  */
 class ComTree {
   private static instance: ComTree;
+  private autoID: AutoID;
   private root: ComponentSchema;
   static readonly PREVIEW_NODE_ID = 999;
 
   // 私有构造函数，防止外部实例化
-  constructor(comTree?: ComponentSchema) {
+  constructor(comTree?: ComponentSchema, comCount?: number) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
       this.root = defaultRoot;
@@ -37,9 +39,7 @@ class ComTree {
       this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
     ComTree.instance = this;
-  }
-  public static create(): ComTree {
-    return new ComTree();
+    this.autoID = new AutoID(this.root.comSchemaId, comCount!);
   }
   // 公共静态方法获取唯一实例
   public static getInstance(): ComTree {
@@ -55,6 +55,14 @@ class ComTree {
 
   public getRoot(): ComponentSchema {
     return this.root;
+  }
+
+  public getID(): number {
+    return this.autoID.generateID();
+  }
+
+  public getCount(): number {
+    return this.autoID.getCount();
   }
 
   // 递归查找节点（核心辅助方法）

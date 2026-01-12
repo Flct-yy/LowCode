@@ -29,6 +29,10 @@ interface CreatePageDto {
    * 宽高比
    */
   aspectRatio?: string;
+  /**
+   * 组件数量
+   */
+  comCount?: number;
 }
 
 /**
@@ -47,6 +51,10 @@ interface UpdatePageDto {
    * 页面关键词数组
    */
   keywords?: string[];
+  /**
+   * 组件数量
+   */
+  comCount?: number;
   /**
    * 组件树结构
    */
@@ -124,6 +132,7 @@ export class PageService {
       pageMetadata: page,
       com_tree: page.pageModel.com_tree,
       aspect_ratio: page.pageModel.aspect_ratio,
+      com_count: page.pageModel.com_count,
     };
   }
 
@@ -179,8 +188,8 @@ export class PageService {
     // 获取当前的组件树，默认为原有组件树
     let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
-    // 如果有组件树或宽高比更新，也更新页面模型
-    if (updatePageDto.comTree || updatePageDto.aspectRatio) {
+    // 如果有组件树、宽高比或组件数量更新，也更新页面模型
+    if (updatePageDto.comTree || updatePageDto.aspectRatio || updatePageDto.comCount !== undefined) {
       // 查找关联的页面模型
       const pageModel = await this.pageModelRepository.findOne({
         where: { pageMetadata: { id: updatedMetadata.id } },
@@ -195,6 +204,10 @@ export class PageService {
         if (updatePageDto.aspectRatio !== undefined) {
           pageModel.aspect_ratio = updatePageDto.aspectRatio;
         }
+        // 更新组件数量
+        if (updatePageDto.comCount !== undefined) {
+          pageModel.com_count = updatePageDto.comCount;
+        }
         await this.pageModelRepository.save(pageModel);
       }
     }
@@ -204,6 +217,7 @@ export class PageService {
       pageMetadata: updatedMetadata,
       com_tree: updatedComTree,
       aspect_ratio: updatedMetadata.pageModel?.aspect_ratio,
+      com_count: updatedMetadata.pageModel?.com_count,
     };
   }
 

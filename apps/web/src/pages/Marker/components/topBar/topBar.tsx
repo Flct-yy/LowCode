@@ -21,7 +21,7 @@ const TopBar: React.FC = () => {
   const handleSave = async () => {
     // 处理保存逻辑
     try {
-      await pageApi.updatePage(metadata.id, { comTree, aspectRatio: `${state.aspectRatio}` });
+      await pageApi.updatePage(metadata.id, { comTree, aspectRatio: `${state.aspectRatio}`,comCount:comTree.getCount() });
       message.success('保存成功');
     } catch (error) {
       message.error('保存失败');
@@ -42,7 +42,8 @@ const TopBar: React.FC = () => {
           try {
             const importData = JSON.parse(e.target?.result as string);
             // 处理导入数据，例如更新页面元信息和组件树
-            actions.import_page(importData.pageMetadata, importData.componentTree);
+            // TODO: 处理导入数据，例如更新页面元信息和组件树
+            // actions.import_page(importData.pageMetadata, importData.componentTree);
             console.log('导入成功');
           } catch (error) {
             console.error('导入文件格式错误', error);
