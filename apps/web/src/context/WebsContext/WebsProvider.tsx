@@ -8,12 +8,12 @@ import pageApi from '@/api/pageApi';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
 import { ComTree, comTreeInstance } from '@wect/type';
 
-export interface ApiPageData extends Pick<PageModel, 'comTree' | 'metadata' | 'aspectRatio'> { }
+export interface PageData extends Pick<PageModel, 'comTree' | 'metadata' | 'aspectRatio'> { }
 
 
 const Actions = {
   // 通过API返回的数据设置Page数据
-  SET_API_PAGE: 'SET_API_PAGE',
+  SET_PAGE: 'SET_PAGE',
 
   // 编辑Page源
   EDIT_TITLE: 'EDIT_TITLE',
@@ -49,7 +49,7 @@ const Actions = {
 function WebsReducer(state: PageModel, action: {
   type: string;
   payload: {
-    ApiPageData?: ApiPageData,
+    PageData?: PageData,
     metadataId?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
 
     selectedComponentId?: number,
@@ -69,10 +69,10 @@ function WebsReducer(state: PageModel, action: {
   }
 }): PageModel {
   switch (action.type) {
-    case Actions.SET_API_PAGE:
+    case Actions.SET_PAGE:
       return {
         ...state,
-        ...action.payload.ApiPageData,
+        ...action.payload.PageData,
       }
     case Actions.EDIT_TITLE:
       return {
@@ -226,7 +226,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
           throw new Error('API返回数据格式不正确');
         }
         // 数据转换
-        const transformedData: ApiPageData = {
+        const transformedData: PageData = {
           metadata: {
             ...res.pageMetadata,
             // 确保日期字段是Date对象
@@ -237,8 +237,8 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
           comTree: new ComTree(res.com_tree.root, res.com_count),
           aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
         };
-        // 调用set_api_page设置页面数据
-        actions.set_api_page(transformedData);
+        // 调用set_page设置页面数据
+        actions.set_page(transformedData);
       })
       .catch((error) => {
         // 处理API调用错误
@@ -256,8 +256,8 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
   // 使用useReducer管理状态，初始状态为initialPageState
   const [state, dispatch] = useReducer(WebsReducer, defaultPageState);
   const actions = {
-    set_api_page: (ApiPageData: ApiPageData) => {
-      dispatch({ type: Actions.SET_API_PAGE, payload: { ApiPageData } })
+    set_page: (PageData: PageData) => {
+      dispatch({ type: Actions.SET_PAGE, payload: { PageData } })
     },
     edit_title: (title: string) => {
       dispatch({ type: Actions.EDIT_TITLE, payload: { title } }),

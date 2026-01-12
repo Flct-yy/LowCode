@@ -127,9 +127,17 @@ export class PageService {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
 
-    // 返回用户指定的数据结构
+    // 返回用户指定的数据结构，过滤掉不需要的字段
     return {
-      pageMetadata: page,
+      pageMetadata: {
+        id: page.id,
+        title: page.title,
+        description: page.description,
+        keywords: page.keywords,
+        createdAt: page.createdAt,
+        updatedAt: page.updatedAt
+        // 不包含model_id和pageModel字段
+      },
       com_tree: page.pageModel.com_tree,
       aspect_ratio: page.pageModel.aspect_ratio,
       com_count: page.pageModel.com_count,
@@ -163,8 +171,22 @@ export class PageService {
    * @returns 所有页面的列表
    */
   async getAllPages(): Promise<any[]> {
-    // 使用pageMetadataRepository查询所有页面元信息
-    return await this.pageMetadataRepository.find();
+    // 使用pageMetadataRepository查询所有页面元信息，包括关联的pageModel
+    const pages = await this.pageMetadataRepository.find({
+      relations: ['pageModel'],
+    });
+    
+    // 转换为包含com_count的格式，过滤掉不需要的字段
+    return pages.map(page => ({
+      id: page.id,
+      title: page.title,
+      description: page.description,
+      keywords: page.keywords,
+      createdAt: page.createdAt,
+      updatedAt: page.updatedAt,
+      com_count: page.pageModel?.com_count
+      // 不包含model_id和pageModel字段
+    }));
   }
 
   /**
@@ -212,9 +234,17 @@ export class PageService {
       }
     }
 
-    // 返回用户指定的数据结构
+    // 返回用户指定的数据结构，过滤掉不需要的字段
     return {
-      pageMetadata: updatedMetadata,
+      pageMetadata: {
+        id: updatedMetadata.id,
+        title: updatedMetadata.title,
+        description: updatedMetadata.description,
+        keywords: updatedMetadata.keywords,
+        createdAt: updatedMetadata.createdAt,
+        updatedAt: updatedMetadata.updatedAt
+        // 不包含model_id和pageModel字段
+      },
       com_tree: updatedComTree,
       aspect_ratio: updatedMetadata.pageModel?.aspect_ratio,
       com_count: updatedMetadata.pageModel?.com_count,

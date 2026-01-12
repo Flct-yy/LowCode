@@ -3,12 +3,12 @@ import PageModel, { AspectRatioEnum } from '@type/PageModel';
 import { type PageMetadata } from '@wect/type';
 import type { ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
-import { ApiPageData } from './WebsProvider';
+import { PageData } from './WebsProvider';
 
 export interface WebsContextType {
   state: PageModel;
   actions: {
-    set_api_page: (pageData: ApiPageData) => void;
+    set_page: (pageData: PageData) => void;
 
     edit_title: (title: string) => void;
     edit_description: (description: string) => void;
