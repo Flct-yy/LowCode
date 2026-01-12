@@ -29,13 +29,14 @@ class ComTree {
   static readonly PREVIEW_NODE_ID = 999;
 
   // 私有构造函数，防止外部实例化
-  private constructor(comTree?: ComponentSchema) {
+  constructor(comTree?: ComponentSchema) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
       this.root = defaultRoot;
     } else {
       this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
+    ComTree.instance = this;
   }
   public static create(): ComTree {
     return new ComTree();

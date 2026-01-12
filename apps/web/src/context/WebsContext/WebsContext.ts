@@ -1,13 +1,15 @@
 import { createContext } from 'react';
-import PageModel,{ AspectRatioEnum } from '@type/PageModel';
+import PageModel, { AspectRatioEnum } from '@type/PageModel';
 import { type PageMetadata } from '@wect/type';
 import type { ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
-
+import { ApiPageData } from './WebsProvider';
 
 export interface WebsContextType {
   state: PageModel;
   actions: {
+    set_api_page: (pageData: ApiPageData) => void;
+
     edit_title: (title: string) => void;
     edit_description: (description: string) => void;
     edit_keywords: (keywords: string[]) => void;
@@ -27,7 +29,6 @@ export interface WebsContextType {
     edit_preview_scroll: (previewScrollTop: number, previewScrollLeft: number) => void;
     edit_is_drag_com: (isDragCom: boolean) => void;
     edit_is_sliding: (isSliding: boolean) => void;
-    import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => void;
   };
 }
 

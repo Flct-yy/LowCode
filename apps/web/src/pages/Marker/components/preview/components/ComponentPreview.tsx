@@ -138,7 +138,6 @@ const ComponentPreview: React.FC<{
       selectedComponentRef.current = ref;
       setSelectedComponentRefState(ref);
     }
-    console.log(1)
   }, [selectedComponentId, comTree]);
 
   // 获取选中组件的相对于Root的位置和尺寸信息
