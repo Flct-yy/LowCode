@@ -142,6 +142,11 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         comTree: state.comTree,
       }
+    case Actions.COPY_COMPONENT:
+      return {
+        ...state,
+        copyComponent: action.payload.copyComponent!,
+      }
     case Actions.EDIT_SELECT_COM:
       return {
         ...state,
@@ -306,6 +311,10 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     },
     remove_preview_node: () => {
       dispatch({ type: Actions.REMOVE_PREVIEW_NODE, payload: {} }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    copy_component: (copyComponent: ComponentSchema) => {
+      dispatch({ type: Actions.COPY_COMPONENT, payload: { copyComponent } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
     edit_select_com: (selectedComponentId: number) => {
