@@ -122,11 +122,11 @@ const RenderComponentContent: React.FC<{
               const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
               // 添加预览节点到组件树
               actions.add_component(comSchema, goalID!, parChIndex!);
-            }else if(item.type === DnDTypes.COMSCHEMA){
-              console.log('拖拽组件到组件上时，更新选中组件',curIndex);
+            } else if (item.type === DnDTypes.COMSCHEMA) {
+              console.log('拖拽组件到组件上时，更新选中组件', curIndex);
               const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
               actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
-              console.log('拖拽组件到组件上时，更新选中组件',parCom);
+              console.log('拖拽组件到组件上时，更新选中组件', parCom);
             }
           } else {
             message.error('非布局组件不能接收拖拽组件');
@@ -257,7 +257,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Flex
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         >{renderedChildren}</Flex>
@@ -266,7 +266,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Text
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -275,7 +275,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Button
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -284,7 +284,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Image
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -293,7 +293,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Input
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         />
@@ -302,7 +302,7 @@ const RenderComponentContent: React.FC<{
       return (
         <Default
           component={component}
-          componentDep={{isSelected, canDrop, isOverShallow}}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         >{renderedChildren}</Default>
