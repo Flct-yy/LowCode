@@ -29,6 +29,10 @@ interface CreatePageDto {
    * 宽高比
    */
   aspectRatio?: string;
+  /**
+   * 组件数量
+   */
+  comCount?: number;
 }
 
 /**
@@ -47,6 +51,10 @@ interface UpdatePageDto {
    * 页面关键词数组
    */
   keywords?: string[];
+  /**
+   * 组件数量
+   */
+  comCount?: number;
   /**
    * 组件树结构
    */
@@ -119,11 +127,20 @@ export class PageService {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
 
-    // 返回用户指定的数据结构
+    // 返回用户指定的数据结构，过滤掉不需要的字段
     return {
-      pageMetadata: page,
+      pageMetadata: {
+        id: page.id,
+        title: page.title,
+        description: page.description,
+        keywords: page.keywords,
+        createdAt: page.createdAt,
+        updatedAt: page.updatedAt
+        // 不包含model_id和pageModel字段
+      },
       com_tree: page.pageModel.com_tree,
       aspect_ratio: page.pageModel.aspect_ratio,
+      com_count: page.pageModel.com_count,
     };
   }
 
@@ -154,8 +171,22 @@ export class PageService {
    * @returns 所有页面的列表
    */
   async getAllPages(): Promise<any[]> {
-    // 使用pageMetadataRepository查询所有页面元信息
-    return await this.pageMetadataRepository.find();
+    // 使用pageMetadataRepository查询所有页面元信息，包括关联的pageModel
+    const pages = await this.pageMetadataRepository.find({
+      relations: ['pageModel'],
+    });
+    
+    // 转换为包含com_count的格式，过滤掉不需要的字段
+    return pages.map(page => ({
+      id: page.id,
+      title: page.title,
+      description: page.description,
+      keywords: page.keywords,
+      createdAt: page.createdAt,
+      updatedAt: page.updatedAt,
+      com_count: page.pageModel?.com_count
+      // 不包含model_id和pageModel字段
+    }));
   }
 
   /**
@@ -179,8 +210,8 @@ export class PageService {
     // 获取当前的组件树，默认为原有组件树
     let updatedComTree = updatedMetadata.pageModel?.com_tree;
 
-    // 如果有组件树或宽高比更新，也更新页面模型
-    if (updatePageDto.comTree || updatePageDto.aspectRatio) {
+    // 如果有组件树、宽高比或组件数量更新，也更新页面模型
+    if (updatePageDto.comTree || updatePageDto.aspectRatio || updatePageDto.comCount !== undefined) {
       // 查找关联的页面模型
       const pageModel = await this.pageModelRepository.findOne({
         where: { pageMetadata: { id: updatedMetadata.id } },
@@ -195,15 +226,28 @@ export class PageService {
         if (updatePageDto.aspectRatio !== undefined) {
           pageModel.aspect_ratio = updatePageDto.aspectRatio;
         }
+        // 更新组件数量
+        if (updatePageDto.comCount !== undefined) {
+          pageModel.com_count = updatePageDto.comCount;
+        }
         await this.pageModelRepository.save(pageModel);
       }
     }
 
-    // 返回用户指定的数据结构
+    // 返回用户指定的数据结构，过滤掉不需要的字段
     return {
-      pageMetadata: updatedMetadata,
+      pageMetadata: {
+        id: updatedMetadata.id,
+        title: updatedMetadata.title,
+        description: updatedMetadata.description,
+        keywords: updatedMetadata.keywords,
+        createdAt: updatedMetadata.createdAt,
+        updatedAt: updatedMetadata.updatedAt
+        // 不包含model_id和pageModel字段
+      },
       com_tree: updatedComTree,
       aspect_ratio: updatedMetadata.pageModel?.aspect_ratio,
+      com_count: updatedMetadata.pageModel?.com_count,
     };
   }
 

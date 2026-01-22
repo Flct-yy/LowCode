@@ -11,6 +11,25 @@
     overflow: auto;
   }
 
+  .preview__com__operation {
+    display: block;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    
+
+    &.active {
+      opacity: 1;
+    }
+    > * {
+      margin-right: 8px;
+    }
+    > :last-child {
+      margin-right: 1px;
+    }
+  }
+
   .preview__content {
     position: relative;
     min-height: 100%;
@@ -19,20 +38,20 @@
     height: max-content;
     display: flex;
     flex-direction: column;
-  }
 
-  .preview__bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: max-content;
-    min-width: 100%;
-    min-height: 100%;
-    background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
-    background-size: 20px 20px;
-    pointer-events: none;
-    z-index: 0;
-    background-repeat: repeat;
+    .preview__bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: max-content;
+      min-width: 100%;
+      min-height: 100%;
+      background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 0;
+      background-repeat: repeat;
+    }
   }
 }

@@ -1,7 +1,6 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
 import PageModel, { AspectRatioEnum } from '@type/PageModel';
-import { type PageMetadata } from '@wect/type';
 import { type ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
@@ -9,58 +8,18 @@ import pageApi from '@/api/pageApi';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
 import { ComTree, comTreeInstance } from '@wect/type';
 
-const initialPageState: PageModel = {
-  metadata: {
-    id: 0,
-    title: '',
-    description: '',
-    keywords: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  comTree: comTreeInstance,
-  showIframe: true,
-  selectedComponentId: -1,
-  aspectRatio: AspectRatioEnum.RATIO_16_9,
-  zoomRatio: 1,
-  previewScrollTop: 0,
-  previewScrollLeft: 0,
-  isDragCom: false,
-  isSliding: false,
-};
+export interface PageData extends Pick<PageModel, 'comTree' | 'metadata' | 'aspectRatio'> { }
 
-interface ActionType {
-  // 编辑Page源
-  EDIT_TITLE: string,
-  EDIT_DESCRIPTION: string,
-  EDIT_KEYWORDS: string,
-  UPDATE_PAGE: string,
-  SET_PAGE_DATA: string,
 
-  // 编辑组件
-  ADD_COMPONENT: string,
-  REMOVE_COMPONENT: string,
-  EDIT_COM_TREE: string,
-  EDIT_CHANGE_VALUE: string,
-  EDIT_CHANGE_UNIT: string,
-  HANDLE_DRAG_DROP: string,
+const Actions = {
+  // 通过API返回的数据设置Page数据
+  SET_PAGE: 'SET_PAGE',
 
-  EDIT_SHOW_IFRAME: string,
-  EDIT_SELECT_COM: string,
-  EDIT_ASPECT_RATIO: string,
-  EDIT_ZOOM_RATIO: string,
-  EDIT_PREVIEW_SCROLL: string,
-  EDIT_IS_DRAG_COM: string,
-  EDIT_IS_SLIDING: string,
-}
-
-const Actions: ActionType = {
   // 编辑Page源
   EDIT_TITLE: 'EDIT_TITLE',
   EDIT_DESCRIPTION: 'EDIT_DESCRIPTION',
   EDIT_KEYWORDS: 'EDIT_KEYWORDS',
   UPDATE_PAGE: 'UPDATE_PAGE',
-  SET_PAGE_DATA: 'SET_PAGE_DATA', // 新增：设置整个页面数据
 
   // 编辑组件
   ADD_COMPONENT: 'ADD_COMPONENT',
@@ -69,9 +28,10 @@ const Actions: ActionType = {
   EDIT_CHANGE_VALUE: 'EDIT_CHANGE_VALUE',
   EDIT_CHANGE_UNIT: 'EDIT_CHANGE_UNIT',
   HANDLE_DRAG_DROP: 'HANDLE_DRAG_DROP',
+  EDIT_LOCK_COM: 'EDIT_LOCK_COM',
+  REMOVE_PREVIEW_NODE: 'REMOVE_PREVIEW_NODE',
+  COPY_COMPONENT: 'COPY_COMPONENT',
 
-  // 编辑是否显示Iframe
-  EDIT_SHOW_IFRAME: 'EDIT_SHOW_IFRAME',
   // 编辑选中组件索引
   EDIT_SELECT_COM: 'EDIT_SELECT_COM',
   // 编辑宽高比
@@ -89,21 +49,31 @@ const Actions: ActionType = {
 function WebsReducer(state: PageModel, action: {
   type: string;
   payload: {
-    id?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
-    comSchemaId?: number, component?: ComponentSchema,
-    showIframe?: boolean, selectedComponentId?: number,
+    PageData?: PageData,
+    metadataId?: number, title?: string, description?: string, keywords?: string[], createdAt?: Date, updatedAt?: Date,
+
+    selectedComponentId?: number,
     aspectRatio?: AspectRatioEnum, zoomRatio?: number,
+
     previewScrollTop?: number, previewScrollLeft?: number,
-    isDragCom?: boolean, areaName?: ConfigAreaEnum,
-    field?: ConfigItemFieldEnum, currentValue?: any,
-    currentUnit?: string, parentId?: number,
+
+    isDragCom?: boolean, isSliding?: boolean,
+
+    comSchemaId?: number, component?: ComponentSchema, copyComponent?: ComponentSchema,
+
+    areaName?: ConfigAreaEnum, field?: ConfigItemFieldEnum, parentId?: number,
+    currentValue?: any,
+    currentUnit?: string,
+
     sourceId?: number, targetParentId?: number, childrenIndex?: number,
-    isSliding?: boolean,
-    comTree?: ComponentSchema,
-    pageData?: PageModel, // 新增：整个页面数据
   }
 }): PageModel {
   switch (action.type) {
+    case Actions.SET_PAGE:
+      return {
+        ...state,
+        ...action.payload.PageData,
+      }
     case Actions.EDIT_TITLE:
       return {
         ...state,
@@ -124,10 +94,6 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         metadata: { ...state.metadata, updatedAt: new Date() },
       }
-    // 新增：设置整个页面数据
-    case Actions.SET_PAGE_DATA:
-      if (!action.payload.pageData) return state;
-      return action.payload.pageData;
     case Actions.ADD_COMPONENT:
       state.comTree.addNode(action.payload.component!, action.payload.parentId!, action.payload.childrenIndex!)
       return {
@@ -135,13 +101,13 @@ function WebsReducer(state: PageModel, action: {
         comTree: state.comTree,
       }
     case Actions.REMOVE_COMPONENT:
-      state.comTree.removeNode(action.payload.id!)
+      state.comTree.removeNode(action.payload.comSchemaId!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.EDIT_COM_TREE:
-      state.comTree.setRoot(action.payload.comTree!)
+      state.comTree.setRoot(action.payload.component!)
       return {
         ...state,
         comTree: state.comTree,
@@ -164,10 +130,22 @@ function WebsReducer(state: PageModel, action: {
         ...state,
         comTree: state.comTree,
       }
-    case Actions.EDIT_SHOW_IFRAME:
+    case Actions.EDIT_LOCK_COM:
+      state.comTree.updateNodeLock(action.payload.comSchemaId!)
       return {
         ...state,
-        showIframe: action.payload.showIframe!,
+        comTree: state.comTree,
+      }
+    case Actions.REMOVE_PREVIEW_NODE:
+      state.comTree.removePreviewNodes()
+      return {
+        ...state,
+        comTree: state.comTree,
+      }
+    case Actions.COPY_COMPONENT:
+      return {
+        ...state,
+        copyComponent: action.payload.copyComponent!,
       }
     case Actions.EDIT_SELECT_COM:
       return {
@@ -210,8 +188,17 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const defaultPageState = {
-    showIframe: true,
+  const defaultPageState: PageModel = {
+    metadata: {
+      id: 0,
+      title: '',
+      description: '',
+      keywords: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    comTree: comTreeInstance,
+    copyComponent: undefined,
     selectedComponentId: -1,
     aspectRatio: AspectRatioEnum.RATIO_16_9,
     zoomRatio: 1,
@@ -239,25 +226,19 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
           throw new Error('API返回数据格式不正确');
         }
         // 数据转换
-        const transformedData: PageModel = {
-          ...defaultPageState,
+        const transformedData: PageData = {
           metadata: {
             ...res.pageMetadata,
             // 确保日期字段是Date对象
             createdAt: new Date(res.pageMetadata.createdAt),
             updatedAt: new Date(res.pageMetadata.updatedAt),
           },
-          // 将API返回的com_tree对象转换为ComTree类的实例
-          comTree: ComTree.getInstance(),
+          // 使用API返回的com_tree数据创建ComTree实例
+          comTree: new ComTree(res.com_tree.root, res.com_count),
           aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
         };
-        transformedData.comTree.setRoot(res.com_tree.root);
-        if (transformedData.metadata.id !== 0) { // 确保只有当页面数据加载完成后才更新
-          dispatch({ type: Actions.SET_PAGE_DATA, payload: { pageData: transformedData } });
-        }
-        if (transformedData.aspectRatio) {
-          dispatch({ type: Actions.EDIT_ASPECT_RATIO, payload: { aspectRatio: transformedData.aspectRatio } });
-        }
+        // 调用set_page设置页面数据
+        actions.set_page(transformedData);
       })
       .catch((error) => {
         // 处理API调用错误
@@ -273,9 +254,11 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
   }, [pageId, navigate]);
 
   // 使用useReducer管理状态，初始状态为initialPageState
-  const [state, dispatch] = useReducer(WebsReducer, initialPageState);
-
+  const [state, dispatch] = useReducer(WebsReducer, defaultPageState);
   const actions = {
+    set_page: (PageData: PageData) => {
+      dispatch({ type: Actions.SET_PAGE, payload: { PageData } })
+    },
     edit_title: (title: string) => {
       dispatch({ type: Actions.EDIT_TITLE, payload: { title } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
@@ -300,8 +283,8 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
 
     },
-    remove_component: (id: number) => {
-      dispatch({ type: Actions.REMOVE_COMPONENT, payload: { id } }),
+    remove_component: (comSchemaId: number) => {
+      dispatch({ type: Actions.REMOVE_COMPONENT, payload: { comSchemaId } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
 
     },
@@ -322,8 +305,16 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
       })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
-    edit_show_iframe: (showIframe: boolean) => {
-      dispatch({ type: Actions.EDIT_SHOW_IFRAME, payload: { showIframe } }),
+    edit_lock_com: (comSchemaId: number) => {
+      dispatch({ type: Actions.EDIT_LOCK_COM, payload: { comSchemaId } }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    remove_preview_node: () => {
+      dispatch({ type: Actions.REMOVE_PREVIEW_NODE, payload: {} }),
+        dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
+    },
+    copy_component: (copyComponent: ComponentSchema) => {
+      dispatch({ type: Actions.COPY_COMPONENT, payload: { copyComponent } }),
         dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
     edit_select_com: (selectedComponentId: number) => {
@@ -349,16 +340,6 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     // 编辑是否滑动
     edit_is_sliding: (isSliding: boolean) => {
       dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } })
-      dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
-    },
-    // 导入
-    import_page: (pageMetadata: PageMetadata, componentTree: ComponentSchema) => {
-      // 导入组件树后，需要更新页面元信息
-      dispatch({ type: Actions.EDIT_TITLE, payload: { title: pageMetadata.title } })
-      dispatch({ type: Actions.EDIT_DESCRIPTION, payload: { description: pageMetadata.description } })
-      dispatch({ type: Actions.EDIT_KEYWORDS, payload: { keywords: pageMetadata.keywords } })
-      // 导入组件树后，需要更新组件树
-      dispatch({ type: Actions.EDIT_COM_TREE, payload: { comTree: componentTree } })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
   }

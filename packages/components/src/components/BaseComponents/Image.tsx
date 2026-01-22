@@ -1,16 +1,16 @@
-import React, { useRef, useMemo } from 'react';
-import { ComponentSchema } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import React, { useRef, useMemo, useEffect } from 'react';
+import { ComponentSchema, ComTree } from '@wect/type';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigImageUrl } from '@/utils/index';
 
 function Image({
   component,
-  componentClassName,
+  componentDep,
   handleDnD,
   handleComponentSelect,
 }: {
   component: ComponentSchema;
-  componentClassName?: string;
+  componentDep?: { isSelected: boolean, canDrop: boolean, isOverShallow: boolean };
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
@@ -19,20 +19,23 @@ function Image({
   // 获得组件图片url
   const imageUrl = getConfigImageUrl(component.config);
 
-  // 处理拖拽
-  handleDnD?.(divRef);
+  // 处理拖拽 - 移到useEffect中避免渲染期间状态更新
+  useEffect(() => {
+    handleDnD?.(divRef);
+  }, [handleDnD]);
 
   // 转换组件配置为 内联样式和类名
+  const { isSelected, canDrop, isOverShallow } = componentDep || {}
   const { style: inlineStyle, className } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
-    return `${componentClassName || ''} ${className}`
-  }, [componentClassName, className])
+    return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
+  }, [isSelected, canDrop, isOverShallow, className, component.comSchemaId])
 
   return (
     <div ref={divRef}
-      className={`component-preview__default component-preview__image ${newClassName}`}
+      className={`component-preview__default component__image ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={(e)=>handleComponentSelect?.(e)}>
+      onMouseDown={(e) => handleComponentSelect?.(e)}>
       {imageUrl ? <img className="img" src={imageUrl} alt='图片' /> : '未上传图片'}
     </div>
   );

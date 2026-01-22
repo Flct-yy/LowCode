@@ -8,6 +8,7 @@ interface PageModelResponse {
   pageMetadata: PageMetadata;
   com_tree: { root: ComponentSchema };
   aspect_ratio: string;
+  com_count: number;
 }
 // 创建页面接口参数
 interface CreatePageParams {
@@ -16,6 +17,7 @@ interface CreatePageParams {
   keywords?: string[];
   comTree: any;
   aspectRatio: string;
+  comCount: number;
 }
 
 // 更新页面接口参数
@@ -25,6 +27,7 @@ interface UpdatePageParams {
   keywords?: string[];
   comTree?: any;
   aspectRatio?: string;
+  comCount?: number;
 }
 
 // 页面API服务

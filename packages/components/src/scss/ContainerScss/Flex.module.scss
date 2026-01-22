@@ -1,0 +1,37 @@
+.component-preview__pre {
+  background-color: rgba(255, 192, 203, 0.5) !important;
+  border: 2px dashed #52c41a !important;
+  border-radius: 4px !important;
+  opacity: 0.7 !important;
+  /* 淡入效果：预览节点出现时的过渡动画 */
+  animation: fadeIn 0.2s ease-in-out;
+
+  /* 脉冲效果：吸引用户注意力 */
+  animation: pulse 1.5s infinite;
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(82, 196, 26, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(82, 196, 26, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(82, 196, 26, 0);
+  }
+}

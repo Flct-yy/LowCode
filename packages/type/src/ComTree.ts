@@ -1,3 +1,4 @@
+import AutoID from './autoID';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from './ComponentSchema';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from './Config';
 import { UiTypeEnum } from './ConfigItem';
@@ -10,6 +11,7 @@ const defaultRoot: ComponentSchema = {
     componentType: ComponentTypeEnum.ROOT,
     category: ComponentCategoryEnum.ROOT,
     tags: [],
+    description: '修改pageModel内容，时时保持同步',
     version: '1.0.0',
   },
   config: [],
@@ -24,19 +26,20 @@ const defaultRoot: ComponentSchema = {
  */
 class ComTree {
   private static instance: ComTree;
+  private autoID: AutoID;
   private root: ComponentSchema;
+  static readonly PREVIEW_NODE_ID = 999;
 
   // 私有构造函数，防止外部实例化
-  private constructor(comTree?: ComponentSchema) {
+  constructor(comTree?: ComponentSchema, comCount?: number) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
       this.root = defaultRoot;
     } else {
       this.root = (comTree as any).root ? (comTree as any).root : comTree;
     }
-  }
-  public static create(): ComTree {
-    return new ComTree();
+    ComTree.instance = this;
+    this.autoID = new AutoID(this.root.comSchemaId, comCount!);
   }
   // 公共静态方法获取唯一实例
   public static getInstance(): ComTree {
@@ -54,10 +57,18 @@ class ComTree {
     return this.root;
   }
 
+  public getID(): number {
+    return this.autoID.generateID();
+  }
+
+  public getCount(): number {
+    return this.autoID.getCount();
+  }
+
   // 递归查找节点（核心辅助方法）
   public findNode(targetId: number, node = this.root): ComponentSchema | undefined {
     // 找到目标节点，直接返回
-    if (node.comSchemaId === targetId) {
+    if (Number(node.comSchemaId) === targetId) {
       return node;
     }
 
@@ -214,6 +225,23 @@ class ComTree {
       throw new Error(`将源组件 ${sourceId} 添加到目标父组件 ${targetParentId} 失败`);
     }
   }
+
+  public updateNodeLock(targetId: number) {
+    const targetNode = this.findNode(targetId);
+    if (!targetNode) {
+      console.error(`节点 ${targetId} 不存在`);
+      return false;
+    }
+    targetNode.isLocked = !targetNode.isLocked;
+    return true;
+  }
+  public removePreviewNodes() {
+    this.removeNode(ComTree.PREVIEW_NODE_ID);
+    return true;
+  }
+  // public addPreviewNode(newNode: ComponentSchema, parentId: number, childrenArrIndex: number) {
+  //   return this.addNode(newNode, parentId, childrenArrIndex);
+  // }
 
   // 打印树形结构（辅助方法，便于调试）
   public printTree(node = ComTree.instance.root, level = 0) {

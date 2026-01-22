@@ -20,6 +20,8 @@ export default defineConfig({
     },
     outDir: 'dist',
     sourcemap: true,
+    // 确保构建时清理dist目录
+    emptyOutDir: true,
     // 处理CSS配置
     cssCodeSplit: true,
     // 外部依赖配置，避免打包到库中

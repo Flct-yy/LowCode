@@ -26,6 +26,12 @@ export class PageModel {
   aspect_ratio!:string;
 
   /**
+   * 数量
+   */
+  @Column({name:'com_count', type:'integer', nullable:false, default:1})
+  com_count!:number;
+
+  /**
    * 一对一关联到PageMetadata
    */
   @OneToOne(() => PageMetadata, (metadata) => metadata.pageModel, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
