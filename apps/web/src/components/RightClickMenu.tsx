@@ -1,15 +1,22 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useContext } from 'react';
 import './RightClickMenu.scss';
+import { message } from 'antd';
+import useWebsContext from '@/context/WebsContext/useWebsContext';
+import renderCopyComNewID from '@/utils/renderCopyComNewID';
+import { AspectRatioEnum } from '@/type/PageModel';
 
-const RightClickMenu: React.FC<{ exLeft?: number,exTop?: number, children?: React.ReactNode }> = ({ exLeft,exTop, children }) => {
+
+const RightClickMenu: React.FC<{ exLeft?: number, exTop?: number, children?: React.ReactNode }> = ({ exLeft, exTop, children }) => {
+  const { state, actions } = useWebsContext();
+  const { comTree, selectedComponentId, copyComponent } = state;
   // 获取菜单元素
   const contextMenu = useRef<HTMLDivElement>(null);
   const targetArea = useRef<HTMLDivElement>(null);
   const menuItems = [
-    { id: 'copy', label: '复制',rightLabel:'Ctrl+C' },
-    { id: 'paste', label: '粘贴',rightLabel:'Ctrl+V' },
-    { id: 'delete', label: '删除',rightLabel:'Del' },
-    { id: 'reset', label: '重置',rightLabel:'Ctrl+R' },
+    { id: 'copy', label: '复制', rightLabel: 'Ctrl+C' },
+    { id: 'paste', label: '粘贴', rightLabel: 'Ctrl+V' },
+    { id: 'delete', label: '删除', rightLabel: 'Del' },
+    { id: 'reset', label: '重置', rightLabel: 'Ctrl+R' },
   ];
 
 
@@ -66,16 +73,74 @@ const RightClickMenu: React.FC<{ exLeft?: number,exTop?: number, children?: Reac
         // 根据菜单ID执行不同操作
         switch (menuItem.id) {
           case 'copy':
-            console.log('复制');
+            try {
+              if (selectedComponentId === comTree.getRoot().comSchemaId) {
+                message.error('不能复制根组件');
+                return;
+              }
+              if (selectedComponentId !== -1) {
+                const comSchema = comTree.findNode(selectedComponentId!);
+                if (comSchema) {
+                  actions.copy_component(comSchema);
+                } else {
+                  message.error('未选中任何组件');
+                }
+                message.success('复制组件成功');
+              }
+            } catch (error) {
+              console.error('复制组件失败:', error);
+              message.error('复制组件失败');
+            }
             break;
           case 'paste':
-            console.log('粘贴');
+            try {
+              if (copyComponent) {
+                // 为粘贴的组件生成新的唯一ID
+                const newComponent = renderCopyComNewID(copyComponent);
+                actions.add_component(newComponent, selectedComponentId!, -1);
+              } else {
+                message.error('未复制任何组件');
+              }
+              message.success('粘贴组件成功');
+            } catch (error) {
+              console.error('粘贴组件失败:', error);
+              message.error('粘贴组件失败');
+            }
             break;
           case 'delete':
-            console.log('删除');
+            try {
+              if (selectedComponentId !== -1) {
+                if (selectedComponentId === comTree.getRoot().comSchemaId) {
+                  message.error('不能删除根组件');
+                  return;
+                }
+                // 在删除前获取父组件ID
+                const componentToDelete = state.comTree.findNode(selectedComponentId!);
+                if (componentToDelete) {
+                  const parentId = componentToDelete.parentId;
+                  actions.remove_component(selectedComponentId!);
+                  // 选择父组件
+                  actions.edit_select_com(parentId);
+                }
+              }
+              console.log('删除组件ID:', selectedComponentId);
+              message.success('删除组件成功');
+            } catch (error) {
+              console.error('删除组件失败:', error);
+              message.error('删除组件失败');
+            }
             break;
           case 'reset':
-            console.log('重置');
+            try {
+              actions.edit_zoom_ratio(1);
+              actions.edit_aspect_ratio(AspectRatioEnum.RATIO_16_9);
+              actions.edit_preview_scroll(0, 0);
+              message.success('画布重新放置成功');
+            } catch (error) {
+              console.error('画布重新放置失败:', error);
+              message.error('画布重新放置失败');
+              return;
+            }
             break;
         }
         // 隐藏菜单
@@ -94,7 +159,7 @@ const RightClickMenu: React.FC<{ exLeft?: number,exTop?: number, children?: Reac
       window.removeEventListener('click', handleClickOutside);
       menuElement.removeEventListener('click', handleMenuClick);
     };
-  }, [exLeft,exTop]);
+  }, [exLeft, exTop,selectedComponentId,copyComponent]);
 
   return (
     <>
