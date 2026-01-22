@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 import styles from '@/scss/BaseScss/Text.module.scss';
 
@@ -35,7 +35,7 @@ function Text({
   return (
     <div
       ref={divRef}
-      className={`component-preview__default ${styles['component-preview__text']} ${newClassName}`}
+      className={`component-preview__default component__text ${newClassName}`}
       style={inlineStyle}
       onMouseDown={(e) => handleComponentSelect?.(e)}>
       {text !== '' && text}

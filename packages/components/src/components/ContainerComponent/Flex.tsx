@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import styles from '@/scss/ContainerScss/Flex.module.scss';
 
 function Flex({
@@ -33,7 +33,7 @@ function Flex({
   return (
     <div
       ref={divRef}
-      className={`component-preview__default ${styles['component-preview__flex']} ${newClassName}`}
+      className={`component-preview__default component__flex ${newClassName}`}
       style={inlineStyle}
       onMouseDown={(e) => handleComponentSelect?.(e)}>
       {children}

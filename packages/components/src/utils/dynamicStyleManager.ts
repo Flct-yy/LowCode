@@ -7,6 +7,20 @@ class DynamicStyleManager {
   private static instance: DynamicStyleManager; // 存储 DynamicStyleManager 类的唯一实例
   private styleElement: HTMLStyleElement | null = null; // 存储动态创建的 <style> 元素引用
   private componentStyles: Map<string, string> = new Map();// 存储所有组件的CSS样式映射表
+  private defaultComStyle =
+    `.component__flex {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.component__text {
+  width: auto;
+  height: auto;
+}
+`;
 
   private constructor() {
     this.initializeStyleElement();
@@ -188,8 +202,12 @@ class DynamicStyleManager {
     this.componentStyles.forEach(style => {
       allStyles += style;
     });
+    this.styleElement.innerHTML = this.defaultComStyle + allStyles;
+  }
 
-    this.styleElement.innerHTML = allStyles;
+  // 导出所有组件样式
+  public exportAllStyles(): string {
+    return this.defaultComStyle + [...this.componentStyles.values()].join('\n');
   }
 
   // 获取组件CSS类名
@@ -215,4 +233,8 @@ export const updateComponentStyle = (component: ComponentSchema): void => {
 
 export const removeComponentStyle = (componentId: number | string): void => {
   return dynamicStyleManager.removeComponentStyle(componentId);
+};
+
+export const exportAllStyles = (): string => {
+  return dynamicStyleManager.exportAllStyles();
 };

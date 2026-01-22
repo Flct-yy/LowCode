@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 
 function Button({
@@ -30,13 +30,13 @@ function Button({
   const newClassName = useMemo(() => {
     return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''} ${className} ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
   }, [isSelected, canDrop, isOverShallow, className, component.comSchemaId])
-  
+
   return (
     <div
       ref={divRef}
-      className={`component-preview__default component-preview__button ${newClassName}`}
+      className={`component-preview__default component__button ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={(e)=>handleComponentSelect?.(e)}
+      onMouseDown={(e) => handleComponentSelect?.(e)}
     >
       {text !== '' && text}
     </div>

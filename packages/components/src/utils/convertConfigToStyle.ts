@@ -21,4 +21,4 @@ const convertConfigToStyle = (component: ComponentSchema): { style: React.CSSPro
   return { style, className };
 };
 
-export default convertConfigToStyle;
+export { convertConfigToStyle };

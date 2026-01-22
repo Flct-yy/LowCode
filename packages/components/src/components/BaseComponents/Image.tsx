@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigImageUrl } from '@/utils/index';
 
 function Image({
@@ -33,9 +33,9 @@ function Image({
 
   return (
     <div ref={divRef}
-      className={`component-preview__default component-preview__image ${newClassName}`}
+      className={`component-preview__default component__image ${newClassName}`}
       style={inlineStyle}
-      onMouseDown={(e)=>handleComponentSelect?.(e)}>
+      onMouseDown={(e) => handleComponentSelect?.(e)}>
       {imageUrl ? <img className="img" src={imageUrl} alt='图片' /> : '未上传图片'}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 import styles from '@/scss/ContainerScss/Default.module.scss';
 

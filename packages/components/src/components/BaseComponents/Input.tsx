@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
-import convertConfigToStyle from '@/utils/convertConfigToStyle';
+import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigText } from '@/utils/index';
 
 function Input({
@@ -33,7 +33,7 @@ function Input({
 
   return (
     <div ref={divRef}
-      className={`component-preview__default component-preview__input ${newClassName}`}
+      className={`component-preview__default component__input ${newClassName}`}
       style={inlineStyle}
       onMouseDown={(e) => handleComponentSelect?.(e)}>
       <input
