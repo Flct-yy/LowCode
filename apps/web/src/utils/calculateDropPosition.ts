@@ -3,7 +3,7 @@ import { XYCoord } from 'react-dnd';
 import React from 'react';
 
 
-const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | null>, curCom: ComponentSchema | undefined, clientOffset: XYCoord | null) => {
+const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | null>, curCom: ComponentSchema|undefined, clientOffset: XYCoord | null) => {
   if (!curCom || !clientOffset) {
     return {
       goalID: -1,

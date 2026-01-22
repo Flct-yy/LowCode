@@ -4,7 +4,7 @@ import { useDrop, useDrag } from "react-dnd";
 import { message } from "antd";
 import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
-import { findNode } from "@wect/type";
+
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
@@ -59,9 +59,9 @@ const RenderComponentContent: React.FC<{
     accept: [DnDTypes.COMMETA, DnDTypes.COMSCHEMA],
     drop: (item: ItemType, monitor) => {
       if (component.comSchemaId === ComTree.PREVIEW_NODE_ID) {
-        const curCom = findNode(component.comSchemaId);
+        const curCom = comTree.findNode(component.comSchemaId);
         const goalID = curCom?.parentId;
-        const parCom = findNode(curCom?.parentId!);
+        const parCom = comTree.findNode(curCom?.parentId!);
         const curIndex = parCom?.children?.findIndex((item) => item.comSchemaId === component.comSchemaId);
         const parChIndex = curIndex !== -1 ? curIndex : -1;
         if (item.type === DnDTypes.COMMETA) {
@@ -83,9 +83,11 @@ const RenderComponentContent: React.FC<{
               clearTimeout(timerRef.current);
             }
             const clientOffset = monitor.getClientOffset();
-            const curCom = findNode(component.comSchemaId);
+            const curCom = comTree.findNode(component.comSchemaId);
+            if (!curCom) {
+              console.log('拖拽组件到组件上时，更新选中组件', component.comSchemaId);
+            }
             let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
-
             if (item.type === DnDTypes.COMMETA) {
               const comMeta = item as { type: string, comMeta: { id: number } };
               // 生成组件Schema
@@ -97,7 +99,7 @@ const RenderComponentContent: React.FC<{
               // 拖拽组件到组件上时，更新选中组件
               // 如果组件拖到到和自己父组件一样时 往后移动要减去1因为计算了自己的位置
               if (goalID === curCom?.parentId) {
-                const parentCom = findNode(curCom.parentId);
+                const parentCom = comTree.findNode(curCom.parentId);
                 if (parChIndex !== -1) {
                   const dragComIndex = parentCom?.children.findIndex(child => child.comSchemaId === component.comSchemaId);
                   const dropComIndex = parentCom?.children.findIndex(child => child.comSchemaId === comSchema.comMeta.comSchemaId);
@@ -110,10 +112,10 @@ const RenderComponentContent: React.FC<{
             }
           }
         } else {
-          if (findNode(ComTree.PREVIEW_NODE_ID)) {
-            const curCom = findNode(ComTree.PREVIEW_NODE_ID);
+          if (comTree.findNode(ComTree.PREVIEW_NODE_ID)) {
+            const curCom = state.comTree.findNode(ComTree.PREVIEW_NODE_ID);
             const goalID = curCom?.parentId;
-            const parCom = findNode(curCom?.parentId!);
+            const parCom = comTree.findNode(curCom?.parentId!);
             const curIndex = parCom?.children?.findIndex((item) => item.comSchemaId === ComTree.PREVIEW_NODE_ID);
             const parChIndex = curIndex !== -1 ? curIndex : -1;
             if (item.type === DnDTypes.COMMETA) {
@@ -161,10 +163,10 @@ const RenderComponentContent: React.FC<{
           clearTimeout(timerRef.current);
           timerRef.current = null;
         }
-        if (findNode(ComTree.PREVIEW_NODE_ID)) {
+        if (comTree.findNode(ComTree.PREVIEW_NODE_ID)) {
           actions.remove_preview_node();
         }
-        const curCom = findNode(component.comSchemaId);
+        const curCom = comTree.findNode(component.comSchemaId);
         let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
         if (item.type === DnDTypes.COMMETA) {
           const comMeta = item as { type: string, comMeta: { id: number } };
@@ -186,7 +188,7 @@ const RenderComponentContent: React.FC<{
         }
       }
     },
-    canDrop: () => !findNode(component.comSchemaId)?.isLocked,
+    canDrop: () => !comTree.findNode(component.comSchemaId)?.isLocked,
     collect: (monitor) => ({
       canDrop: monitor.canDrop() && isLayoutComponent(),
       isOverShallow: monitor.isOver({ shallow: true })
@@ -205,10 +207,10 @@ const RenderComponentContent: React.FC<{
   // 拖拽组件事件处理
   const [, dragComItem] = useDrag({
     type: DnDTypes.COMSCHEMA,
-    canDrag: () => isDragCom && !findNode(component.comSchemaId)?.isLocked,
+    canDrag: () => isDragCom && !comTree.findNode(component.comSchemaId)?.isLocked,
     item: { type: DnDTypes.COMSCHEMA, comMeta: { comSchemaId: component.comSchemaId, commetaID: component.metadata.componentId } },
     end: (item, monitor) => {
-      if (findNode(ComTree.PREVIEW_NODE_ID)) {
+      if (comTree.findNode(ComTree.PREVIEW_NODE_ID)) {
         actions.remove_preview_node();
       }
     }

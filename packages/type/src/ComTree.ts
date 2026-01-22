@@ -68,7 +68,7 @@ class ComTree {
   // 递归查找节点（核心辅助方法）
   public findNode(targetId: number, node = this.root): ComponentSchema | undefined {
     // 找到目标节点，直接返回
-    if (node.comSchemaId === targetId) {
+    if (Number(node.comSchemaId) === targetId) {
       return node;
     }
 
