@@ -2,6 +2,7 @@ import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
 import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
 import { getConfigImageUrl } from '@/utils/index';
+import '@/scss/preview.scss';
 
 function Image({
   component,

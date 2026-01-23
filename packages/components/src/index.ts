@@ -1,7 +1,4 @@
-import './scss/BaseScss/Text.module.scss';
-
-import './scss/ContainerScss/Flex.module.scss';
-import './scss/ContainerScss/Default.module.scss';
+import './scss/preview.scss';
 
 export * from './components/BaseComponents/Text';
 export * from './components/BaseComponents/Image';
