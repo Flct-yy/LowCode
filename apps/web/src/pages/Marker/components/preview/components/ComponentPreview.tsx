@@ -26,7 +26,7 @@ const ComponentPreview: React.FC<{
 
   type ItemType =
     | { type: DnDTypes.COMMETA; comMeta: { id: number } }
-    | { type: DnDTypes.COMSCHEMA; comSchemaId: number };
+    | { type: DnDTypes.COMSCHEMA; comMeta: { comSchemaId: number, commetaID: number } };
   const [{ canDrop }, dropComItem] = useDrop({
     accept: [DnDTypes.COMMETA, DnDTypes.COMSCHEMA],
     drop: (item: ItemType, monitor) => {
@@ -41,9 +41,9 @@ const ComponentPreview: React.FC<{
           actions.add_component(compSchema, comRoot.comSchemaId, -1);
           dropped = true;
         } else if (item.type === DnDTypes.COMSCHEMA) {
-          const comSchema = item as { type: string, comSchemaId: number };
+          const comSchemaItem = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
           // 拖拽组件到组件上时，更新选中组件
-          actions.handle_drag_drop(comSchema.comSchemaId, comRoot.comSchemaId, -1);
+          actions.handle_drag_drop(comSchemaItem.comMeta.comSchemaId, comRoot.comSchemaId, -1);
           dropped = true;
         }
       }

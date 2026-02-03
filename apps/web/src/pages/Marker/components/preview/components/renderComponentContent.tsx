@@ -48,6 +48,11 @@ const RenderComponentContent: React.FC<{
   const [{ canDrop, isOverShallow }, dropComItem] = useDrop({
     accept: [DnDTypes.COMMETA, DnDTypes.COMSCHEMA],
     drop: useCallback((item: any, monitor: DropTargetMonitor) => {
+      // 使用shallow选项确保只有最上层的放置目标处理drop事件
+      if (!monitor.isOver({ shallow: true }) || !monitor.canDrop() || monitor.didDrop() === true) {
+        return;
+      }
+
       if (component.comSchemaId === ComTree.PREVIEW_NODE_ID) {
         const curCom = comTree?.findNode(component.comSchemaId);
         const goalID = curCom?.parentId;
@@ -64,64 +69,61 @@ const RenderComponentContent: React.FC<{
           const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
           actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
         }
+      } else if (isLayoutComponent(metadata.componentType)) {
+        // 删除预览节点
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+        const clientOffset = monitor.getClientOffset();
+        const curCom = comTree?.findNode(component.comSchemaId);
+        if (!curCom) {
+          console.log('拖拽组件到组件上时，更新选中组件', component.comSchemaId);
+          return;
+        }
+        let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
+        if (item.type === DnDTypes.COMMETA) {
+          const comMeta = item as { type: string, comMeta: { id: number } };
+          // 生成组件Schema
+          const compSchema = generateComSchema(comMeta.comMeta.id, goalID);
+          // 拖拽组件到画布时，更新选中组件
+          actions.add_component(compSchema, compSchema.parentId, parChIndex);
+        } else if (item.type === DnDTypes.COMSCHEMA) {
+          const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
+          // 拖拽组件到组件上时，更新选中组件
+          // 如果组件拖到到和自己父组件一样时 往后移动要减去1因为计算了自己的位置
+          if (goalID === curCom?.parentId) {
+            const parentCom = comTree?.findNode(curCom.parentId);
+            if (parChIndex !== -1) {
+              const dragComIndex = parentCom?.children.findIndex((child: any) => child.comSchemaId === component.comSchemaId);
+              const dropComIndex = parentCom?.children.findIndex((child: any) => child.comSchemaId === comSchema.comMeta.comSchemaId);
+              if (dropComIndex !== -1 && dragComIndex !== -1 && dragComIndex! >= dropComIndex!) {
+                parChIndex -= 1;
+              }
+            }
+          }
+          actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID, parChIndex);
+        }
       } else {
-        // 使用shallow选项确保只有最上层的放置目标处理drop事件
-        if (isLayoutComponent(metadata.componentType) && monitor.isOver({ shallow: true }) && monitor.canDrop() && monitor.didDrop() === false) {
-          // 删除预览节点
-          if (timerRef.current) {
-            clearTimeout(timerRef.current);
-          }
-          const clientOffset = monitor.getClientOffset();
-          const curCom = comTree?.findNode(component.comSchemaId);
-          if (!curCom) {
-            console.log('拖拽组件到组件上时，更新选中组件', component.comSchemaId);
-            return;
-          }
-          let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
+        if (comTree?.findNode(ComTree.PREVIEW_NODE_ID)) {
+          const curCom = state.comTree?.findNode(ComTree.PREVIEW_NODE_ID);
+          const goalID = curCom?.parentId;
+          const parCom = comTree?.findNode(curCom?.parentId!);
+          const curIndex = parCom?.children?.findIndex((i: any) => i.comSchemaId === ComTree.PREVIEW_NODE_ID);
+          const parChIndex = curIndex !== -1 ? curIndex : -1;
           if (item.type === DnDTypes.COMMETA) {
             const comMeta = item as { type: string, comMeta: { id: number } };
             // 生成组件Schema
-            const compSchema = generateComSchema(comMeta.comMeta.id, goalID);
-            // 拖拽组件到画布时，更新选中组件
-            actions.add_component(compSchema, compSchema.parentId, parChIndex);
+            const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
+            // 添加预览节点到组件树
+            actions.add_component(comSchema, goalID!, parChIndex!);
           } else if (item.type === DnDTypes.COMSCHEMA) {
+            console.log('拖拽组件到组件上时，更新选中组件', curIndex);
             const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
-            // 拖拽组件到组件上时，更新选中组件
-            // 如果组件拖到到和自己父组件一样时 往后移动要减去1因为计算了自己的位置
-            if (goalID === curCom?.parentId) {
-              const parentCom = comTree?.findNode(curCom.parentId);
-              if (parChIndex !== -1) {
-                const dragComIndex = parentCom?.children.findIndex((child: any) => child.comSchemaId === component.comSchemaId);
-                const dropComIndex = parentCom?.children.findIndex((child: any) => child.comSchemaId === comSchema.comMeta.comSchemaId);
-                if (dropComIndex !== -1 && dragComIndex !== -1 && dragComIndex! >= dropComIndex!) {
-                  parChIndex -= 1;
-                }
-              }
-            }
-            actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID, parChIndex);
+            actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
+            console.log('拖拽组件到组件上时，更新选中组件', parCom);
           }
         } else {
-          if (comTree?.findNode(ComTree.PREVIEW_NODE_ID)) {
-            const curCom = state.comTree?.findNode(ComTree.PREVIEW_NODE_ID);
-            const goalID = curCom?.parentId;
-            const parCom = comTree?.findNode(curCom?.parentId!);
-            const curIndex = parCom?.children?.findIndex((i: any) => i.comSchemaId === ComTree.PREVIEW_NODE_ID);
-            const parChIndex = curIndex !== -1 ? curIndex : -1;
-            if (item.type === DnDTypes.COMMETA) {
-              const comMeta = item as { type: string, comMeta: { id: number } };
-              // 生成组件Schema
-              const comSchema = generateComSchema(comMeta.comMeta.id, goalID!);
-              // 添加预览节点到组件树
-              actions.add_component(comSchema, goalID!, parChIndex!);
-            } else if (item.type === DnDTypes.COMSCHEMA) {
-              console.log('拖拽组件到组件上时，更新选中组件', curIndex);
-              const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
-              actions.handle_drag_drop(comSchema.comMeta.comSchemaId, goalID!, parChIndex!);
-              console.log('拖拽组件到组件上时，更新选中组件', parCom);
-            }
-          } else {
-            message.error('非布局组件不能接收拖拽组件');
-          }
+          message.error('非布局组件不能接收拖拽组件');
         }
       }
     }, [actions, comTree, component.comSchemaId, metadata.componentType]),
@@ -155,14 +157,14 @@ const RenderComponentContent: React.FC<{
           actions.remove_preview_node();
         }
         const curCom = comTree?.findNode(component.comSchemaId);
-        
+
         // 检查必要参数
         if (!curCom || !clientOffset || !componentRef.current) {
           return;
         }
-        
+
         let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
-        
+
         // 检查目标ID是否有效
         if (goalID === -1) {
           return;
@@ -221,7 +223,7 @@ const RenderComponentContent: React.FC<{
   const [, dragComItem] = useDrag({
     type: DnDTypes.COMSCHEMA,
     canDrag: useCallback(() => {
-      const node = comTree.findNode(component.comSchemaId);
+      const node = comTree?.findNode(component.comSchemaId);
       return isDragCom && !node?.isLocked;
     }, [isDragCom, comTree, component.comSchemaId]),
     item: useCallback(() => ({
@@ -232,7 +234,7 @@ const RenderComponentContent: React.FC<{
       }
     }), [component.comSchemaId, component.metadata.componentId]),
     end: useCallback((item: any, monitor: DragSourceMonitor) => {
-      if (comTree.findNode(ComTree.PREVIEW_NODE_ID)) {
+      if (comTree?.findNode(ComTree.PREVIEW_NODE_ID)) {
         actions.remove_preview_node();
       }
     }, [actions, comTree])

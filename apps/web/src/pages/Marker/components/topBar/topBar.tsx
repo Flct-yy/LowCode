@@ -34,7 +34,12 @@ const TopBar: React.FC = () => {
   const handleSave = async () => {
     // 处理保存逻辑
     try {
-      await pageApi.updatePage(metadata.id, { comTree, aspectRatio: `${state.aspectRatio}`, comCount: comTree.getCount() });
+
+      await pageApi.updatePage(metadata.id, {
+        comTree: comTree?.getRoot(),
+        aspectRatio: `${state.aspectRatio}`,
+        comCount: (comTree?.getCount() || 0),
+      });
       message.success('保存成功');
     } catch (error) {
       message.error('保存失败');
@@ -95,9 +100,9 @@ const TopBar: React.FC = () => {
   const handleExportHtml = async () => {
     try {
       const progress = message.loading('正在导出 HTML...', 0);
-      
+
       // 验证数据
-      const rootComponent = comTree.getRoot();
+      const rootComponent = comTree?.getRoot();
       if (!rootComponent) {
         throw new Error('没有可导出的组件');
       }
@@ -144,9 +149,9 @@ const TopBar: React.FC = () => {
   const handleExportJson = async () => {
     try {
       const progress = message.loading('正在导出 JSON...', 0);
-      
+
       // 验证数据
-      const rootComponent = comTree.getRoot();
+      const rootComponent = comTree?.getRoot();
       if (!rootComponent) {
         throw new Error('没有可导出的组件');
       }
@@ -155,7 +160,7 @@ const TopBar: React.FC = () => {
       const exportData: pageFileData = {
         pageMetadata: metadata, // 页面元信息
         componentTree: rootComponent, // 组件树结构
-        comCount: comTree.getCount(),
+        comCount: comTree?.getCount() || 0,
         aspectRatio: state.aspectRatio,
         exportTime: new Date().toISOString(),
         version: '1.0.0'

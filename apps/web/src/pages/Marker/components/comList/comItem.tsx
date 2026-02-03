@@ -14,9 +14,9 @@ const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componen
       item: { type: DnDTypes.COMMETA, comMeta: { id: componentId } },
       type: DnDTypes.COMMETA,
       end: (i: any, monitor: DragSourceMonitor) => {
-        if (findNode(ComTree.PREVIEW_NODE_ID)) {
-          actions.remove_preview_node();
-        }
+        // if (findNode(ComTree.PREVIEW_NODE_ID)) {
+        //   actions.remove_preview_node();
+        // }
         if (monitor.didDrop()) {
           i.originalIndex = -1
         }

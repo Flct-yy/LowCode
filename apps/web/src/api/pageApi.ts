@@ -25,7 +25,7 @@ interface UpdatePageParams {
   title?: string;
   description?: string;
   keywords?: string[];
-  comTree?: any;
+  comTree?: ComponentSchema;
   aspectRatio?: string;
   comCount?: number;
 }

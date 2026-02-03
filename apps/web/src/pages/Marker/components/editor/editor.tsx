@@ -22,7 +22,7 @@ const Editor: React.FC = () => {
       label: '组件总览',
       children: <ComTreeControl
         selectedComponentId={selectedComponentId!}
-        comTree={comTree}
+        comTree={comTree!}
         onSelect={actions.edit_select_com}
         onDragDrop={actions.handle_drag_drop} />,
     },
