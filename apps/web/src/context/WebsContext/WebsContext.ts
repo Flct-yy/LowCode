@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 import PageModel, { AspectRatioEnum } from '@type/PageModel';
-import { type PageMetadata } from '@wect/type';
 import type { ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { PageData } from './WebsProvider';

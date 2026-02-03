@@ -12,6 +12,16 @@ const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | nu
   }
   let goalID = curCom.comSchemaId;
   let parChIndex = -1;
+  
+  // 检查是否为根组件
+  if (curCom.parentId === -1) {
+    // 根组件没有父组件，直接返回
+    return {
+      goalID: curCom.comSchemaId,
+      parChIndex: -1
+    };
+  }
+  
   const parentCom = findNode(curCom.parentId);
   if (parentCom) {
     // 获取拖拽位置信息

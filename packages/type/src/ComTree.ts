@@ -3,7 +3,7 @@ import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '
 import { ConfigAreaEnum, ConfigItemFieldEnum } from './Config';
 import { UiTypeEnum } from './ConfigItem';
 
-const defaultRoot: ComponentSchema = {
+export const defaultRoot: ComponentSchema = {
   comSchemaId: new Date().getTime(),
   metadata: {
     componentId: 0,
@@ -28,29 +28,31 @@ class ComTree {
   private static instance: ComTree;
   private autoID: AutoID;
   private root: ComponentSchema;
+  private nodeMap: Map<number, ComponentSchema>; // 节点缓存
   static readonly PREVIEW_NODE_ID = 999;
 
   // 私有构造函数，防止外部实例化
   constructor(comTree?: ComponentSchema, comCount?: number) {
+    console.log(comTree);
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
       this.root = defaultRoot;
     } else {
-      this.root = (comTree as any).root ? (comTree as any).root : comTree;
+      this.root = comTree;
     }
     ComTree.instance = this;
-    this.autoID = new AutoID(this.root.comSchemaId, comCount!);
+    this.autoID = new AutoID(this.root.comSchemaId, comCount);
+    this.nodeMap = new Map<number, ComponentSchema>();
+    this.buildNodeMap(); // 构建节点缓存
   }
   // 公共静态方法获取唯一实例
-  public static getInstance(): ComTree {
-    if (!ComTree.instance) {
-      ComTree.instance = new ComTree();
-    }
+  public static getInstance(): ComTree | undefined {
     return ComTree.instance;
   }
 
   public setRoot(root: ComponentSchema): void {
-    this.root = (root as any).root ? (root as any).root : root;;
+    this.root = root;
+    this.buildNodeMap(); // 重新构建节点缓存
   }
 
   public getRoot(): ComponentSchema {
@@ -65,19 +67,37 @@ class ComTree {
     return this.autoID.getCount();
   }
 
-  // 递归查找节点（核心辅助方法）
-  public findNode(targetId: number, node = this.root): ComponentSchema | undefined {
-    // 找到目标节点，直接返回
-    if (Number(node.comSchemaId) === targetId) {
-      return node;
+  // 构建节点缓存
+  private buildNodeMap(node: ComponentSchema = this.root): void {
+    this.nodeMap.set(node.comSchemaId, node);
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => this.buildNodeMap(child));
+    }
+  }
+
+  // 迭代查找节点（核心辅助方法）
+  public findNode(targetId: number): ComponentSchema | undefined {
+    // 先从缓存中查找
+    if (this.nodeMap.has(targetId)) {
+      return this.nodeMap.get(targetId);
+    }
+    // 缓存未命中，使用迭代方式查找
+    const stack: ComponentSchema[] = [this.root];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      if (Number(node.comSchemaId) === targetId) {
+        // 找到节点，更新缓存
+        this.nodeMap.set(targetId, node);
+        return node;
+      }
+      // 将子节点压入栈中
+      if (node.children && node.children.length > 0) {
+        stack.push(...node.children);
+      }
     }
 
-    // 遍历子节点递归查找
-    if (node.children && node.children.length > 0) {
-      for (const child of node.children) {
-        const found = this.findNode(targetId, child);
-        if (found) return found;
-      }
+    if (targetId !== ComTree.PREVIEW_NODE_ID) {
+      console.log(this.root);
     }
 
     // 未找到
@@ -102,8 +122,7 @@ class ComTree {
     const insertIndex = childrenArrIndex !== -1 ? childrenArrIndex : parentNode.children?.length || 0;
 
     // 校验子节点 ID 唯一性
-    // 在 main.tsx 中启用了 React.StrictMode ，这会导致组件在开发模式下进行双重渲染，包括 useDrop 钩子的设置和事件处理函数。 所以会暂时报错
-    if (this.findNode(newNode.comSchemaId)) {
+    if (this.nodeMap.has(newNode.comSchemaId)) {
       console.error(`节点 ID ${newNode.comSchemaId} 已存在`);
       return false;
     }
@@ -113,12 +132,21 @@ class ComTree {
     parentNode.children.splice(insertIndex, 0, newNode);
     // 更新子节点的 parentId
     newNode.parentId = parentId;
+    // 递归更新子节点的缓存
+    this.updateChildNodeCache(newNode);
     return true;
+  }
+
+  // 更新子节点缓存
+  private updateChildNodeCache(node: ComponentSchema): void {
+    this.nodeMap.set(node.comSchemaId, node);
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => this.updateChildNodeCache(child));
+    }
   }
 
   // 删除节点（包含其子节点）
   public removeNode(targetId: number) {
-
     // 查找节点
     const currentNode = this.findNode(targetId);
     if (!currentNode) {
@@ -134,7 +162,17 @@ class ComTree {
 
     // 过滤掉要删除的节点
     parentNode.children = parentNode.children.filter(node => node.comSchemaId !== currentNode.comSchemaId);
+    // 从缓存中删除节点及其子节点
+    this.removeNodeFromCache(currentNode);
     return true;
+  }
+
+  // 从缓存中删除节点及其子节点
+  private removeNodeFromCache(node: ComponentSchema): void {
+    this.nodeMap.delete(node.comSchemaId);
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => this.removeNodeFromCache(child));
+    }
   }
 
   // 更新节点配置
@@ -244,7 +282,7 @@ class ComTree {
   // }
 
   // 打印树形结构（辅助方法，便于调试）
-  public printTree(node = ComTree.instance.root, level = 0) {
+  public printTree(node: ComponentSchema = this.root, level: number = 0) {
     const indent = '  '.repeat(level);
     console.log(`${indent}├── ${node.comSchemaId} - ${node.metadata.componentName}`);
     if (node.children && node.children.length > 0) {
@@ -254,9 +292,19 @@ class ComTree {
 }
 
 export { ComTree };
-export const comTreeInstance = ComTree.getInstance();
+export const comTreeInstance = () => {
+  if (!ComTree.getInstance()) {
+    console.error('ComTree 实例不存在');
+    return undefined;
+  }
+  return ComTree.getInstance();
+};
 
 // 导出工具函数
 export const findNode = (componentID: number): ComponentSchema | undefined => {
-  return comTreeInstance.findNode(componentID);
+  const tree = comTreeInstance();
+  if (!tree) {
+    return undefined;
+  }
+  return tree.findNode(componentID);
 };

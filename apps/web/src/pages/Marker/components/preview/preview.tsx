@@ -171,7 +171,7 @@ const Preview: React.FC = () => {
       {/* 组件渲染区域 */}
       <RightClickMenu exLeft={previewContainerRef.current?.offsetLeft} exTop={previewContainerRef.current?.offsetTop}>
         <ComponentPreview
-          comRoot={comTree.getRoot()}
+          comRoot={comTree?.getRoot()}
         />
       </RightClickMenu>
     </div>

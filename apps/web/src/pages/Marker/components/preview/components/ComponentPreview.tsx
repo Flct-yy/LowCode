@@ -101,7 +101,7 @@ const ComponentPreview: React.FC<{
         return;
       }
       actions.remove_component(selectedComponentId!);
-      const comSchemaId = state.comTree.findNode(selectedComponentId!)?.parentId;
+      const comSchemaId = comTree?.findNode(selectedComponentId!)?.parentId;
       actions.edit_select_com(comSchemaId as number);
     }
     message.success('删除组件成功');
@@ -110,14 +110,14 @@ const ComponentPreview: React.FC<{
   const handleMoveUpComponent = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedComponentId !== -1) {
-      actions.edit_select_com(comTree.findNode(selectedComponentId!)?.parentId || -1);
+      actions.edit_select_com(comTree?.findNode(selectedComponentId!)?.parentId || -1);
     }
   }
   // 组件操作按钮-移动组件 - 使用useCallback缓存
   const handleMoveDownComponent = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedComponentId !== -1) {
-      actions.edit_select_com(comTree.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
+      actions.edit_select_com(comTree?.findNode(selectedComponentId!)?.children[0].comSchemaId || -1);
     }
   }
   // 组件操作按钮-锁定组件 - 使用useCallback缓存
@@ -197,12 +197,12 @@ const ComponentPreview: React.FC<{
         <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDeleteComponent} onMouseDown={(e) => e.stopPropagation()} />
         <Button type="primary" icon={<ArrowUpOutlined />} onClick={handleMoveUpComponent} onMouseDown={(e) => e.stopPropagation()} />
         <Button type="primary" icon={<ArrowDownOutlined />} onClick={handleMoveDownComponent} onMouseDown={(e) => e.stopPropagation()} />
-        <Button type="primary" icon={comTree.findNode(selectedComponentId!)?.isLocked ? <UnlockOutlined /> : <LockOutlined />} onClick={handleLockComponent} onMouseDown={(e) => e.stopPropagation()} />
+        <Button type="primary" icon={comTree?.findNode(selectedComponentId!)?.isLocked ? <UnlockOutlined /> : <LockOutlined />} onClick={handleLockComponent} onMouseDown={(e) => e.stopPropagation()} />
       </div>
       <div className="preview__content">
         <div className="preview__bg"></div>
         {
-          comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
+          comRoot && comRoot.children && comRoot.children.length > 0 && comRoot.children.map((child) => (
             <RenderComponentContent
               key={child.comSchemaId}
               component={child as ComponentSchema}

@@ -6,7 +6,7 @@ import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
 import pageApi from '@/api/pageApi';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
-import { ComTree, comTreeInstance } from '@wect/type';
+import { ComTree } from '@wect/type';
 
 export interface PageData extends Pick<PageModel, 'comTree' | 'metadata' | 'aspectRatio'> { }
 
@@ -95,48 +95,72 @@ function WebsReducer(state: PageModel, action: {
         metadata: { ...state.metadata, updatedAt: new Date() },
       }
     case Actions.ADD_COMPONENT:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.addNode(action.payload.component!, action.payload.parentId!, action.payload.childrenIndex!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.REMOVE_COMPONENT:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.removeNode(action.payload.comSchemaId!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.EDIT_COM_TREE:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.setRoot(action.payload.component!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_VALUE:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.updateNodeConfig(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentValue!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.EDIT_CHANGE_UNIT:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.updateNodeUnit(state.selectedComponentId!, action.payload.areaName!, action.payload.field!, action.payload.currentUnit!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.HANDLE_DRAG_DROP:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.dropDrag(action.payload.sourceId!, action.payload.targetParentId!, action.payload.childrenIndex!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.EDIT_LOCK_COM:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.updateNodeLock(action.payload.comSchemaId!)
       return {
         ...state,
         comTree: state.comTree,
       }
     case Actions.REMOVE_PREVIEW_NODE:
+      if (state.comTree === undefined) {
+        return state;
+      }
       state.comTree.removePreviewNodes()
       return {
         ...state,
@@ -197,7 +221,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-    comTree: comTreeInstance,
+    comTree: undefined,
     copyComponent: undefined,
     selectedComponentId: -1,
     aspectRatio: AspectRatioEnum.RATIO_16_9,
@@ -206,56 +230,12 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     previewScrollLeft: 0,
     isDragCom: false,
     isSliding: false,
-  };
-  // 使用useEffect确保API只在pageId变化时调用一次
-  useEffect(() => {
-    // 重置状态
-    setLoading(true);
-    setError(null);
-    // 验证pageId
-    if (!pageId || typeof pageId !== 'number') {
-      setError('pageId 为空或类型不正确');
-      setLoading(false);
-      navigate('/');
-      return;
-    }
-    // 调用API获取页面详情
-    pageApi.getPageById(pageId)
-      .then((res) => {
-        if (!res || !res.pageMetadata || !res.com_tree) {
-          throw new Error('API返回数据格式不正确');
-        }
-        // 数据转换
-        const transformedData: PageData = {
-          metadata: {
-            ...res.pageMetadata,
-            // 确保日期字段是Date对象
-            createdAt: new Date(res.pageMetadata.createdAt),
-            updatedAt: new Date(res.pageMetadata.updatedAt),
-          },
-          // 使用API返回的com_tree数据创建ComTree实例
-          comTree: new ComTree(res.com_tree.root, res.com_count),
-          aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
-        };
-        // 调用set_page设置页面数据
-        actions.set_page(transformedData);
-      })
-      .catch((error) => {
-        // 处理API调用错误
-        const errorMessage = error instanceof Error ? error.message : '获取页面详情失败';
-        console.error('获取页面详情失败:', error);
-        setError(errorMessage);
-        // 跳转到列表页
-        navigate('/');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [pageId, navigate]);
-
+  }
   // 使用useReducer管理状态，初始状态为initialPageState
   const [state, dispatch] = useReducer(WebsReducer, defaultPageState);
-  const actions = {
+
+  // 使用useMemo缓存actions对象，防止每次渲染都重新创建
+  const actions = React.useMemo(() => ({
     set_page: (PageData: PageData) => {
       dispatch({ type: Actions.SET_PAGE, payload: { PageData } })
     },
@@ -342,7 +322,53 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
       dispatch({ type: Actions.EDIT_IS_SLIDING, payload: { isSliding } })
       dispatch({ type: Actions.UPDATE_PAGE, payload: {} })
     },
-  }
+  }), [dispatch]);
+
+  // 使用useEffect确保API只在pageId变化时调用一次
+  useEffect(() => {
+    // 重置状态
+    setLoading(true);
+    setError(null);
+    // 验证pageId
+    if (!pageId || typeof pageId !== 'number') {
+      setError('pageId 为空或类型不正确');
+      setLoading(false);
+      navigate('/');
+      return;
+    }
+    // 调用API获取页面详情
+    pageApi.getPageById(pageId)
+      .then((res) => {
+        if (!res || !res.pageMetadata || !res.com_tree) {
+          throw new Error('API返回数据格式不正确');
+        }
+        // 数据转换
+        const transformedData: PageData = {
+          metadata: {
+            ...res.pageMetadata,
+            // 确保日期字段是Date对象
+            createdAt: new Date(res.pageMetadata.createdAt),
+            updatedAt: new Date(res.pageMetadata.updatedAt),
+          },
+          // 使用API返回的com_tree数据创建ComTree实例
+          comTree: new ComTree(res.com_tree, res.com_count),
+          aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
+        };
+        // 调用set_page设置页面数据
+        actions.set_page(transformedData);
+      })
+      .catch((error) => {
+        // 处理API调用错误
+        const errorMessage = error instanceof Error ? error.message : '获取页面详情失败';
+        console.error('获取页面详情失败:', error);
+        setError(errorMessage);
+        // 跳转到列表页
+        navigate('/');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [pageId, navigate, actions]);
 
   const contextValue: WebsContextType = {
     state,

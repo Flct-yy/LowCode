@@ -92,12 +92,23 @@ const TopBar: React.FC = () => {
 
 
   // 导出页面为HTML文件
-  const handleExportHtml = () => {
+  const handleExportHtml = async () => {
     try {
+      const progress = message.loading('正在导出 HTML...', 0);
+      
+      // 验证数据
       const rootComponent = comTree.getRoot();
+      if (!rootComponent) {
+        throw new Error('没有可导出的组件');
+      }
 
       // 生成完整的HTML文件
       const contentHtml = wholeHtml(metadata.title, rootComponent);
+
+      // 验证生成的HTML
+      if (!contentHtml || contentHtml.length < 100) {
+        throw new Error('生成的 HTML 内容无效');
+      }
 
       // 创建Blob对象
       const blob = new Blob([contentHtml], { type: 'text/html' });
@@ -106,7 +117,6 @@ const TopBar: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      console.log(metadata.title);
       a.download = `lowcode-page-${metadata.title || 'untitled'}.html`;
 
       // 触发下载
@@ -119,46 +129,74 @@ const TopBar: React.FC = () => {
         URL.revokeObjectURL(url);
       }, 100);
 
-      message.success('导出为HTML成功');
+      // 关闭进度提示
+      setTimeout(() => {
+        progress();
+        message.success('导出为HTML成功');
+      }, 500);
     } catch (error) {
       console.error('导出HTML失败', error);
-      message.error('导出HTML失败');
+      message.error(`导出HTML失败：${error instanceof Error ? error.message : '未知错误'}`);
     }
   };
 
   // 导出页面配置和组件树为JSON文件
-  const handleExportJson = () => {
-    // 要导出的数据内容
-    const exportData: pageFileData = {
-      pageMetadata: metadata, // 页面元信息
-      componentTree: comTree.getRoot(), // 组件树结构
-      comCount: comTree.getCount(),
-      aspectRatio: state.aspectRatio,
-      exportTime: new Date().toISOString(),
-      version: '1.0.0'
-    };
+  const handleExportJson = async () => {
+    try {
+      const progress = message.loading('正在导出 JSON...', 0);
+      
+      // 验证数据
+      const rootComponent = comTree.getRoot();
+      if (!rootComponent) {
+        throw new Error('没有可导出的组件');
+      }
 
-    // 转换为JSON字符串
-    const jsonString = JSON.stringify(exportData, null, 2);
+      // 要导出的数据内容
+      const exportData: pageFileData = {
+        pageMetadata: metadata, // 页面元信息
+        componentTree: rootComponent, // 组件树结构
+        comCount: comTree.getCount(),
+        aspectRatio: state.aspectRatio,
+        exportTime: new Date().toISOString(),
+        version: '1.0.0'
+      };
 
-    // 创建Blob对象
-    const blob = new Blob([jsonString], { type: 'application/json' });
+      // 转换为JSON字符串
+      const jsonString = JSON.stringify(exportData, null, 2);
 
-    // 创建下载链接
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `lowcode-page-${metadata.title || 'untitled'}.json`;
+      // 验证生成的JSON
+      if (!jsonString || jsonString.length < 100) {
+        throw new Error('生成的 JSON 内容无效');
+      }
 
-    // 触发下载
-    document.body.appendChild(a);
-    a.click();
+      // 创建Blob对象
+      const blob = new Blob([jsonString], { type: 'application/json' });
 
-    // 清理
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
+      // 创建下载链接
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `lowcode-page-${metadata.title || 'untitled'}.json`;
+
+      // 触发下载
+      document.body.appendChild(a);
+      a.click();
+
+      // 清理
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+
+      // 关闭进度提示
+      setTimeout(() => {
+        progress();
+        message.success('导出为JSON成功');
+      }, 500);
+    } catch (error) {
+      console.error('导出JSON失败', error);
+      message.error(`导出JSON失败：${error instanceof Error ? error.message : '未知错误'}`);
+    }
   };
 
   // 导出菜单选项

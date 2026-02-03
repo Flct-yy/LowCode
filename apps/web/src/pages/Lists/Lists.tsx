@@ -4,7 +4,7 @@ import type { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import pageApi from '@/api/pageApi';
-import {ComTree} from '@wect/type';
+import { defaultRoot } from '@wect/type';
 
 // 页面数据接口
 interface PageData {
@@ -127,7 +127,7 @@ const Lists: React.FC = () => {
         title: uniqueTitle,
         description: '这是一个新创建的页面',
         keywords: ['新页面'],
-        comTree: new ComTree().getRoot(),
+        comTree: defaultRoot,
         aspectRatio: '16/9',
         comCount: 1,
       });

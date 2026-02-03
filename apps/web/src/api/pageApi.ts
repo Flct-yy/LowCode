@@ -6,7 +6,7 @@ import { type ComponentSchema } from '@wect/type';
 
 interface PageModelResponse {
   pageMetadata: PageMetadata;
-  com_tree: { root: ComponentSchema };
+  com_tree: ComponentSchema;
   aspect_ratio: string;
   com_count: number;
 }

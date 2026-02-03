@@ -16,7 +16,7 @@ export enum AspectRatioEnum {
 // 页面模型接口
 export interface PageModel {
   metadata: PageMetadata; // 页面元信息
-  comTree: ComTree; // 组件树
+  comTree: ComTree | undefined; // 组件树
   copyComponent?: ComponentSchema; // 复制的组件ID
   selectedComponentId?: number; // 选中的组件ID
   aspectRatio: AspectRatioEnum; // 宽高比

@@ -1,8 +1,6 @@
-import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from '@wect/type';
-import { ConfigItemFieldEnum } from "@wect/type";
+import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum, comTreeInstance, ComTree } from '@wect/type';
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
-import { ComTree } from '@wect/type';
 import { initDynamicParams } from '@/type/InitDynamicParams';
 import DynamicParams from '@/type/DynamicParams';
 
@@ -20,7 +18,7 @@ export const generateComSchema: (componentId: number, parentId: number) => Compo
     throw new Error(`组件 ID ${componentId} 不存在`);
   }
   // 生成唯一ID：时间戳 + 计数器
-  const uniqueId = ComTree.getInstance().getID();
+  const uniqueId = comTreeInstance()?.getID() || 0;
   return {
     comSchemaId: uniqueId,
     metadata: componentMeta,

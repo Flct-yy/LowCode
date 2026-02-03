@@ -28,14 +28,9 @@ function Preview() {
           if (res.aspect_ratio) {
             setAspectRatio(res.aspect_ratio);
           }
-          // 数据转换
-          const transformedData: transformedData = {
-            comTree: ComTree.getInstance(),
-          };
 
-          if (transformedData.comTree !== null) { // 确保只有当页面数据加载完成后才更新
-            transformedData.comTree.setRoot(res.com_tree.root);
-            setComponentRoot(transformedData.comTree.getRoot());
+          if (res.com_tree !== null) { // 确保只有当页面数据加载完成后才更新
+            setComponentRoot(res.com_tree);
           }
         })
         .catch((error) => {
