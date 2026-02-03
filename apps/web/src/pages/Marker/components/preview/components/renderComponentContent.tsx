@@ -265,18 +265,57 @@ const RenderComponentContent: React.FC<{
     }
   }, [isSelected, component, onSetSelectedComponentRef]);
 
-  // 渲染子组件 - 使用useMemo缓存
-  const renderedChildren = useMemo(() => {
-    if (!children || children.length === 0) return null;
-    return children.map((child) => (
-      <RenderComponentContent
-        key={child.comSchemaId}
-        component={child as ComponentSchema}
-        Selected={isSelected}
-        onSetSelectedComponentRef={onSetSelectedComponentRef}
-      />
-    ));
-  }, [children, isSelected, onSetSelectedComponentRef]);
+  // 渲染子组件
+  const renderedChildren = (): React.ReactNode => {
+    if (!children || !Array.isArray(children) || children.length === 0) {
+      return null;
+    }
+    
+    try {
+      // 直接处理所有子组件，不进行过滤
+      const mappedChildren: React.ReactNode[] = [];
+      
+      // 遍历子组件
+      children.forEach((child, index) => {
+        const childId = child.comSchemaId;
+        
+        // 确保子组件有必要的属性
+        if (!child || !childId || !child.metadata || !child.metadata.componentName) {
+          console.error('无效子组件:', {
+            childId: child?.comSchemaId,
+            index
+          });
+          return;
+        }
+        
+        try {
+          const renderedChild = (
+            <RenderComponentContent
+              key={childId}
+              component={child as ComponentSchema}
+              Selected={selectedComponentId === childId}
+              onSetSelectedComponentRef={onSetSelectedComponentRef}
+            />
+          );
+          
+          mappedChildren.push(renderedChild);
+          
+        } catch (renderError: any) {
+          console.error('渲染子组件错误:', {
+            childId,
+            error: renderError.message
+          });
+        }
+      });
+      
+      return mappedChildren;
+    } catch (error: any) {
+      console.error('映射子组件错误:', {
+        error: error instanceof Error ? error.message : error
+      });
+      return null;
+    }
+  };
 
   // 渲染组件内容
   switch (metadata.componentType) {
@@ -287,7 +326,7 @@ const RenderComponentContent: React.FC<{
           componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
-        >{renderedChildren}</Flex>
+        >{renderedChildren()}</Flex>
       );
     case ComponentTypeEnum.TEXT:
       return (
@@ -332,7 +371,7 @@ const RenderComponentContent: React.FC<{
           componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
-        >{renderedChildren}</Default>
+        >{renderedChildren()}</Default>
       );
   }
 });

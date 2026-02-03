@@ -33,7 +33,6 @@ class ComTree {
 
   // 私有构造函数，防止外部实例化
   constructor(comTree?: ComponentSchema, comCount?: number) {
-    console.log(comTree);
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
       this.root = defaultRoot;
@@ -96,10 +95,6 @@ class ComTree {
       }
     }
 
-    if (targetId !== ComTree.PREVIEW_NODE_ID) {
-      console.log(this.root);
-    }
-
     // 未找到
     return undefined;
   }
@@ -128,6 +123,10 @@ class ComTree {
     }
     // 初始化 children（防止传入的新节点没有 children 属性）
     newNode.children = newNode.children || [];
+    // 确保节点可见性
+    if (newNode.isVisible === undefined) {
+      newNode.isVisible = true;
+    }
     // 添加子节点
     parentNode.children.splice(insertIndex, 0, newNode);
     // 更新子节点的 parentId
