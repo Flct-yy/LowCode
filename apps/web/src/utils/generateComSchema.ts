@@ -1,8 +1,6 @@
 import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum, comTreeInstance, ComTree } from '@wect/type';
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
-import { initDynamicParams } from '@/type/InitDynamicParams';
-import DynamicParams from '@/type/DynamicParams';
 
 /**
  * 初始化 组件的默认 Schema 配置
@@ -11,9 +9,8 @@ import DynamicParams from '@/type/DynamicParams';
 export const generateComSchema: (componentId: number, parentId: number) => ComponentSchema = (componentId, parentId) => {
   const componentMeta: ComponentMetadata | undefined = InitComponentMetadata.find((item) => item.componentId === componentId);
   const componentType = componentMeta?.componentType;
-  const dynamicParams = initDynamicParams.find((item) => item.componentType === componentType) || {};
 
-  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum, dynamicParams as DynamicParams);
+  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum);
   if (!componentMeta) {
     throw new Error(`组件 ID ${componentId} 不存在`);
   }
@@ -45,9 +42,8 @@ export const generatePreComSchema: (componentId: number, parentId: number) => Co
     throw new Error(`组件 ID ${componentId} 不存在`);
   }
   const componentType = componentMeta?.componentType;
-  const dynamicParams = initDynamicParams.find((item) => item.componentType === componentType) || {};
 
-  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum, dynamicParams as DynamicParams);
+  let config: ComponentSchema['config'] = generateComConfig(componentType as ComponentTypeEnum);
   return {
     comSchemaId: ComTree.PREVIEW_NODE_ID,
     metadata: componentMeta,

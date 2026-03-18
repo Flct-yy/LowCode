@@ -1,6 +1,7 @@
 import AutoID from './autoID';
 import { type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum } from './ComponentSchema';
-import { ConfigAreaEnum, ConfigItemFieldEnum } from './Config';
+import { ConfigAreaEnum } from './Config';
+import { ConfigItemFieldEnum } from './InitConfig';
 import { UiTypeEnum } from './ConfigItem';
 
 export const defaultRoot: ComponentSchema = {

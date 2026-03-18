@@ -1,3 +1,5 @@
+import { ComponentTypeEnum } from './ComponentSchema';
+import { ConfigItemFieldEnum } from './InitConfig';
 import { type ConfigItem } from './ConfigItem';
 
 export enum ConfigAreaEnum {
@@ -8,52 +10,20 @@ export enum ConfigAreaEnum {
   image = '图片',
 }
 
-export enum ConfigItemFieldEnum {
-  // 布局
-  backgroundColor = 'backgroundColor',
-  flexWrap = 'flexWrap',
-  flexDirection = 'flexDirection',
-  justifyContent = 'justifyContent',
-  alignContent = 'alignContent',
-  alignItems = 'alignItems',
-  gap = 'gap',
-  MarginPadding = 'MarginPadding',
-  // 边框
-  borderColor = 'borderColor',
-  borderWidth = 'borderWidth',
-  borderRadius = 'borderRadius',
-  borderStyle = 'borderStyle',
-  // 常规
-  width = 'width',
-  height = 'height',
-  // 文字
-  text = 'text',
-  fontSize = 'fontSize',
-  fontWeight = 'fontWeight',
-  textAlign = 'textAlign',
-  lineHeight = 'lineHeight',
-  color = 'color',
-  // 图片
-  imageUrl = 'imageUrl',
-  imageWidth = 'imageWidth',
-  imageHeight = 'imageHeight',
-  objectFit = 'objectFit',
-  objectPosition = 'objectPosition',
-  opacity = 'opacity',
-  // 按钮
-  buttonWidth = 'buttonWidth',
-  buttonHeight = 'buttonHeight',
-
-}
-
 interface ConfigArea {
   areaName: string;
 }
 
 export interface ShortConfig extends ConfigArea {
-  configItem: ConfigItemFieldEnum[];
+  configItem: string[];
 }
 
 export interface TotesConfig extends ConfigArea {
   configItem: ConfigItem[];
+}
+
+export interface ComponentsConfig {
+  componentName: ConfigItemFieldEnum;
+  componentType: ComponentTypeEnum;
+  config: ShortConfig[];
 }

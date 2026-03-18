@@ -9,7 +9,8 @@ export const getConfigText = (config: ComponentSchema['config']): string => {
   };
   let text = '';
   textConfig.configItem.forEach((configItem) => {
-    if (configItem.field === ConfigItemFieldEnum.text) {
+    const fieldName = configItem.field.replace(/^[a-z]+\./, '');
+    if (fieldName === 'text') {
       text = configItem.currentValue;
     }
   });
@@ -24,7 +25,7 @@ export const getConfigImageUrl = (config: ComponentSchema['config']): string => 
   };
   let imageUrl = '';
   imageConfig.configItem.forEach((configItem) => {
-    if (configItem.field === ConfigItemFieldEnum.imageUrl) {
+    if (configItem.field === ConfigItemFieldEnum.image_imageUrl) {
       imageUrl = configItem.currentValue;
     }
   });

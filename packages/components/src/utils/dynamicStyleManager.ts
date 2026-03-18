@@ -1,5 +1,4 @@
 import { ComponentSchema } from "@wect/type";
-import { ConfigItemFieldEnum } from "@wect/type";
 import { InputNumberConfigItem } from "@wect/type";
 
 // 动态样式管理器类
@@ -50,83 +49,103 @@ class DynamicStyleManager {
     if (component.config) {
       component.config.forEach(configArea => {
         configArea.configItem.forEach(configItem => {
-          switch (configItem.field) {
-            case ConfigItemFieldEnum.backgroundColor:
+          // 提取字段名后缀（去掉组件前缀）
+          const fieldName = configItem.field.replace(/^[a-z]+\./, '');
+          switch (fieldName) {
+            case 'backgroundColor':
               cssVariables += `  --${componentId}-background-color: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.flexWrap:
+            case 'flexWrap':
               cssVariables += `  --${componentId}-flex-wrap: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.flexDirection:
+            case 'flexDirection':
               cssVariables += `  --${componentId}-flex-direction: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.justifyContent:
+            case 'justifyContent':
               cssVariables += `  --${componentId}-justify-content: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.alignContent:
+            case 'alignContent':
               cssVariables += `  --${componentId}-align-content: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.alignItems:
+            case 'alignItems':
               cssVariables += `  --${componentId}-align-items: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.gap:
+            case 'gap':
               const gapUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-gap: ${configItem.currentValue.one}${gapUnit} ${configItem.currentValue.two}${gapUnit};\n`;
               break;
-            case ConfigItemFieldEnum.MarginPadding:
+            case 'MarginPadding':
               const mpUnit = (configItem as any).unit || (configItem as any).currentUnit || 'px';
               const margin = configItem.currentValue.margin;
               const padding = configItem.currentValue.padding;
               cssVariables += `  --${componentId}-margin: ${margin.top}${mpUnit} ${margin.right}${mpUnit} ${margin.bottom}${mpUnit} ${margin.left}${mpUnit};\n`;
               cssVariables += `  --${componentId}-padding: ${padding.top}${mpUnit} ${padding.right}${mpUnit} ${padding.bottom}${mpUnit} ${padding.left}${mpUnit};\n`;
               break;
-            case ConfigItemFieldEnum.borderColor:
+            case 'borderColor':
               cssVariables += `  --${componentId}-border-color: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.borderWidth:
+            case 'borderWidth':
               const borderWidthUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-border-width: ${configItem.currentValue}${borderWidthUnit};\n`;
               break;
-            case ConfigItemFieldEnum.borderRadius:
+            case 'borderRadius':
               const borderRadiusUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-border-radius: ${configItem.currentValue}${borderRadiusUnit};\n`;
               break;
-            case ConfigItemFieldEnum.borderStyle:
+            case 'borderStyle':
               cssVariables += `  --${componentId}-border-style: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.width:
+            case 'width':
               const widthUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-width: ${configItem.currentValue}${widthUnit};\n`;
               break;
-            case ConfigItemFieldEnum.height:
+            case 'height':
               const heightUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-height: ${configItem.currentValue}${heightUnit};\n`;
               break;
-            case ConfigItemFieldEnum.fontSize:
+            case 'fontSize':
               const fontSizeUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-font-size: ${configItem.currentValue}${fontSizeUnit};\n`;
               break;
-            case ConfigItemFieldEnum.fontWeight:
+            case 'fontWeight':
               cssVariables += `  --${componentId}-font-weight: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.textAlign:
+            case 'textAlign':
               cssVariables += `  --${componentId}-text-align: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.lineHeight:
+            case 'lineHeight':
               const lineHeightUnit = (configItem as InputNumberConfigItem).currentUnit || (configItem as InputNumberConfigItem).unit || 'px';
               cssVariables += `  --${componentId}-line-height: ${configItem.currentValue}${lineHeightUnit};\n`;
               break;
-            case ConfigItemFieldEnum.color:
+            case 'color':
               cssVariables += `  --${componentId}-color: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.objectFit:
+            case 'objectFit':
               cssVariables += `  --${componentId}-object-fit: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.objectPosition:
+            case 'objectPosition':
               cssVariables += `  --${componentId}-object-position: ${configItem.currentValue};\n`;
               break;
-            case ConfigItemFieldEnum.opacity:
+            case 'opacity':
               cssVariables += `  --${componentId}-opacity: ${configItem.currentValue};\n`;
+              break;
+            case 'text':
+              // 文本内容不需要生成CSS变量
+              break;
+            case 'placeholder':
+              // 占位符不需要生成CSS变量
+              break;
+            case 'disabled':
+              // 禁用状态不需要生成CSS变量
+              break;
+            case 'readOnly':
+              // 只读状态不需要生成CSS变量
+              break;
+            case 'type':
+              // 按钮类型不需要生成CSS变量
+              break;
+            case 'size':
+              // 按钮大小不需要生成CSS变量
               break;
             default:
               break;

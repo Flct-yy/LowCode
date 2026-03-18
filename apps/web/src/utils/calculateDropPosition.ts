@@ -1,4 +1,4 @@
-import { findNode, ComponentSchema, ConfigItemFieldEnum } from '@wect/type';
+import { findNode, ComponentSchema } from '@wect/type';
 import { XYCoord } from 'react-dnd';
 import React from 'react';
 
@@ -56,7 +56,8 @@ const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | nu
 
         parentCom.config?.forEach((item, index) => {
           item.configItem.forEach((configItem) => {
-            if (configItem.field === ConfigItemFieldEnum.flexDirection) {
+            const fieldName = configItem.field.replace(/^[a-z]+\./, '');
+            if (fieldName === 'flexDirection') {
               direction = configItem.currentValue as string;
             }
           })

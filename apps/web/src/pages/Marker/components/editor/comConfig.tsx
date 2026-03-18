@@ -11,7 +11,7 @@ const ComConfig: React.FC = () => {
 
   const { state } = useWebsContext();
   const { comTree, metadata, selectedComponentId } = state;
-  const selectedComponent: ComponentSchema | undefined = comTree.findNode(selectedComponentId!);
+  const selectedComponent: ComponentSchema | undefined = comTree?.findNode(selectedComponentId!);
   // 如果selectedComponent为undefined，显示空状态
   if (!selectedComponent) {
     return <Empty description="请选择组件" />;
@@ -28,7 +28,7 @@ const ComConfig: React.FC = () => {
         </div>
       </div>
       {
-        selectedComponent.comSchemaId !== comTree.getRoot().comSchemaId ?
+        selectedComponent.comSchemaId !== comTree?.getRoot().comSchemaId ?
           (selectedComponent.config || []).map((item: TotesConfig, index: number) => (
             <ConfigComArea key={item.areaName || index.toString()} config={item} />
           )) :

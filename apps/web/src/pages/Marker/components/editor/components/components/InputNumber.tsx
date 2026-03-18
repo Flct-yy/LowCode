@@ -86,6 +86,7 @@ const InputNumber = ({
       setCurrentNumber(currentValue);
     }
   }
+  const fieldName = configItem.field.replace(/^[a-z]+\./, '');
   const handleAuto = () => {
     if(currentValue !== 'auto') {
       setCurrentValue('auto');
@@ -131,7 +132,7 @@ const InputNumber = ({
           </div>
         }
       </div>
-      {field === ConfigItemFieldEnum.width || field === ConfigItemFieldEnum.height ? (
+      {fieldName === 'width' || fieldName === 'height' ? (
         <div className="input_number-auto no-select" onClick={() => handleAuto()}>
           {currentValue !== 'auto' ? '设置auto' : '取消auto'}
         </div>
