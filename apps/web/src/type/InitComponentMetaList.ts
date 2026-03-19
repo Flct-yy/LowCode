@@ -61,6 +61,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于选择数值范围的组件',
     icon: 'slider-icon',
+  },
+  {
+    componentId: 7,
+    componentName: 'Label',
+    componentType: ComponentTypeEnum.LABEL,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['标签', 'Label'],
+    version: '1.0.0',
+    description: '用于显示标签文本的组件',
+    icon: 'label-icon',
   }
 
 ]

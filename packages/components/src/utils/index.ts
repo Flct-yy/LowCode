@@ -4,13 +4,14 @@
  * @param field 组件内容字段
  * @returns 组件内容
  */
-export const getConfigText = (config: any[],field: string): string => {
+export const getConfigText = (config: any[], field: string): string => {
   if (!config || !Array.isArray(config)) return '';
-  
+
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {
-        if (item.field === field && typeof item.currentValue === 'string') {
+        const itemName = item.field.replace(/^[a-z]+\./, '');
+        if (itemName === field && typeof item.currentValue === 'string') {
           return item.currentValue;
         }
       }
@@ -26,7 +27,7 @@ export const getConfigText = (config: any[],field: string): string => {
  */
 export const getConfigImageUrl = (config: any[]): string | undefined => {
   if (!config || !Array.isArray(config)) return undefined;
-  
+
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {
@@ -47,7 +48,7 @@ export const getConfigImageUrl = (config: any[]): string | undefined => {
  */
 export const getConfigValue = <T = any>(config: any[], field: string): T | undefined => {
   if (!config || !Array.isArray(config)) return undefined;
-  
+
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {

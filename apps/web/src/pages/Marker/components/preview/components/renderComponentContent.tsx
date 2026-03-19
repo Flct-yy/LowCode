@@ -8,7 +8,7 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
-import { Default, Flex, Text, Image, Button, Input, Slider } from '@wect/components';
+import { Default, Flex, Text, Image, Button, Input, Slider, Label } from '@wect/components';
 import { ComTree } from '@wect/type';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -270,15 +270,15 @@ const RenderComponentContent: React.FC<{
     if (!children || !Array.isArray(children) || children.length === 0) {
       return null;
     }
-    
+
     try {
       // 直接处理所有子组件，不进行过滤
       const mappedChildren: React.ReactNode[] = [];
-      
+
       // 遍历子组件
       children.forEach((child, index) => {
         const childId = child.comSchemaId;
-        
+
         // 确保子组件有必要的属性
         if (!child || !childId || !child.metadata || !child.metadata.componentName) {
           console.error('无效子组件:', {
@@ -287,7 +287,7 @@ const RenderComponentContent: React.FC<{
           });
           return;
         }
-        
+
         try {
           const renderedChild = (
             <RenderComponentContent
@@ -297,9 +297,9 @@ const RenderComponentContent: React.FC<{
               onSetSelectedComponentRef={onSetSelectedComponentRef}
             />
           );
-          
+
           mappedChildren.push(renderedChild);
-          
+
         } catch (renderError: any) {
           console.error('渲染子组件错误:', {
             childId,
@@ -307,7 +307,7 @@ const RenderComponentContent: React.FC<{
           });
         }
       });
-      
+
       return mappedChildren;
     } catch (error: any) {
       console.error('映射子组件错误:', {
@@ -373,7 +373,15 @@ const RenderComponentContent: React.FC<{
           handleComponentSelect={handleComponentSelect}
         />
       );
-      
+    case ComponentTypeEnum.LABEL:
+      return (
+        <Label
+          component={component}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
+          handleDnD={handleDnD}
+          handleComponentSelect={handleComponentSelect}
+        />
+      );
     default:
       return (
         <Default

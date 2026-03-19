@@ -4,6 +4,7 @@ import { ImageItemFieldEnum, ImageConfigItem, ImageConfigList } from "./componen
 import { InputItemFieldEnum, InputConfigItem, InputConfigList } from "./components/Input";
 import { ButtonItemFieldEnum, ButtonConfigItem, ButtonConfigList } from "./components/Button";
 import { SliderItemFieldEnum, SliderConfigItem, SliderConfigList } from "./components/Slider";
+import { LabelItemFieldEnum, LabelConfigItem, LabelConfigList } from "./components/Label";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -14,6 +15,7 @@ const ConfigItemFieldEnum = {
   ...InputItemFieldEnum,
   ...ButtonItemFieldEnum,
   ...SliderItemFieldEnum,
+  ...LabelItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -25,6 +27,7 @@ const initConfigItem: ConfigItem[] = [
   ...InputConfigItem,
   ...ButtonConfigItem,
   ...SliderConfigItem,
+  ...LabelConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -34,6 +37,7 @@ const initConfigList: ComponentsConfig[] = [
   InputConfigList,
   ButtonConfigList,
   SliderConfigList,
+  LabelConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

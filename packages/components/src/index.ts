@@ -5,6 +5,7 @@ export * from './components/BaseComponents/Image';
 export * from './components/BaseComponents/Button';
 export * from './components/BaseComponents/Input';
 export * from './components/BaseComponents/Slider';
+export * from './components/BaseComponents/Label';
 
 
 
