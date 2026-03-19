@@ -51,6 +51,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于用户输入的组件',
     icon: 'input-icon',
+  },
+  {
+    componentId: 6,
+    componentName: 'Slider',
+    componentType: ComponentTypeEnum.SLIDER,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['滑动条', 'Slider'],
+    version: '1.0.0',
+    description: '用于选择数值范围的组件',
+    icon: 'slider-icon',
   }
 
 ]

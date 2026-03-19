@@ -182,41 +182,6 @@ export const FlexConfigItem: ConfigItem[] = [
     },
     unit: 'px',
   },
-  // 边距
-  {
-    field: FlexItemFieldEnum.flex_MarginPadding,
-    label: '边距',
-    uiType: UiTypeEnum.MARGIN_PADDING,
-    defaultValue: {
-      margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-    },
-    currentValue: {
-      margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-    },
-    unit: 'px',
-  },
   // 边框颜色
   {
     field: FlexItemFieldEnum.flex_borderColor,

@@ -8,7 +8,7 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
-import { Default, Flex, Text, Image, Button, Input } from '@wect/components';
+import { Default, Flex, Text, Image, Button, Input, Slider } from '@wect/components';
 import { ComTree } from '@wect/type';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -364,6 +364,16 @@ const RenderComponentContent: React.FC<{
           handleComponentSelect={handleComponentSelect}
         />
       );
+    case ComponentTypeEnum.SLIDER:
+      return (
+        <Slider
+          component={component}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
+          handleDnD={handleDnD}
+          handleComponentSelect={handleComponentSelect}
+        />
+      );
+      
     default:
       return (
         <Default

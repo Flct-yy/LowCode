@@ -164,12 +164,17 @@ const ComponentPreview: React.FC<{
 
   // 计算操作按钮组的位置
   const operationButtonsStyle = useMemo(() => {
+    if(selectedComponentId === comTree.getRoot().comSchemaId) return {
+      
+      top: '0px',
+      right: '0px',
+    };
     // 每次都调用函数获取最新位置
     const position = getSelectedComponentPosition();
     if (!position) {
       return {
         top: '0px',
-        left: '0px',
+        right: '0px',
       };
     }
     const containerWidth = previewRef.current?.clientWidth || Infinity;
@@ -181,7 +186,7 @@ const ComponentPreview: React.FC<{
       top: `${position.y > buttonHeight ? position.y - buttonHeight : position.y}px`,
       left: `${position.width > buttonWidth ? position.x + position.width - buttonWidth : (position.y > buttonHeight ? (position.x + buttonWidth < containerWidth ? position.x : position.x + position.width - buttonWidth) : (position.x + position.width + buttonWidth < containerWidth ? position.x + position.width : position.x - buttonWidth))}px`,
     };
-  }, [selectedComponentRefState]);
+  }, [selectedComponentRefState, selectedComponentId]);
 
   return (
     <div ref={previewRef}

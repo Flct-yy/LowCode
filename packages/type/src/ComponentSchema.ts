@@ -26,6 +26,7 @@ export enum ComponentTypeEnum {
   INPUT = 'Input',
   IMAGE = 'Image',
   TEXT = 'Text',
+  SLIDER = 'Slider',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

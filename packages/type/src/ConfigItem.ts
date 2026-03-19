@@ -123,30 +123,30 @@ export interface MarginPaddingConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.MARGIN_PADDING;
   defaultValue: {
     margin: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      top:number,
+      right:number,
+      bottom:number,
+      left:number,
     },
     padding: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      top:number,
+      right:number,
+      bottom:number,
+      left:number,
     },
   };
   currentValue: {
     margin: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      top:number,
+      right:number,
+      bottom:number,
+      left:number,
     },
     padding: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      top:number,
+      right:number,
+      bottom:number,
+      left:number,
     },
   };
   unit?: string;
