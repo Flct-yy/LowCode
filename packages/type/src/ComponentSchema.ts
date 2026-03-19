@@ -28,6 +28,7 @@ export enum ComponentTypeEnum {
   TEXT = 'Text',
   SLIDER = 'Slider',
   LABEL = 'Label',
+  TEXTAREA = 'Textarea',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

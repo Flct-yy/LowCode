@@ -48,11 +48,12 @@ export const getConfigImageUrl = (config: any[]): string | undefined => {
  */
 export const getConfigValue = <T = any>(config: any[], field: string): T | undefined => {
   if (!config || !Array.isArray(config)) return undefined;
-
+  
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {
-        if (item.field === field) {
+        const itemName = item.field.replace(/^[a-z]+\./, '');
+        if (itemName === field) {
           return item.currentValue as T;
         }
       }

@@ -6,6 +6,7 @@ export * from './components/BaseComponents/Button';
 export * from './components/BaseComponents/Input';
 export * from './components/BaseComponents/Slider';
 export * from './components/BaseComponents/Label';
+export * from './components/BaseComponents/Textarea';
 
 
 

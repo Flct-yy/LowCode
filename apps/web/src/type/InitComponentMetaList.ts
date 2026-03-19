@@ -71,6 +71,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于显示标签文本的组件',
     icon: 'label-icon',
+  },
+  {
+    componentId: 8,
+    componentName: 'Textarea',
+    componentType: ComponentTypeEnum.TEXTAREA,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['文本域', 'Textarea'],
+    version: '1.0.0',
+    description: '用于多行文本输入的组件',
+    icon: 'textarea-icon',
   }
 
 ]
