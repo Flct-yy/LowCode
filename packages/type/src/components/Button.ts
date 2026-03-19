@@ -287,12 +287,17 @@ export const ButtonConfigList: ComponentsConfig = {
     {
       areaName: ConfigAreaEnum.text,
       configItem: [
-        ButtonItemFieldEnum.button_text,
         ButtonItemFieldEnum.button_fontSize,
         ButtonItemFieldEnum.button_fontWeight,
         ButtonItemFieldEnum.button_textAlign,
         ButtonItemFieldEnum.button_lineHeight,
         ButtonItemFieldEnum.button_color,
+      ]
+    },
+    {
+      areaName: ConfigAreaEnum.content,
+      configItem: [
+        ButtonItemFieldEnum.button_text,
       ]
     },
   ],

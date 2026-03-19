@@ -8,6 +8,7 @@ export enum ConfigAreaEnum {
   regular = '常规',
   text = '文字',
   image = '图片',
+  content = '内容',
 }
 
 interface ConfigArea {

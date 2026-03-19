@@ -191,8 +191,8 @@ export const TextConfigItem: ConfigItem[] = [
     field: TextItemFieldEnum.text_height,
     label: '高度',
     uiType: UiTypeEnum.INPUT_NUMBER,
-    defaultValue: 36,
-    currentValue: 36,
+    defaultValue: 18,
+    currentValue: 18,
     step: 1,
     currentUnit: 'px',
     units: [
@@ -254,7 +254,7 @@ export const TextConfigList: ComponentsConfig = {
       ]
     },
     {
-      areaName: ConfigAreaEnum.text,
+      areaName: ConfigAreaEnum.content,
       configItem: [
         TextItemFieldEnum.text_text,
       ]

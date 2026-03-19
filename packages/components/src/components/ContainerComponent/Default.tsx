@@ -20,7 +20,7 @@ function Default({
   const divRef = useRef<HTMLDivElement>(null);
 
   // 获得组件文本
-  const text = getConfigText(component.config);
+  const text = getConfigText(component.config, 'text');
 
   // 处理拖拽，使用useEffect确保在渲染完成后调用
   useEffect(() => {

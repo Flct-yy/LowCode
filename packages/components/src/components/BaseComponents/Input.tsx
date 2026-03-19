@@ -18,7 +18,7 @@ function Input({
   const divRef = useRef<HTMLDivElement>(null);
 
   // 获得组件文本
-  const text = getConfigText(component.config);
+  const text = getConfigText(component.config, 'text');
 
   // 处理拖拽 - 移到useEffect中避免渲染期间状态更新
   useEffect(() => {

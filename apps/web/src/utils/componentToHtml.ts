@@ -10,7 +10,7 @@ const componentToHtml = (component: ComponentSchema): string => {
   const { metadata, config, children } = component;
   let html = '';
   let { style, className } = convertConfigToStyle(component);
-  const textValue = getConfigText(config) || '';
+  const textValue = getConfigText(config, 'text') || '';
   const imageUrl = getConfigImageUrl(config) || '';
 
   // 根据组件类型生成HTML

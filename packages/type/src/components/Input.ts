@@ -277,7 +277,6 @@ export const InputConfigList: ComponentsConfig = {
     {
       areaName: ConfigAreaEnum.text,
       configItem: [
-        InputItemFieldEnum.input_text,
         InputItemFieldEnum.input_placeholder,
         InputItemFieldEnum.input_fontSize,
         InputItemFieldEnum.input_fontWeight,
@@ -286,5 +285,11 @@ export const InputConfigList: ComponentsConfig = {
         InputItemFieldEnum.input_color,
       ]
     },
+    {
+      areaName: ConfigAreaEnum.content,
+      configItem: [
+        InputItemFieldEnum.input_text,
+      ]
+    }
   ],
 };

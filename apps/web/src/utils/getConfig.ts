@@ -1,22 +1,6 @@
 import { type ComponentSchema } from "@wect/type";
 import { ConfigItemFieldEnum, ConfigAreaEnum, type TotesConfig } from "@wect/type";
 
-// 从组件配置中提取文字内容
-export const getConfigText = (config: ComponentSchema['config']): string => {
-  const textConfig: TotesConfig = config.find((item) => item.areaName === ConfigAreaEnum.text) || {
-    areaName: ConfigAreaEnum.text,
-    configItem: [],
-  };
-  let text = '';
-  textConfig.configItem.forEach((configItem) => {
-    const fieldName = configItem.field.replace(/^[a-z]+\./, '');
-    if (fieldName === 'text') {
-      text = configItem.currentValue;
-    }
-  });
-  return text;
-}
-
 // 从组件配置中提取图片内容
 export const getConfigImageUrl = (config: ComponentSchema['config']): string => {
   const imageConfig: TotesConfig = config.find((item) => item.areaName === ConfigAreaEnum.image) || {
