@@ -164,6 +164,10 @@ const ComponentPreview: React.FC<{
 
   // 计算操作按钮组的位置
   const operationButtonsStyle = useMemo(() => {
+    if(!comTree) return {
+      top: '0px',
+      right: '0px',
+    };
     if(selectedComponentId === comTree.getRoot().comSchemaId) return {
       
       top: '0px',
