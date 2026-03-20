@@ -101,6 +101,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于表单提交的容器组件',
     icon: 'form-icon',
+  },
+  {
+    componentId: 11,
+    componentName: 'Card',
+    componentType: ComponentTypeEnum.CARD,
+    category: ComponentCategoryEnum.LAYOUT,
+    tags: ['卡片', 'Card'],
+    version: '1.0.0',
+    description: '用于显示卡片内容的组件',
+    icon: 'card-icon',
   }
 
 ]

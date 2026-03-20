@@ -8,12 +8,14 @@ export * from './components/BaseComponents/Slider';
 export * from './components/BaseComponents/Label';
 export * from './components/BaseComponents/Textarea';
 export * from './components/BaseComponents/Switch';
-export * from './components/BaseComponents/Form';
 
 
 
-export * from './components/ContainerComponent/Flex';
+export * from './components/LayoutComponents/Flex';
 export * from './components/ContainerComponent/Default';
+
+export * from './components/LayoutComponents/Card';
+export * from './components/LayoutComponents/Form';
 
 export * from './utils/convertConfigToStyle';
 export { exportAllStyles } from './utils/dynamicStyleManager';

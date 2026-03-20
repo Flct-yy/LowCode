@@ -8,7 +8,7 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
-import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch, Form } from '@wect/components';
+import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch, Form, Card } from '@wect/components';
 import { ComTree } from '@wect/type';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -408,6 +408,15 @@ const RenderComponentContent: React.FC<{
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
         >{renderedChildren()}</Form>
+      );
+    case ComponentTypeEnum.CARD:
+      return (
+        <Card
+          component={component}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
+          handleDnD={handleDnD}
+          handleComponentSelect={handleComponentSelect}
+        >{renderedChildren()}</Card>
       );
     default:
       return (
