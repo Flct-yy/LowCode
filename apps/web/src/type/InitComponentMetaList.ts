@@ -81,6 +81,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于多行文本输入的组件',
     icon: 'textarea-icon',
+  },
+  {
+    componentId: 9,
+    componentName: 'Switch',
+    componentType: ComponentTypeEnum.SWITCH,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['开关', 'Switch'],
+    version: '1.0.0',
+    description: '用于开关状态切换的组件',
+    icon: 'switch-icon',
   }
 
 ]

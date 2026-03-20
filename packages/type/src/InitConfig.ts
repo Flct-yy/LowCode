@@ -6,6 +6,7 @@ import { ButtonItemFieldEnum, ButtonConfigItem, ButtonConfigList } from "./compo
 import { SliderItemFieldEnum, SliderConfigItem, SliderConfigList } from "./components/Slider";
 import { LabelItemFieldEnum, LabelConfigItem, LabelConfigList } from "./components/Label";
 import { TextareaItemFieldEnum, TextareaConfigItem, TextareaConfigList } from "./components/Textarea";
+import { SwitchItemFieldEnum, SwitchConfigItem, SwitchConfigList } from "./components/Switch";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -18,6 +19,7 @@ const ConfigItemFieldEnum = {
   ...SliderItemFieldEnum,
   ...LabelItemFieldEnum,
   ...TextareaItemFieldEnum,
+  ...SwitchItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -31,6 +33,7 @@ const initConfigItem: ConfigItem[] = [
   ...SliderConfigItem,
   ...LabelConfigItem,
   ...TextareaConfigItem,
+  ...SwitchConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -42,6 +45,7 @@ const initConfigList: ComponentsConfig[] = [
   SliderConfigList,
   LabelConfigList,
   TextareaConfigList,
+  SwitchConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

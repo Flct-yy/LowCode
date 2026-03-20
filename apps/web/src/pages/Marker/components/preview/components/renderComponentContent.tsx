@@ -8,7 +8,7 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
-import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea } from '@wect/components';
+import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch } from '@wect/components';
 import { ComTree } from '@wect/type';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -385,6 +385,15 @@ const RenderComponentContent: React.FC<{
     case ComponentTypeEnum.TEXTAREA:
       return (
         <Textarea
+          component={component}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
+          handleDnD={handleDnD}
+          handleComponentSelect={handleComponentSelect}
+        />
+      );
+    case ComponentTypeEnum.SWITCH:
+      return (
+        <Switch
           component={component}
           componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
