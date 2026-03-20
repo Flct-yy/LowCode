@@ -32,6 +32,7 @@ export enum ComponentTypeEnum {
   SWITCH = 'Switch',
   FORM = 'Form',
   CARD = 'Card',
+  CALENDAR = 'Calendar',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

@@ -111,6 +111,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于显示卡片内容的组件',
     icon: 'card-icon',
+  },
+  {
+    componentId: 12,
+    componentName: 'Calendar',
+    componentType: ComponentTypeEnum.CALENDAR,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['日历', 'Calendar'],
+    version: '1.0.0',
+    description: '用于显示日历的组件',
+    icon: 'calendar-icon',
   }
 
 ]

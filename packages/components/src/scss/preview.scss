@@ -35,3 +35,92 @@
     box-shadow: 0 0 0 0 rgba(82, 196, 26, 0);
   }
 }
+
+/* Calendar组件样式 */
+.component__calendar {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.component__calendar-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.component__calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.component__calendar-prev,
+.component__calendar-next {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.component__calendar-prev:hover,
+.component__calendar-next:hover {
+  background: #e6f7ff;
+}
+
+.component__calendar-title {
+  font-weight: 500;
+}
+
+.component__calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.component__calendar-weekdays span {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding: 4px 0;
+}
+
+.component__calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex: 1;
+  padding: 8px 0;
+}
+
+.component__calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+.component__calendar-day:hover {
+  background: #e6f7ff;
+}
+
+.component__calendar-day--empty {
+  color: #f0f0f0;
+  cursor: default;
+}
+
+.component__calendar-day--empty:hover {
+  background: none;
+}
