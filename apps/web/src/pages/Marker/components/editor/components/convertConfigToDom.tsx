@@ -8,6 +8,7 @@ import MarginPadding from './components/MarginPadding';
 import Group from './components/Group';
 import DoubleInputNumber from './components/DoubleInputNumber';
 import ImageUpload from './components/ImageUpload';
+import Textarea from './components/Textarea';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 
@@ -34,6 +35,14 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
     case UiTypeEnum.INPUT:
       return (
         <Input
+          configItem={configItem}
+          setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
+        />
+      );
+
+    case UiTypeEnum.TEXTAREA:
+      return (
+        <Textarea
           configItem={configItem}
           setCurrentValue={(value: string) => handleChangeValue(configItem.field as ConfigItemFieldEnum, value)}
         />

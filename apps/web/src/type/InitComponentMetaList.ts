@@ -131,6 +131,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于分页显示的组件',
     icon: 'pagination-icon',
+  },
+  {
+    componentId: 14,
+    componentName: 'Table',
+    componentType: ComponentTypeEnum.TABLE,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['表格', 'Table'],
+    version: '1.0.0',
+    description: '用于显示表格数据的组件',
+    icon: 'table-icon',
   }
 
 ]

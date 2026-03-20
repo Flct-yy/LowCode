@@ -9,6 +9,8 @@ export enum UiTypeEnum {
   MARGIN_PADDING = 'MarginPadding',
   // 图片上传
   IMAGE_UPLOAD = 'ImageUpload',
+  // 文本域
+  TEXTAREA = 'Textarea',
 }
 
 /**
@@ -159,6 +161,12 @@ export interface ImageUploadConfigItem extends BaseConfigItem {
   uiType: UiTypeEnum.IMAGE_UPLOAD;
 }
 
+/**
+ * 文本域配置项
+ */
+export interface TextareaConfigItem extends BaseConfigItem {
+  uiType: UiTypeEnum.TEXTAREA;
+}
 
 
 /**
@@ -172,4 +180,5 @@ export type ConfigItem =
   | ColorPickerConfigItem
   | GroupConfigItem
   | MarginPaddingConfigItem
-  | ImageUploadConfigItem;
+  | ImageUploadConfigItem
+  | TextareaConfigItem;

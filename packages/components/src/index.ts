@@ -10,6 +10,7 @@ export * from './components/BaseComponents/Textarea';
 export * from './components/BaseComponents/Switch';
 export * from './components/BaseComponents/Calendar';
 export * from './components/BaseComponents/Pagination';
+export * from './components/BaseComponents/Table';
 
 
 

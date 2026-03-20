@@ -11,6 +11,7 @@ import { FormItemFieldEnum, FormConfigItem, FormConfigList } from "./components/
 import { CardItemFieldEnum, CardConfigItem, CardConfigList } from "./components/Card";
 import { CalendarItemFieldEnum, CalendarConfigItem, CalendarConfigList } from "./components/Calendar";
 import { PaginationItemFieldEnum, PaginationConfigItem, PaginationConfigList } from "./components/Pagination";
+import { TableItemFieldEnum, TableConfigItem, TableConfigList } from "./components/Table";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -28,6 +29,7 @@ const ConfigItemFieldEnum = {
   ...CardItemFieldEnum,
   ...CalendarItemFieldEnum,
   ...PaginationItemFieldEnum,
+  ...TableItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -46,6 +48,7 @@ const initConfigItem: ConfigItem[] = [
   ...CardConfigItem,
   ...CalendarConfigItem,
   ...PaginationConfigItem,
+  ...TableConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -62,6 +65,7 @@ const initConfigList: ComponentsConfig[] = [
   CardConfigList,
   CalendarConfigList,
   PaginationConfigList,
+  TableConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

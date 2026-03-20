@@ -34,6 +34,7 @@ export enum ComponentTypeEnum {
   CARD = 'Card',
   CALENDAR = 'Calendar',
   PAGINATION = 'Pagination',
+  TABLE = 'Table',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

@@ -53,6 +53,13 @@ const ShortcutManager = () => {
 
       // Ctrl/Cmd + C: 复制
       if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+        // 检查是否有选中文本
+        const selectedText = window.getSelection()?.toString().trim();
+        if (selectedText) {
+          // 有选中文本，让浏览器默认处理复制操作
+          return;
+        }
+        
         e.preventDefault();
         // 这里调用你的复制逻辑
         try {
@@ -77,6 +84,13 @@ const ShortcutManager = () => {
 
       // Ctrl/Cmd + V: 粘贴
       if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        // 检查是否有选中文本区域
+        const activeElement = document.activeElement;
+        if (activeElement instanceof HTMLInputElement || activeElement instanceof HTMLTextAreaElement || (activeElement as any).isContentEditable) {
+          // 在输入框或可编辑区域中，让浏览器默认处理粘贴操作
+          return;
+        }
+        
         e.preventDefault();
         // 这里调用你的粘贴逻辑
         try {
