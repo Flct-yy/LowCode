@@ -91,6 +91,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于开关状态切换的组件',
     icon: 'switch-icon',
+  },
+  {
+    componentId: 10,
+    componentName: 'Form',
+    componentType: ComponentTypeEnum.FORM,
+    category: ComponentCategoryEnum.LAYOUT,
+    tags: ['表单', 'Form'],
+    version: '1.0.0',
+    description: '用于表单提交的容器组件',
+    icon: 'form-icon',
   }
 
 ]

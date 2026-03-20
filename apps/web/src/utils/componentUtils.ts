@@ -7,7 +7,7 @@ import { ComponentTypeEnum } from "@wect/type";
  */
 export const isLayoutComponent = (componentType: ComponentTypeEnum): boolean => {
   // 允许接收拖拽组件类型列表
-  const layoutComponentTypes = [ComponentTypeEnum.ROOT, ComponentTypeEnum.FLEX];
+  const layoutComponentTypes = [ComponentTypeEnum.ROOT, ComponentTypeEnum.FLEX, ComponentTypeEnum.FORM];
   return layoutComponentTypes.includes(componentType);
 };
 
@@ -17,7 +17,7 @@ export const isLayoutComponent = (componentType: ComponentTypeEnum): boolean => 
  * @returns 是否为容器组件
  */
 export const isContainerComponent = (componentType: ComponentTypeEnum): boolean => {
-  const containerComponentTypes = [ComponentTypeEnum.ROOT, ComponentTypeEnum.FLEX];
+  const containerComponentTypes = [ComponentTypeEnum.ROOT, ComponentTypeEnum.FLEX, ComponentTypeEnum.FORM];
   return containerComponentTypes.includes(componentType);
 };
 

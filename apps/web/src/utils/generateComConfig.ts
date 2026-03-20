@@ -6,7 +6,6 @@ import { ComponentTypeEnum, initConfigList, initConfigItem } from "@wect/type";
 export default function generateComConfig(componentType: ComponentTypeEnum): TotesConfig[] {
   let config: TotesConfig[] = [];
   const configList = initConfigList.find((item) => item.componentType === componentType);
-  console.log(configList);
   if (configList) {
     config = configList.config.map((item) => ({
       ...item,
