@@ -10,7 +10,7 @@ export const getConfigText = (config: any[], field: string): string => {
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {
-        const itemName = item.field.replace(/^[a-z]+\./, '');
+        const itemName = item.field.replace(/^[a-zA-Z]+\./, '');
         if (itemName === field && typeof item.currentValue === 'string') {
           return item.currentValue;
         }
@@ -52,7 +52,7 @@ export const getConfigValue = <T = any>(config: any[], field: string): T | undef
   for (const configItem of config) {
     if (configItem && Array.isArray(configItem.configItem)) {
       for (const item of configItem.configItem) {
-        const itemName = item.field.replace(/^[a-z]+\./, '');
+        const itemName = item.field.replace(/^[a-zA-Z]+\./, '');
         if (itemName === field) {
           return item.currentValue as T;
         }

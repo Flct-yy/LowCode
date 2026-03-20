@@ -12,6 +12,7 @@ export * from './components/BaseComponents/Calendar';
 export * from './components/BaseComponents/Pagination';
 export * from './components/BaseComponents/Table';
 export * from './components/BaseComponents/Menu';
+export * from './components/BaseComponents/TimePicker';
 
 
 

@@ -50,7 +50,7 @@ class DynamicStyleManager {
       component.config.forEach(configArea => {
         configArea.configItem.forEach(configItem => {
           // 提取字段名后缀（去掉组件前缀）
-          const fieldName = configItem.field.replace(/^[a-z]+\./, '');
+          const fieldName = configItem.field.replace(/^[a-zA-Z]+\./, '');
           switch (fieldName) {
             case 'backgroundColor':
               cssVariables += `  --${componentId}-background-color: ${configItem.currentValue};\n`;

@@ -36,6 +36,7 @@ export enum ComponentTypeEnum {
   PAGINATION = 'Pagination',
   TABLE = 'Table',
   MENU = 'Menu',
+  TIME_PICKER = 'TimePicker',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

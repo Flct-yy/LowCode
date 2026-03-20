@@ -13,6 +13,7 @@ import { CalendarItemFieldEnum, CalendarConfigItem, CalendarConfigList } from ".
 import { PaginationItemFieldEnum, PaginationConfigItem, PaginationConfigList } from "./components/Pagination";
 import { TableItemFieldEnum, TableConfigItem, TableConfigList } from "./components/Table";
 import { MenuItemFieldEnum, MenuConfigItem, MenuConfigList } from "./components/Menu";
+import { TimePickerItemFieldEnum, TimePickerConfigItem, TimePickerConfigList } from "./components/TimePicker";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -32,6 +33,7 @@ const ConfigItemFieldEnum = {
   ...PaginationItemFieldEnum,
   ...TableItemFieldEnum,
   ...MenuItemFieldEnum,
+  ...TimePickerItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -52,6 +54,7 @@ const initConfigItem: ConfigItem[] = [
   ...PaginationConfigItem,
   ...TableConfigItem,
   ...MenuConfigItem,
+  ...TimePickerConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -70,6 +73,7 @@ const initConfigList: ComponentsConfig[] = [
   PaginationConfigList,
   TableConfigList,
   MenuConfigList,
+  TimePickerConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

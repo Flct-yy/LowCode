@@ -8,3 +8,4 @@ export * from './components/Calendar';
 export * from './components/Pagination';
 export * from './components/Table';
 export * from './components/Menu';
+export * from './components/TimePicker';

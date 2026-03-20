@@ -152,6 +152,16 @@ const initComponentList: ComponentMetadata[] = [
     description: '用于显示菜单的组件',
     icon: 'menu-icon',
   },
+  {
+    componentId: 16,
+    componentName: 'TimePicker',
+    componentType: ComponentTypeEnum.TIME_PICKER,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['时间选择器', 'TimePicker'],
+    version: '1.0.0',
+    description: '用于选择时间的组件',
+    icon: 'time-picker-icon',
+  },
 
 ]
 
