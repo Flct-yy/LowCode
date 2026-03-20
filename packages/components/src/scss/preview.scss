@@ -124,3 +124,50 @@
 .component__calendar-day--empty:hover {
   background: none;
 }
+
+/* Pagination组件样式 */
+.component__pagination {
+  width: 400px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.component__pagination-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.component__pagination-item {
+  padding: 4px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.component__pagination-item:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.component__pagination-item--active {
+  background: #1890ff;
+  border-color: #1890ff;
+  color: #fff;
+}
+
+.component__pagination-item--disabled {
+  color: #bfbfbf;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.component__pagination-item--disabled:hover {
+  color: #bfbfbf;
+  border-color: #d9d9d9;
+}

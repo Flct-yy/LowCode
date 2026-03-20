@@ -121,6 +121,16 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于显示日历的组件',
     icon: 'calendar-icon',
+  },
+  {
+    componentId: 13,
+    componentName: 'Pagination',
+    componentType: ComponentTypeEnum.PAGINATION,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['分页', 'Pagination'],
+    version: '1.0.0',
+    description: '用于分页显示的组件',
+    icon: 'pagination-icon',
   }
 
 ]

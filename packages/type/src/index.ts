@@ -5,3 +5,4 @@ export * from './PageMetadata';
 export * from './ComTree';
 export * from './InitConfig';
 export * from './components/Calendar';
+export * from './components/Pagination';
