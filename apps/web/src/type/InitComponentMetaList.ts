@@ -141,7 +141,17 @@ const initComponentList: ComponentMetadata[] = [
     version: '1.0.0',
     description: '用于显示表格数据的组件',
     icon: 'table-icon',
-  }
+  },
+  {
+    componentId: 15,
+    componentName: 'Menu',
+    componentType: ComponentTypeEnum.MENU,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['菜单', 'Menu'],
+    version: '1.0.0',
+    description: '用于显示菜单的组件',
+    icon: 'menu-icon',
+  },
 
 ]
 
