@@ -202,6 +202,16 @@ const initComponentList: ComponentMetadata[] = [
     description: '用于显示雷达图的组件',
     icon: 'radar-chart-icon',
   },
+  {
+    componentId: 21,
+    componentName: 'Timeline',
+    componentType: ComponentTypeEnum.TIMELINE,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['时间线', 'Timeline'],
+    version: '1.0.0',
+    description: '用于显示时间线的组件',
+    icon: 'timeline-icon',
+  },
 
 ]
 

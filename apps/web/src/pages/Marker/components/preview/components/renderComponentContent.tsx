@@ -8,7 +8,7 @@ import useWebsContext from "@context/WebsContext/useWebsContext";
 import { generateComSchema, generatePreComSchema } from "@utils/generateComSchema";
 import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
-import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch, Form, Card, Calendar, Pagination, Table, Menu, TimePicker, LineChart, BarChart, PieChart, RadarChart } from '@wect/components';
+import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch, Form, Card, Calendar, Pagination, Table, Menu, TimePicker, LineChart, BarChart, PieChart, RadarChart, Timeline } from '@wect/components';
 import { ComTree } from '@wect/type';
 import './RenderComponentContent.scss'
 import '@scss/variables.scss'
@@ -493,6 +493,15 @@ const RenderComponentContent: React.FC<{
     case ComponentTypeEnum.RADAR_CHART:
       return (
         <RadarChart
+          component={component}
+          componentDep={{ isSelected, canDrop, isOverShallow }}
+          handleDnD={handleDnD}
+          handleComponentSelect={handleComponentSelect}
+        />
+      );
+    case ComponentTypeEnum.TIMELINE:
+      return (
+        <Timeline
           component={component}
           componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}

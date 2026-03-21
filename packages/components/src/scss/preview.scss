@@ -397,7 +397,67 @@
 .component__chart-data-legend-color {
   width: 12px;
   height: 12px;
-  border-radius: 2px;
+}
+
+/* Timeline组件样式 */
+.component__timeline {
+  position: relative;
+  padding: 16px;
+}
+
+.timeline-container {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #d9d9d9;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #1890ff;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px #1890ff;
+}
+
+.timeline-content {
+  flex: 1;
+  padding: 8px 0;
+}
+
+.timeline-time {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.timeline-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
 }
 
 .component__chart-data-bar:hover {
