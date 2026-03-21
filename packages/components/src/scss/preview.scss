@@ -823,3 +823,42 @@
   white-space: nowrap;
   z-index: 10;
 }
+
+
+// Card组件样式
+.component__card {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .component__card-header {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 16px;
+  }
+
+  .component__card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+  }
+
+  .component__card-body {
+    min-height: 80px;
+  }
+
+  .component__card-content {
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.5;
+  }
+}

@@ -35,10 +35,13 @@ class DynamicStyleManager {
 
   // 初始化样式元素 并将其添加到文档头
   private initializeStyleElement(): void {
-    this.styleElement = document.createElement('style');
-    this.styleElement.id = 'dynamic-component-styles';
-    this.styleElement.type = 'text/css';
-    document.head.appendChild(this.styleElement);
+    // 检查是否在浏览器环境中
+    if (typeof document !== 'undefined') {
+      this.styleElement = document.createElement('style');
+      this.styleElement.id = 'dynamic-component-styles';
+      this.styleElement.type = 'text/css';
+      document.head.appendChild(this.styleElement);
+    }
   }
 
   // 生成组件CSS变量
@@ -215,13 +218,14 @@ class DynamicStyleManager {
 
   // 更新样式表
   private updateStyleSheet(): void {
-    if (!this.styleElement) return;
-
-    let allStyles = '';
-    this.componentStyles.forEach(style => {
-      allStyles += style;
-    });
-    this.styleElement.innerHTML = this.defaultComStyle + allStyles;
+    // 检查是否在浏览器环境中且 styleElement 存在
+    if (typeof document !== 'undefined' && this.styleElement) {
+      let allStyles = '';
+      this.componentStyles.forEach(style => {
+        allStyles += style;
+      });
+      this.styleElement.innerHTML = this.defaultComStyle + allStyles;
+    }
   }
 
   // 导出所有组件样式

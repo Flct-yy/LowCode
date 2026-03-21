@@ -452,7 +452,9 @@ const RenderComponentContent: React.FC<{
           componentDep={{ isSelected, canDrop, isOverShallow }}
           handleDnD={handleDnD}
           handleComponentSelect={handleComponentSelect}
-        />
+        >
+          {renderedChildren()}
+        </Menu>
       );
     case ComponentTypeEnum.TIME_PICKER:
       return (

@@ -230,9 +230,9 @@ const TopBar: React.FC = () => {
           <Button onClick={handlePreview}>预览</Button>
           <Button onClick={handleSave}>保存</Button>
           <Button type="primary" onClick={handleImport}>导入</Button>
-          <Dropdown menu={{ items: exportMenuOptions }}>
-            <Button type="primary" onClick={(e) => e.preventDefault()}>
-              导出 <span className="anticon anticon-down"></span>
+          <Dropdown menu={{ items: exportMenuOptions }} trigger={['click']}>
+            <Button type="primary">
+              <span className="anticon anticon-down">导出</span>
             </Button>
           </Dropdown>
         </Flex>

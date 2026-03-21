@@ -17,13 +17,13 @@ function Slider({
   const divRef = useRef<HTMLDivElement>(null);
 
   // 从配置中获取 Slider 组件的属性
-  const min = getConfigValue<number>(component.config, 'slider.min') ?? 0;
-  const max = getConfigValue<number>(component.config, 'slider.max') ?? 100;
-  const step = getConfigValue<number>(component.config, 'slider.step') ?? 1;
-  const value = getConfigValue<number>(component.config, 'slider.value') ?? 50;
-  const disabled = getConfigValue<boolean>(component.config, 'slider.disabled') ?? false;
-  const showTooltip = getConfigValue<boolean>(component.config, 'slider.showTooltip') ?? true;
-  const showMarks = getConfigValue<boolean>(component.config, 'slider.showMarks') ?? false;
+  const min = getConfigValue<number>(component.config, 'min') ?? 0;
+  const max = getConfigValue<number>(component.config, 'max') ?? 100;
+  const step = getConfigValue<number>(component.config, 'step') ?? 1;
+  const value = getConfigValue<number>(component.config, 'value') ?? 50;
+  const disabled = getConfigValue<boolean>(component.config, 'disabled') ?? false;
+  const showTooltip = getConfigValue<boolean>(component.config, 'showTooltip') ?? true;
+  const showMarks = getConfigValue<boolean>(component.config, 'showMarks') ?? false;
 
   // 处理拖拽 - 移到useEffect中避免渲染期间状态更新
   useEffect(() => {

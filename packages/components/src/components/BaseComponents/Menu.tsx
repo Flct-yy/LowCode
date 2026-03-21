@@ -9,11 +9,13 @@ function Menu({
   componentDep,
   handleDnD,
   handleComponentSelect,
+  children
 }: {
   component: ComponentSchema;
   componentDep?: { isSelected: boolean, canDrop: boolean, isOverShallow: boolean };
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
+  children?: React.ReactNode;
 }) {
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +81,7 @@ function Menu({
           ))}
         </ul>
       </div>
+      {children}
     </div>
   );
 }
