@@ -20,6 +20,7 @@
     "test": "echo '运行components测试...'"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@wect/type": "workspace:*",
     "react": "19.2.0",
     "react-dnd": "^16.0.1",

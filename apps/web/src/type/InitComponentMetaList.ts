@@ -212,6 +212,16 @@ const initComponentList: ComponentMetadata[] = [
     description: '用于显示时间线的组件',
     icon: 'timeline-icon',
   },
+  {
+    componentId: 22,
+    componentName: 'Drawer',
+    componentType: ComponentTypeEnum.DRAWER,
+    category: ComponentCategoryEnum.LAYOUT,
+    tags: ['抽屉', 'Drawer'],
+    version: '1.0.0',
+    description: '用于显示抽屉的组件',
+    icon: 'drawer-icon',
+  },
 
 ]
 

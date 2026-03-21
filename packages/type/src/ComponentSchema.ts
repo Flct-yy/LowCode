@@ -42,6 +42,7 @@ export enum ComponentTypeEnum {
   PIE_CHART = 'PieChart',
   RADAR_CHART = 'RadarChart',
   TIMELINE = 'Timeline',
+  DRAWER = 'Drawer',
   // SELECT = 'Select',
   // RADIO = 'Radio',
   // CHECKBOX = 'Checkbox'

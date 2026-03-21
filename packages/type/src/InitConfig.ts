@@ -19,6 +19,7 @@ import { BarChartItemFieldEnum, BarChartConfigItem, BarChartConfigList } from ".
 import { PieChartItemFieldEnum, PieChartConfigItem, PieChartConfigList } from "./components/PieChart";
 import { RadarChartItemFieldEnum, RadarChartConfigItem, RadarChartConfigList } from "./components/RadarChart";
 import { TimelineItemFieldEnum, TimelineConfigItem, TimelineConfigList } from "./components/Timeline";
+import { DrawerItemFieldEnum, DrawerConfigItem, DrawerConfigList } from "./components/Drawer";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -44,6 +45,7 @@ const ConfigItemFieldEnum = {
   ...PieChartItemFieldEnum,
   ...RadarChartItemFieldEnum,
   ...TimelineItemFieldEnum,
+  ...DrawerItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -70,6 +72,7 @@ const initConfigItem: ConfigItem[] = [
   ...PieChartConfigItem,
   ...RadarChartConfigItem,
   ...TimelineConfigItem,
+  ...DrawerConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -94,6 +97,7 @@ const initConfigList: ComponentsConfig[] = [
   PieChartConfigList,
   RadarChartConfigList,
   TimelineConfigList,
+  DrawerConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };
