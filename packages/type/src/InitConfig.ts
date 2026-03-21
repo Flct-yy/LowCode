@@ -14,6 +14,10 @@ import { PaginationItemFieldEnum, PaginationConfigItem, PaginationConfigList } f
 import { TableItemFieldEnum, TableConfigItem, TableConfigList } from "./components/Table";
 import { MenuItemFieldEnum, MenuConfigItem, MenuConfigList } from "./components/Menu";
 import { TimePickerItemFieldEnum, TimePickerConfigItem, TimePickerConfigList } from "./components/TimePicker";
+import { LineChartItemFieldEnum, LineChartConfigItem, LineChartConfigList } from "./components/LineChart";
+import { BarChartItemFieldEnum, BarChartConfigItem, BarChartConfigList } from "./components/BarChart";
+import { PieChartItemFieldEnum, PieChartConfigItem, PieChartConfigList } from "./components/PieChart";
+import { RadarChartItemFieldEnum, RadarChartConfigItem, RadarChartConfigList } from "./components/RadarChart";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -34,6 +38,10 @@ const ConfigItemFieldEnum = {
   ...TableItemFieldEnum,
   ...MenuItemFieldEnum,
   ...TimePickerItemFieldEnum,
+  ...LineChartItemFieldEnum,
+  ...BarChartItemFieldEnum,
+  ...PieChartItemFieldEnum,
+  ...RadarChartItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -55,6 +63,10 @@ const initConfigItem: ConfigItem[] = [
   ...TableConfigItem,
   ...MenuConfigItem,
   ...TimePickerConfigItem,
+  ...LineChartConfigItem,
+  ...BarChartConfigItem,
+  ...PieChartConfigItem,
+  ...RadarChartConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -74,6 +86,10 @@ const initConfigList: ComponentsConfig[] = [
   TableConfigList,
   MenuConfigList,
   TimePickerConfigList,
+  LineChartConfigList,
+  BarChartConfigList,
+  PieChartConfigList,
+  RadarChartConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

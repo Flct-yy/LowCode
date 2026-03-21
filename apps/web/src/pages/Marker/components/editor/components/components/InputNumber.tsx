@@ -86,7 +86,7 @@ const InputNumber = ({
       setCurrentNumber(currentValue);
     }
   }
-  const fieldName = configItem.field.replace(/^[a-z]+\./, '');
+  const fieldName = configItem.field.replace(/^[a-zA-Z]+\./, '');
   const handleAuto = () => {
     if(currentValue !== 'auto') {
       setCurrentValue('auto');

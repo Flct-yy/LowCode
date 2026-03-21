@@ -13,6 +13,10 @@ export * from './components/BaseComponents/Pagination';
 export * from './components/BaseComponents/Table';
 export * from './components/BaseComponents/Menu';
 export * from './components/BaseComponents/TimePicker';
+export * from './components/BaseComponents/LineChart';
+export * from './components/BaseComponents/BarChart';
+export * from './components/BaseComponents/PieChart';
+export * from './components/BaseComponents/RadarChart';
 
 
 

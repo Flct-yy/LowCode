@@ -9,3 +9,7 @@ export * from './components/Pagination';
 export * from './components/Table';
 export * from './components/Menu';
 export * from './components/TimePicker';
+export * from './components/LineChart';
+export * from './components/BarChart';
+export * from './components/PieChart';
+export * from './components/RadarChart';
