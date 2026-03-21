@@ -20,6 +20,8 @@ import { PieChartItemFieldEnum, PieChartConfigItem, PieChartConfigList } from ".
 import { RadarChartItemFieldEnum, RadarChartConfigItem, RadarChartConfigList } from "./components/RadarChart";
 import { TimelineItemFieldEnum, TimelineConfigItem, TimelineConfigList } from "./components/Timeline";
 import { DrawerItemFieldEnum, DrawerConfigItem, DrawerConfigList } from "./components/Drawer";
+import { RadioItemFieldEnum, RadioConfigItem, RadioConfigList } from "./components/Radio";
+import { SelectItemFieldEnum, SelectConfigItem, SelectConfigList } from "./components/Select";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -46,6 +48,8 @@ const ConfigItemFieldEnum = {
   ...RadarChartItemFieldEnum,
   ...TimelineItemFieldEnum,
   ...DrawerItemFieldEnum,
+  ...RadioItemFieldEnum,
+  ...SelectItemFieldEnum,
 } as const;
 
 type ConfigItemFieldEnum = (typeof ConfigItemFieldEnum)[keyof typeof ConfigItemFieldEnum];
@@ -73,6 +77,8 @@ const initConfigItem: ConfigItem[] = [
   ...RadarChartConfigItem,
   ...TimelineConfigItem,
   ...DrawerConfigItem,
+  ...RadioConfigItem,
+  ...SelectConfigItem,
 ];
 
 const initConfigList: ComponentsConfig[] = [
@@ -98,6 +104,8 @@ const initConfigList: ComponentsConfig[] = [
   RadarChartConfigList,
   TimelineConfigList,
   DrawerConfigList,
+  RadioConfigList,
+  SelectConfigList,
 ];
 
 export { ConfigItemFieldEnum, initConfigItem, initConfigList };

@@ -15,3 +15,5 @@ export * from './components/PieChart';
 export * from './components/RadarChart';
 export * from './components/Timeline';
 export * from './components/Drawer';
+export * from './components/Select';
+export * from './components/Radio';

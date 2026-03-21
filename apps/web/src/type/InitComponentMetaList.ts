@@ -222,6 +222,26 @@ const initComponentList: ComponentMetadata[] = [
     description: '用于显示抽屉的组件',
     icon: 'drawer-icon',
   },
+  {
+    componentId: 23,
+    componentName: 'Radio',
+    componentType: ComponentTypeEnum.RADIO,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['单选框', 'Radio'],
+    version: '1.0.0',
+    description: '用于单选框的组件',
+    icon: 'radio-icon',
+  },
+  {
+    componentId: 24,
+    componentName: 'Select',
+    componentType: ComponentTypeEnum.SELECT,
+    category: ComponentCategoryEnum.BASIC,
+    tags: ['下拉选择框', 'Select'],
+    version: '1.0.0',
+    description: '用于下拉选择框的组件',
+    icon: 'select-icon',
+  },
 
 ]
 

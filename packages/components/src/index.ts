@@ -19,6 +19,8 @@ export * from './components/BaseComponents/PieChart';
 export * from './components/BaseComponents/RadarChart';
 export * from './components/BaseComponents/Timeline';
 export * from './components/BaseComponents/Drawer';
+export * from './components/BaseComponents/Select';
+export * from './components/BaseComponents/Radio';
 
 
 
