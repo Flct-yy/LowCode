@@ -3,7 +3,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -14,17 +18,35 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@type/*": ["src/type/*"],
-      "@context/*": ["src/context/*"],
-      "@components/*": ["src/components/*"],
-      "@scss/*": ["src/scss/*"],
-      "@pages/*": ["src/pages/*"],
-      "@router/*": ["src/router/*"],
-      "@utils/*": ["src/utils/*"],
-      "@wect/type": ["../../packages/type/src"],
-      "@wect/components": ["../../packages/components/src"]
+      "@/*": [
+        "src/*"
+      ],
+      "@type/*": [
+        "src/type/*"
+      ],
+      "@context/*": [
+        "src/context/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@scss/*": [
+        "src/scss/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@router/*": [
+        "src/router/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
     }
   },
-  "include": ["src", "api/pageApi.ts", "api/api.ts", "../../packages/components/**/*", "../../packages/type/**/*"]
+  "include": [
+    "src",
+    "api/pageApi.ts",
+    "api/api.ts"
+  ]
 }

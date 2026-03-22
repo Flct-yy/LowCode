@@ -1,9 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PageMetadata } from './page-metadata.entity';
-import { PageModel } from './page-model.entity';
-import { Repository } from 'typeorm';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InternalServerErrorException } from '@nestjs/common';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * 创建页面的DTO接口
@@ -73,15 +70,10 @@ interface UpdatePageDto {
 export class PageService {
   constructor(
     /**
-     * 注入页面元信息仓库
+     * 注入Supabase客户端
      */
-    @InjectRepository(PageMetadata)
-    private readonly pageMetadataRepository: Repository<PageMetadata>,
-    /**
-     * 注入页面模型仓库
-     */
-    @InjectRepository(PageModel)
-    private readonly pageModelRepository: Repository<PageModel>
+    @Inject('SUPABASE_CLIENT')
+    private readonly supabase: SupabaseClient
   ) { }
 
   /**
@@ -90,26 +82,53 @@ export class PageService {
    * @returns 创建的页面信息
    */
   async createPage(createPageDto: CreatePageDto): Promise<void> {
+    try {
+      console.log('Creating page with data:', createPageDto);
+      
+      // 先创建页面模型
+      const { data: pageModel, error: modelError } = await this.supabase
+        .from('page_model')
+        .insert({
+          com_tree: createPageDto.comTree,
+          aspect_ratio: createPageDto.aspectRatio || '16/9',
+          com_count: createPageDto.comCount || 0,
+        })
+        .select('id')
+        .single();
 
-    // 创建页面元信息
-    const pageMetadata = this.pageMetadataRepository.create({
-      title: createPageDto.title,
-      description: createPageDto.description,
-      keywords: createPageDto.keywords,
-    });
+      console.log('Page model creation result:', { data: pageModel, error: modelError });
+      
+      if (modelError) {
+        console.error('Model error details:', modelError);
+        throw new InternalServerErrorException(`Failed to create page model: ${modelError.message}`);
+      }
 
-    // 创建页面模型
-    const pageModel = this.pageModelRepository.create({
-      com_tree: createPageDto.comTree,
-      aspect_ratio: createPageDto.aspectRatio || '16/9',
-    });
+      // 创建页面元信息，使用pageModel的ID作为model_id
+      const { data: pageMetadata, error: metadataError } = await this.supabase
+        .from('page_metadata')
+        .insert({
+          title: createPageDto.title,
+          description: createPageDto.description || '',
+          keywords: createPageDto.keywords || [],
+          model_id: pageModel.id,
+        })
+        .select('id')
+        .single();
 
-    // 建立双向关联
-    pageMetadata.pageModel = pageModel;
-    pageModel.pageMetadata = pageMetadata;
-
-    // 保存页面元信息（会级联保存页面模型）
-    const savedMetadata = await this.pageMetadataRepository.save(pageMetadata);
+      console.log('Page metadata creation result:', { data: pageMetadata, error: metadataError });
+      
+      if (metadataError) {
+        console.error('Metadata error details:', metadataError);
+        throw new InternalServerErrorException(`Failed to create page metadata: ${metadataError.message}`);
+      }
+    } catch (error) {
+      console.error('Create page error:', error);
+      if (error instanceof InternalServerErrorException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException(`Failed to create page: ${(error as Error).message}`);
+      }
+    }
   }
 
   /**
@@ -118,29 +137,41 @@ export class PageService {
    * @returns 页面信息
    */
   async getPageById(id: bigint): Promise<any> {
-    const page = await this.pageMetadataRepository.findOne({
-      where: { id },
-      relations: ['pageModel'],
-    });
+    // 先获取页面元信息
+    const { data: metadata, error: metadataError } = await this.supabase
+      .from('page_metadata')
+      .select('id, title, description, keywords, created_at, updated_at, model_id')
+      .eq('id', id)
+      .single();
 
-    if (!page) {
+    if (metadataError || !metadata) {
       throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+
+    // 然后根据model_id获取页面模型
+    const { data: model, error: modelError } = await this.supabase
+      .from('page_model')
+      .select('com_tree, aspect_ratio, com_count')
+      .eq('id', metadata.model_id)
+      .single();
+
+    if (modelError || !model) {
+      throw new InternalServerErrorException('Failed to get page model');
     }
 
     // 返回用户指定的数据结构，过滤掉不需要的字段
     return {
       pageMetadata: {
-        id: page.id,
-        title: page.title,
-        description: page.description,
-        keywords: page.keywords,
-        createdAt: page.createdAt,
-        updatedAt: page.updatedAt
-        // 不包含model_id和pageModel字段
+        id: metadata.id,
+        title: metadata.title,
+        description: metadata.description,
+        keywords: metadata.keywords,
+        createdAt: metadata.created_at,
+        updatedAt: metadata.updated_at
       },
-      com_tree: page.pageModel.com_tree,
-      aspect_ratio: page.pageModel.aspect_ratio,
-      com_count: page.pageModel.com_count,
+      com_tree: model.com_tree,
+      aspect_ratio: model.aspect_ratio,
+      com_count: model.com_count,
     };
   }
 
@@ -150,19 +181,32 @@ export class PageService {
    * @returns 组件树
    */
   async getComTreeById(id: bigint): Promise<any> {
-    const page = await this.pageMetadataRepository.findOne({
-      where: { id },
-      relations: ['pageModel'],
-    });
+    // 先获取页面元信息
+    const { data: metadata, error: metadataError } = await this.supabase
+      .from('page_metadata')
+      .select('model_id')
+      .eq('id', id)
+      .single();
 
-    if (!page) {
+    if (metadataError || !metadata) {
       throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+
+    // 然后根据model_id获取页面模型
+    const { data: model, error: modelError } = await this.supabase
+      .from('page_model')
+      .select('com_tree, aspect_ratio')
+      .eq('id', metadata.model_id)
+      .single();
+
+    if (modelError || !model) {
+      throw new InternalServerErrorException('Failed to get page model');
     }
 
     // 返回用户指定的数据结构
     return {
-      com_tree: page.pageModel.com_tree,
-      aspect_ratio: page.pageModel.aspect_ratio,
+      com_tree: model.com_tree,
+      aspect_ratio: model.aspect_ratio,
     };
   }
 
@@ -171,22 +215,36 @@ export class PageService {
    * @returns 所有页面的列表
    */
   async getAllPages(): Promise<any[]> {
-    // 使用pageMetadataRepository查询所有页面元信息，包括关联的pageModel
-    const pages = await this.pageMetadataRepository.find({
-      relations: ['pageModel'],
-    });
-    
+    // 获取所有页面元信息
+    const { data: metadataList, error: metadataError } = await this.supabase
+      .from('page_metadata')
+      .select('id, title, description, keywords, created_at, updated_at, model_id');
+
+    if (metadataError) {
+      throw new InternalServerErrorException('Failed to get pages');
+    }
+
     // 转换为包含com_count的格式，过滤掉不需要的字段
-    return pages.map(page => ({
-      id: page.id,
-      title: page.title,
-      description: page.description,
-      keywords: page.keywords,
-      createdAt: page.createdAt,
-      updatedAt: page.updatedAt,
-      com_count: page.pageModel?.com_count
-      // 不包含model_id和pageModel字段
+    const pages = await Promise.all((metadataList || []).map(async (metadata) => {
+      // 根据model_id获取页面模型
+      const { data: model, error: modelError } = await this.supabase
+        .from('page_model')
+        .select('com_count')
+        .eq('id', metadata.model_id)
+        .single();
+
+      return {
+        id: metadata.id,
+        title: metadata.title,
+        description: metadata.description,
+        keywords: metadata.keywords,
+        createdAt: metadata.created_at,
+        updatedAt: metadata.updated_at,
+        com_count: model?.com_count
+      };
     }));
+
+    return pages;
   }
 
   /**
@@ -196,59 +254,74 @@ export class PageService {
    * @returns 更新后的页面信息
    */
   async updatePage(id: bigint, updatePageDto: UpdatePageDto): Promise<any> {
-    // 查找页面
-    const { pageMetadata } = await this.getPageById(id);
+    try {
+      console.log('Updating page with id:', id, 'and data:', updatePageDto);
+      
+      // 先获取页面元信息，获取model_id
+      const { data: metadata, error: metadataError } = await this.supabase
+        .from('page_metadata')
+        .select('model_id')
+        .eq('id', id)
+        .single();
 
-    // 更新页面元信息
-    if (updatePageDto.title) pageMetadata.title = updatePageDto.title;
-    if (updatePageDto.description) pageMetadata.description = updatePageDto.description;
-    if (updatePageDto.keywords) pageMetadata.keywords = updatePageDto.keywords;
+      console.log('Page metadata retrieval result:', { data: metadata, error: metadataError });
+      
+      if (metadataError || !metadata) {
+        throw new NotFoundException(`Page with ID ${id} not found`);
+      }
 
-    // 保存更新后的元信息
-    const updatedMetadata = await this.pageMetadataRepository.save(pageMetadata);
+      // 更新页面元信息
+      const updateData: any = {};
+      if (updatePageDto.title !== undefined) updateData.title = updatePageDto.title;
+      if (updatePageDto.description !== undefined) updateData.description = updatePageDto.description;
+      if (updatePageDto.keywords !== undefined) updateData.keywords = updatePageDto.keywords;
 
-    // 获取当前的组件树，默认为原有组件树
-    let updatedComTree = updatedMetadata.pageModel?.com_tree;
+      if (Object.keys(updateData).length > 0) {
+        const { error: updateMetadataError } = await this.supabase
+          .from('page_metadata')
+          .update(updateData)
+          .eq('id', id);
 
-    // 如果有组件树、宽高比或组件数量更新，也更新页面模型
-    if (updatePageDto.comTree || updatePageDto.aspectRatio || updatePageDto.comCount !== undefined) {
-      // 查找关联的页面模型
-      const pageModel = await this.pageModelRepository.findOne({
-        where: { pageMetadata: { id: updatedMetadata.id } },
-      });
-
-      if (pageModel) {
-        if (updatePageDto.comTree) {
-          pageModel.com_tree = updatePageDto.comTree;
-          updatedComTree = updatePageDto.comTree;
+        console.log('Page metadata update result:', { error: updateMetadataError });
+        
+        if (updateMetadataError) {
+          console.error('Metadata update error details:', updateMetadataError);
+          throw new InternalServerErrorException(`Failed to update page metadata: ${updateMetadataError.message}`);
         }
-        // 兼容两种参数名格式
-        if (updatePageDto.aspectRatio !== undefined) {
-          pageModel.aspect_ratio = updatePageDto.aspectRatio;
+      }
+
+      // 准备页面模型更新数据
+      const modelUpdateData: any = {};
+      if (updatePageDto.comTree !== undefined) modelUpdateData.com_tree = updatePageDto.comTree;
+      if (updatePageDto.aspectRatio !== undefined) modelUpdateData.aspect_ratio = updatePageDto.aspectRatio;
+      if (updatePageDto.comCount !== undefined) modelUpdateData.com_count = updatePageDto.comCount;
+
+      if (Object.keys(modelUpdateData).length > 0) {
+        const { error: modelError } = await this.supabase
+          .from('page_model')
+          .update(modelUpdateData)
+          .eq('id', metadata.model_id);
+
+        console.log('Page model update result:', { error: modelError });
+        
+        if (modelError) {
+          console.error('Model update error details:', modelError);
+          throw new InternalServerErrorException(`Failed to update page model: ${modelError.message}`);
         }
-        // 更新组件数量
-        if (updatePageDto.comCount !== undefined) {
-          pageModel.com_count = updatePageDto.comCount;
-        }
-        await this.pageModelRepository.save(pageModel);
+      }
+
+      // 返回更新后的页面信息
+      return this.getPageById(id);
+    } catch (error) {
+      console.error('Update page error:', error);
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else if (error instanceof InternalServerErrorException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException(`Failed to update page: ${(error as Error).message}`);
       }
     }
-
-    // 返回用户指定的数据结构，过滤掉不需要的字段
-    return {
-      pageMetadata: {
-        id: updatedMetadata.id,
-        title: updatedMetadata.title,
-        description: updatedMetadata.description,
-        keywords: updatedMetadata.keywords,
-        createdAt: updatedMetadata.createdAt,
-        updatedAt: updatedMetadata.updatedAt
-        // 不包含model_id和pageModel字段
-      },
-      com_tree: updatedComTree,
-      aspect_ratio: updatedMetadata.pageModel?.aspect_ratio,
-      com_count: updatedMetadata.pageModel?.com_count,
-    };
   }
 
   /**
@@ -257,18 +330,55 @@ export class PageService {
    */
   async deletePage(id: bigint): Promise<void> {
     try {
-      // 删除页面元信息（会级联删除页面模型）
-      const modelResult = await this.pageModelRepository.delete(Number(id));
+      console.log('Deleting page with id:', id);
+      
+      // 先获取页面元信息，获取model_id
+      const { data: pageMetadata, error: metadataError } = await this.supabase
+        .from('page_metadata')
+        .select('model_id')
+        .eq('id', id)
+        .single();
 
-      // 检查是否有任一删除操作成功
-      if (modelResult.affected === 0) {
+      console.log('Page metadata retrieval result:', { data: pageMetadata, error: metadataError });
+      
+      if (metadataError || !pageMetadata) {
         throw new NotFoundException(`Page with ID ${id} not found`);
       }
+
+      // 删除页面模型
+      const { error: modelError } = await this.supabase
+        .from('page_model')
+        .delete()
+        .eq('id', pageMetadata.model_id);
+
+      console.log('Page model deletion result:', { error: modelError });
+      
+      if (modelError) {
+        console.error('Model deletion error details:', modelError);
+        throw new InternalServerErrorException(`Failed to delete page model: ${modelError.message}`);
+      }
+
+      // 删除页面元信息
+      const { error: deleteMetadataError } = await this.supabase
+        .from('page_metadata')
+        .delete()
+        .eq('id', id);
+
+      console.log('Page metadata deletion result:', { error: deleteMetadataError });
+      
+      if (deleteMetadataError) {
+        console.error('Metadata deletion error details:', deleteMetadataError);
+        throw new InternalServerErrorException(`Failed to delete page metadata: ${deleteMetadataError.message}`);
+      }
+
     } catch (error) {
+      console.error('Delete page error:', error);
       if (error instanceof NotFoundException) {
         throw error;
+      } else if (error instanceof InternalServerErrorException) {
+        throw error;
       } else {
-        throw new InternalServerErrorException('Failed to delete page');
+        throw new InternalServerErrorException(`Failed to delete page: ${(error as Error).message}`);
       }
     }
   }

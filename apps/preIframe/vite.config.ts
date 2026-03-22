@@ -19,8 +19,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      '@wect/type': resolve(__dirname, '../../packages/type/src'),
-      '@wect/components': resolve(__dirname, '../../packages/components/src')
     }
   },
 })

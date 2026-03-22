@@ -1,7 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PageMetadata } from './page-metadata.entity';
-import { PageModel } from './page-model.entity';
 import { PageController } from './page.controller';
 import { PageService } from './page.service';
 
@@ -10,10 +7,6 @@ import { PageService } from './page.service';
  * 组织页面相关的控制器、服务和实体
  */
 @Module({
-  /**
-   * 导入TypeORM模块，注册页面相关的实体
-   */
-  imports: [TypeOrmModule.forFeature([PageMetadata, PageModel])],
   /**
    * 注册页面控制器
    */

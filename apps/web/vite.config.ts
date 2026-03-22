@@ -28,8 +28,6 @@ export default defineConfig({
       '@pages': resolve(__dirname, './src/pages'),
       '@utils': resolve(__dirname, './src/utils'),
       '@router': resolve(__dirname, './src/router'),
-      '@wect/type': resolve(__dirname, '../../packages/type/src'),
-      '@wect/components': resolve(__dirname, '../../packages/components/src')
     }
   },
   optimizeDeps: {
