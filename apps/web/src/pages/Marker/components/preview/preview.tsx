@@ -6,7 +6,7 @@ import { useDrop } from 'react-dnd';
 import ComponentPreview from './components/ComponentPreview';
 import './preview.scss';
 import { RedoOutlined } from '@ant-design/icons';
-import { AspectRatioEnum } from '@type/PageModel';
+import { AspectRatioEnum } from '@type/pageModel';
 import RightClickMenu from '@components/RightClickMenu';
 import ShortcutManager from '@components/ShortcutManager';
 

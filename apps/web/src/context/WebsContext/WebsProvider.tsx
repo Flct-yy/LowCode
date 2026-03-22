@@ -1,6 +1,6 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
-import PageModel, { AspectRatioEnum } from '@type/PageModel';
+import { PageModel, AspectRatioEnum } from '@type/pageModel';
 import { type ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';

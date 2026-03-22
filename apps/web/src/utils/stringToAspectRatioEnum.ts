@@ -1,4 +1,4 @@
-import { AspectRatioEnum } from '@/type/PageModel';
+import { AspectRatioEnum } from '@/type/pageModel';
 /**
  * 将字符串格式的宽高比转换为AspectRatioEnum枚举值
  * @param aspectRatio

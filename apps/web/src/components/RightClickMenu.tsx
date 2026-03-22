@@ -3,7 +3,7 @@ import './RightClickMenu.scss';
 import { message } from 'antd';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import renderCopyComNewID from '@/utils/renderCopyComNewID';
-import { AspectRatioEnum } from '@/type/PageModel';
+import { AspectRatioEnum } from '@/type/pageModel';
 
 
 const RightClickMenu: React.FC<{ exLeft?: number, exTop?: number, children?: React.ReactNode }> = ({ exLeft, exTop, children }) => {

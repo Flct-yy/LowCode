@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import useWebsContext from '@context/WebsContext/useWebsContext';
-import { AspectRatioEnum } from '@/type/PageModel';
+import { AspectRatioEnum } from '@/type/pageModel';
 import renderCopyComNewID from '@/utils/renderCopyComNewID';
 import { message } from 'antd';
 
