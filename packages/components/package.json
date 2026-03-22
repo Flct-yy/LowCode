@@ -1,7 +1,6 @@
 {
   "name": "@wect/components",
   "version": "1.0.0",
-  "private": false,
   "packageManager": "yarn@4.9.1",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -29,8 +28,6 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
-    "@types/react-dnd": "^3.0.2",
-    "@types/react-dnd-html5-backend": "^3.0.2",
     "@types/react-dom": "19.2.0",
     "@vitejs/plugin-react": "^5.1.2",
     "sass": "^1.97.2",

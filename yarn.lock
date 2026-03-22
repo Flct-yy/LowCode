@@ -2712,24 +2712,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dnd-html5-backend@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@types/react-dnd-html5-backend@npm:3.0.2"
-  dependencies:
-    react-dnd-html5-backend: "npm:*"
-  checksum: 10c0/85cec8edc481fd613cb1b7d3da04b12edd061111dd6b2011869795a3d8dd9a5908d76c5eca6b4a443459d03284e5a745daa5e02828cba86dafad1444a97a00ba
-  languageName: node
-  linkType: hard
-
-"@types/react-dnd@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@types/react-dnd@npm:3.0.2"
-  dependencies:
-    react-dnd: "npm:*"
-  checksum: 10c0/a212106fe1316379aec9b4d71ec25fa7e1b0cc55e18c95ef43a55eb37ce77a6f6d182f68e78d0ca4e05beefe2b080863648a6f8316c21379b86ab45d82fce26a
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:19.2.0":
   version: 19.2.0
   resolution: "@types/react-dom@npm:19.2.0"
@@ -3322,8 +3304,6 @@ __metadata:
   dependencies:
     "@ant-design/icons": "npm:^6.1.0"
     "@types/react": "npm:^19.2.7"
-    "@types/react-dnd": "npm:^3.0.2"
-    "@types/react-dnd-html5-backend": "npm:^3.0.2"
     "@types/react-dom": "npm:19.2.0"
     "@vitejs/plugin-react": "npm:^5.1.2"
     "@wect/type": "workspace:*"
@@ -7969,7 +7949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dnd-html5-backend@npm:*, react-dnd-html5-backend@npm:^16.0.1":
+"react-dnd-html5-backend@npm:^16.0.1":
   version: 16.0.1
   resolution: "react-dnd-html5-backend@npm:16.0.1"
   dependencies:
@@ -7978,7 +7958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dnd@npm:*, react-dnd@npm:^16.0.1":
+"react-dnd@npm:^16.0.1":
   version: 16.0.1
   resolution: "react-dnd@npm:16.0.1"
   dependencies:

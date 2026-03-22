@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "YARN_ENABLE_WORKSPACES": "true"
+    }
+  },
+  "routes": [
+    { "src": "/(.*)", "dest": "/apps/web/build/$1" }
+  ]
+}

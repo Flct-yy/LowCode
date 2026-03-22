@@ -1,7 +1,6 @@
 {
   "name": "@wect/type",
   "version": "1.0.0",
-  "private": false,
   "packageManager": "yarn@4.9.1",
   "main": "dist/index.js",
   "module": "dist/index.js",
