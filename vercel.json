@@ -6,7 +6,7 @@
       "NODE_ENV": "production"
     }
   },
-  "installCommand": "yarn install --frozen-lockfile",
+  "installCommand": "yarn install --immutable",
   "buildCommand": "yarn build:all",
   "outputDirectory": "./",
   "routes": [
