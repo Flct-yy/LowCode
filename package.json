@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "yarn workspaces foreach -A run test",
-    "build:all": "yarn workspaces foreach -A -p run build",
+    "build:all": "yarn build:packages && yarn build:apps",
     "build:apps": "yarn workspaces foreach -A --include 'apps/*' -p run build",
     "build:packages": "yarn workspaces foreach -A --include 'packages/*' -p run build",
     "dev:pre": "yarn workspace @wect/pre_iframe dev",

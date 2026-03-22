@@ -2,10 +2,26 @@
   "version": 2,
   "build": {
     "env": {
-      "YARN_ENABLE_WORKSPACES": "true"
+      "YARN_ENABLE_WORKSPACES": "true",
+      "NODE_ENV": "production"
     }
   },
+  "installCommand": "yarn install --frozen-lockfile",
+  "buildCommand": "yarn build:all",
+  "outputDirectory": "./",
   "routes": [
-    { "src": "/(.*)", "dest": "/apps/web/build/$1" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/apps/api/dist/main.js"
+    },
+    {
+      "src": "/pre/(.*)",
+      "dest": "/apps/preIframe/dist/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/dist/$1",
+      "status": 200
+    }
   ]
 }
