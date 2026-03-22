@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "installCommand": "npm install -g corepack && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn@4.9.1 install --immutable --force",
+  "buildCommand": "yarn@4.9.1 build",
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/apps/api/dist/main.js" },
+    { "src": "/(.*)", "dest": "/apps/web/dist/$1" }
+  ]
+}
