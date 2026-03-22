@@ -17,7 +17,7 @@ export const SelectItemFieldEnum = {
   select_color: 'select.color',
 };
 
-export const SelectConfigItem: ConfigItem[] = [
+export const SelectConfigItems: ConfigItem[] = [
   // 背景颜色
   {
     field: SelectItemFieldEnum.select_backgroundColor,

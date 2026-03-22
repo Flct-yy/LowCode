@@ -21,7 +21,7 @@ import { RadarChartItemFieldEnum, RadarChartConfigItem, RadarChartConfigList } f
 import { TimelineItemFieldEnum, TimelineConfigItem, TimelineConfigList } from "./components/Timeline";
 import { DrawerItemFieldEnum, DrawerConfigItem, DrawerConfigList } from "./components/Drawer";
 import { RadioItemFieldEnum, RadioConfigItem, RadioConfigList } from "./components/Radio";
-import { SelectItemFieldEnum, SelectConfigItem, SelectConfigList } from "./components/Select";
+import { SelectItemFieldEnum, SelectConfigItems, SelectConfigList } from "./components/Select";
 import { ComponentsConfig } from "./Config";
 import { ConfigItem } from "./ConfigItem";
 
@@ -78,7 +78,7 @@ const initConfigItem: ConfigItem[] = [
   ...TimelineConfigItem,
   ...DrawerConfigItem,
   ...RadioConfigItem,
-  ...SelectConfigItem,
+  ...SelectConfigItems,
 ];
 
 const initConfigList: ComponentsConfig[] = [

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { resolve } from 'dns'
+import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,5 +15,12 @@ export default defineConfig({
   build: {
     outDir: 'dist', // 构建输出目录
     sourcemap: true, // 生成 sourcemap
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '@wect/type': resolve(__dirname, '../../packages/type/src'),
+      '@wect/components': resolve(__dirname, '../../packages/components/src')
+    }
   },
 })

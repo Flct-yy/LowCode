@@ -32,6 +32,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
+      "@wect/type": ["../../packages/type/src"],
+      "@wect/components": ["../../packages/components/src"]
     },
   },
   "include": [

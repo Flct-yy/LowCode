@@ -21,7 +21,9 @@
       "@scss/*": ["src/scss/*"],
       "@pages/*": ["src/pages/*"],
       "@router/*": ["src/router/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@wect/type": ["../../packages/type/src"],
+      "@wect/components": ["../../packages/components/src"]
     }
   },
   "include": ["src", "api/pageApi.ts", "api/api.ts", "../../packages/components/src/utils/dynamicStyleManager.ts"]
