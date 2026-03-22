@@ -26,5 +26,5 @@
       "@wect/components": ["../../packages/components/src"]
     }
   },
-  "include": ["src", "api/pageApi.ts", "api/api.ts", "../../packages/components/src/utils/dynamicStyleManager.ts"]
+  "include": ["src", "api/pageApi.ts", "api/api.ts", "../../packages/components/src/utils/dynamicStyleManager.ts", "../../packages/type/**/*"]
 }
