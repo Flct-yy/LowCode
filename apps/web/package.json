@@ -1,7 +1,7 @@
 {
   "name": "@wect/web",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "dev": "vite",
