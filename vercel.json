@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "npm install -g corepack && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn install --immutable --force",
+  "installCommand": "npm install -g corepack && corepack enable && corepack prepare yarn@4.9.1 --activate && yarn -v &&yarn install --immutable",
   "buildCommand": "yarn@4.9.1 build",
   "routes": [
     {
