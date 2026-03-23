@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
 import { type ComponentSchema } from '@wect/type';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
-import RenderComponentContent from './RenderComponentContent';
+import RenderComponentContent from './renderComponentContent';
 import './ComponentPreview.scss';
 import { useDrop, useDrag, DragSourceMonitor } from 'react-dnd';
 import { DnDTypes } from '@/type/DnDTypes';

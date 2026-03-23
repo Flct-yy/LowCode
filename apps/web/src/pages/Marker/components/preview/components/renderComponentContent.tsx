@@ -10,7 +10,7 @@ import calculateDropPosition from "@utils/calculateDropPosition";
 import { isLayoutComponent } from "@utils/componentUtils";
 import { Default, Flex, Text, Image, Button, Input, Slider, Label, Textarea, Switch, Form, Card, Calendar, Pagination, Table, Menu, TimePicker, LineChart, BarChart, PieChart, RadarChart, Timeline, Drawer, Radio, Select } from '@wect/components';
 import { ComTree } from '@wect/type';
-import './RenderComponentContent.scss'
+import './renderComponentContent.scss'
 import '@scss/variables.scss'
 import '@wect/components/index.css';
 
