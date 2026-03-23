@@ -12,7 +12,7 @@ import { createSupabaseClient } from './index';
   providers: [
     {
       provide: 'SUPABASE_CLIENT',
-      useFactory: (configService: ConfigService) => {
+      useFactory: () => {
         return createSupabaseClient();
       },
       inject: [ConfigService],

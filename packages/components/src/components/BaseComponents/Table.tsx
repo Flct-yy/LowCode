@@ -76,11 +76,6 @@ function Table({
     dataSource = [];
   }
 
-  // 定义数据类型
-  interface TableRow {
-    [key: string]: any;
-  }
-
   return (
     <div
       ref={divRef}

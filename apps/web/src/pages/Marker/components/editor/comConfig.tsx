@@ -5,7 +5,6 @@ import { type ComponentSchema } from '@wect/type';
 import { type TotesConfig } from '@wect/type';
 import { Empty } from 'antd';
 import useWebsContext from "@/context/WebsContext/useWebsContext";
-import { ComTree } from "@wect/type";
 
 const ComConfig: React.FC = () => {
 

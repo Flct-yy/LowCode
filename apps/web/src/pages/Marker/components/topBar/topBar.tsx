@@ -3,7 +3,7 @@ import { Button, Flex, message, Dropdown, MenuProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 import pageApi from '@/api/pageApi';
-import { ComTree, ComponentSchema, PageMetadata, ComponentTypeEnum } from '@wect/type';
+import { ComTree, ComponentSchema, PageMetadata } from '@wect/type';
 import { PageData } from '@/context/WebsContext/WebsProvider';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
 import { wholeHtml } from '@/utils/componentToHtml';

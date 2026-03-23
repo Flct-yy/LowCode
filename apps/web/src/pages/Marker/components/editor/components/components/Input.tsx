@@ -1,4 +1,3 @@
-import React from "react";
 import { InputConfigItem } from "@wect/type";
 
 
@@ -10,11 +9,8 @@ const Input = ({
   setCurrentValue: (value: string) => void;
 }) => {
   const {
-    field,
     label,
-    uiType,
     placeholder,
-    defaultValue,
     currentValue,
   } = configItem;
 

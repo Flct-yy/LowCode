@@ -28,7 +28,7 @@ function Drawer({
 
   // 转换组件配置为 内联样式和类名
   const { isSelected, canDrop, isOverShallow } = componentDep || {}
-  const { style: inlineStyle, className } = convertConfigToStyle(component)
+  const { style: inlineStyle } = convertConfigToStyle(component)
   const newClassName = useMemo(() => {
     return `${isSelected ? 'component-preview__selected' : ''} ${canDrop && isOverShallow && component.comSchemaId !== ComTree.PREVIEW_NODE_ID ? 'component-preview__can-drop' : ''}  ${component.comSchemaId === ComTree.PREVIEW_NODE_ID ? 'component-preview__pre' : ''}`
   }, [isSelected, canDrop, isOverShallow, component.comSchemaId])
@@ -41,8 +41,6 @@ function Drawer({
   const placement = getConfigValue<string>(component.config, 'placement') || 'right';
   // 从配置中获取宽度
   const width = getConfigValue<number>(component.config, 'width') || 300;
-  // 从配置中获取按钮文本
-  const buttonText = getConfigText(component.config, 'buttonText') || '';
   // 从配置中获取按钮样式
   const buttonBackgroundColor = getConfigValue<string>(component.config, 'buttonBackgroundColor') || '#1890ff';
   const buttonColor = getConfigValue<string>(component.config, 'buttonColor') || '#ffffff';

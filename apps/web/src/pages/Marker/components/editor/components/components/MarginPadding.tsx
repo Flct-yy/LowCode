@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MarginPaddingConfigItem } from "@wect/type";
 
 interface MarginPaddingProps {
@@ -11,11 +11,7 @@ const MarginPadding: React.FC<MarginPaddingProps> = ({
   setCurrentValue,
 }) => {
   const {
-    field,
     label,
-    uiType,
-    placeholder,
-    defaultValue,
     currentValue,
   } = configItem;
 

@@ -111,7 +111,7 @@ function RadarChart({
           <div className="component__chart-radar-grid-border">
             <svg width="100%" height="100%" viewBox="0 0 100 100">
               <polygon
-                points={data.labels && data.labels.map((label, index) => {
+                points={data.labels && data.labels.map((_, index) => {
                   const angle = (index / data.labels.length) * Math.PI * 2 - Math.PI / 2;
                   const x = 50 + 55 * Math.cos(angle);
                   const y = 50 + 55 * Math.sin(angle);
@@ -125,7 +125,7 @@ function RadarChart({
           </div>
           {[1, 0.75, 0.5, 0.25].map((level, levelIndex) => (
             <div key={levelIndex} className="component__chart-radar-grid-level" style={{ transform: `scale(${level})` }}>
-              {data.labels && data.labels.map((label, labelIndex) => {
+              {data.labels && data.labels.map((_, labelIndex) => {
                 const angle = (labelIndex / data.labels.length) * Math.PI * 2 - Math.PI / 2;
                 const x = 50 + 50 * level * Math.cos(angle);
                 const y = 50 + 50 * level * Math.sin(angle);
@@ -160,7 +160,7 @@ function RadarChart({
           <div key={datasetIndex} className="component__chart-radar-dataset">
             <svg width="100%" height="100%" viewBox="0 0 100 100">
               <polygon
-                points={data.labels && data.labels.map((label, index) => {
+                points={data.labels && data.labels.map((_, index) => {
                   const value = dataset.data && dataset.data[index] !== undefined ? dataset.data[index] : 0;
                   const normalizedValue = value / maxValue;
                   const angle = (index / data.labels.length) * Math.PI * 2 - Math.PI / 2;

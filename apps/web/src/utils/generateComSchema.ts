@@ -1,4 +1,4 @@
-import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, ComponentCategoryEnum, comTreeInstance, ComTree } from '@wect/type';
+import { type ComponentMetadata, type ComponentSchema, ComponentTypeEnum, comTreeInstance, ComTree } from '@wect/type';
 import InitComponentMetadata from '../type/InitComponentMetaList';
 import generateComConfig from '@utils/generateComConfig';
 

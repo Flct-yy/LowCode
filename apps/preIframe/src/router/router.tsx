@@ -1,5 +1,4 @@
 // src/router/router.ts
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '@/App';
 import Preview from '@/pages/preview/preview';

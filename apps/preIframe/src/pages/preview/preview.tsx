@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ComTree, type ComponentSchema } from '@wect/type';
+import { type ComponentSchema } from '@wect/type';
 import pageApi from '@/api/pageApi';
 import RenderComponentContent from './RenderComponentContent';
 import './preview.scss';
-
-interface transformedData {
-  comTree: ComTree;
-}
 
 function Preview() {
   const { pageId } = useParams<{ pageId: string }>();

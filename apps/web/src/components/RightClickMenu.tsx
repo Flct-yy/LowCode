@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useContext } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import './RightClickMenu.scss';
 import { message } from 'antd';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
@@ -161,7 +161,7 @@ const RightClickMenu: React.FC<{ exLeft?: number, exTop?: number, children?: Rea
       window.removeEventListener('click', handleClickOutside);
       menuElement.removeEventListener('click', handleMenuClick);
     };
-  }, [exLeft, exTop,selectedComponentId,copyComponent]);
+  }, [exLeft, exTop, selectedComponentId, copyComponent]);
 
   return (
     <>

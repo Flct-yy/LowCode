@@ -1,5 +1,5 @@
-import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
-import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch, message, } from 'antd';
+import React, { useRef, useMemo } from 'react';
+import { Slider, InputNumber, Dropdown, Button, Popconfirm, Switch } from 'antd';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { DnDTypes } from '@type/DnDTypes';
 import { useDrop } from 'react-dnd';
@@ -13,7 +13,7 @@ import ShortcutManager from '@components/ShortcutManager';
 
 const Preview: React.FC = () => {
   const { state, actions } = useWebsContext();
-  const { metadata, comTree, selectedComponentId, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
+  const { comTree, zoomRatio, previewScrollTop, previewScrollLeft, isDragCom, isSliding } = state;
   const previewContainerRef = useRef<HTMLDivElement>(null);
 
 

@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
 import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
-import { getConfigText, getConfigValue } from '@/utils/index';
+import { getConfigText } from '@/utils/index';
 import '@/scss/preview.scss';
 
 function Form({
@@ -64,11 +64,6 @@ function Form({
     marginBottom: '20px',
     textAlign: 'center',
     color: '#333',
-  };
-
-  // 表单内容样式
-  const contentStyle: React.CSSProperties = {
-    marginBottom: '20px',
   };
 
   // 按钮容器样式

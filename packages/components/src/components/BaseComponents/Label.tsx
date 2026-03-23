@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { ComponentSchema, ComTree } from '@wect/type';
 import { convertConfigToStyle } from '@/utils/convertConfigToStyle';
-import { getConfigText, getConfigValue } from '@/utils/index';
+import { getConfigText } from '@/utils/index';
 import '@/scss/preview.scss';
 
 function Label({

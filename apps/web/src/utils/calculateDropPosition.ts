@@ -3,7 +3,7 @@ import { XYCoord } from 'react-dnd';
 import React from 'react';
 
 
-const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | null>, curCom: ComponentSchema|undefined, clientOffset: XYCoord | null) => {
+const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | null>, curCom: ComponentSchema | undefined, clientOffset: XYCoord | null) => {
   if (!curCom || !clientOffset) {
     return {
       goalID: -1,
@@ -12,7 +12,7 @@ const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | nu
   }
   let goalID = curCom.comSchemaId;
   let parChIndex = -1;
-  
+
   // 检查是否为根组件
   if (curCom.parentId === -1) {
     // 根组件没有父组件，直接返回
@@ -21,7 +21,7 @@ const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | nu
       parChIndex: -1
     };
   }
-  
+
   const parentCom = findNode(curCom.parentId);
   if (parentCom) {
     // 获取拖拽位置信息
@@ -54,7 +54,7 @@ const calculateDropPosition = (componentRef: React.RefObject<HTMLDivElement | nu
         goalID = parentCom.comSchemaId;
         parChIndex = parentCom.children.findIndex(child => child.comSchemaId === curCom.comSchemaId);
 
-        parentCom.config?.forEach((item, index) => {
+        parentCom.config?.forEach((item) => {
           item.configItem.forEach((configItem) => {
             const fieldName = configItem.field.replace(/^[a-z]+\./, '');
             if (fieldName === 'flexDirection') {

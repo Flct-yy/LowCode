@@ -16,7 +16,7 @@ function LineChart({
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
   const divRef = useRef<HTMLDivElement>(null);
-  
+
   // 从配置中获取图表标签
   const chartLabels = getConfigValue<string | any>(component.config, 'labels');
   // 从配置中获取图表数据集
@@ -25,7 +25,7 @@ function LineChart({
   const datasetBorderColor = getConfigValue<string>(component.config, 'dataset.borderColor');
   // 从配置中获取数据集线条张力
   const datasetTension = getConfigValue<number>(component.config, 'dataset.tension');
-  
+
   // 默认数据
   const defaultData = {
     labels: ['一月', '二月', '三月', '四月', '五月', '六月'],
@@ -49,7 +49,7 @@ function LineChart({
 
   // 处理图表数据
   let data = { ...defaultData };
-  
+
   try {
     // 解析标签
     if (chartLabels) {
@@ -59,7 +59,7 @@ function LineChart({
         data.labels = chartLabels;
       }
     }
-    
+
     // 解析数据集
     if (chartDatasets) {
       if (typeof chartDatasets === 'string') {
@@ -68,7 +68,7 @@ function LineChart({
         data.datasets = chartDatasets;
       }
     }
-    
+
     // 应用数据集边框颜色
     if (datasetBorderColor && data.datasets) {
       data.datasets = data.datasets.map((dataset: any) => ({
@@ -76,7 +76,7 @@ function LineChart({
         borderColor: datasetBorderColor
       }));
     }
-    
+
     // 应用数据集线条张力
     if (datasetTension !== undefined && data.datasets) {
       data.datasets = data.datasets.map((dataset: any) => ({
@@ -87,7 +87,7 @@ function LineChart({
   } catch (error) {
     console.error('Error parsing chart data:', error);
   }
-  
+
   // 处理拖拽
   useEffect(() => {
     handleDnD?.(divRef);
@@ -108,8 +108,8 @@ function LineChart({
         <div className="component__chart-line-legend">
           {data.datasets && data.datasets.map((dataset, datasetIndex) => (
             <div key={datasetIndex} className="component__chart-line-legend-item">
-              <span 
-                className="component__chart-line-legend-color" 
+              <span
+                className="component__chart-line-legend-color"
                 style={{ backgroundColor: dataset.borderColor || 'rgba(75, 192, 192, 1)' }}
               />
               <span className="component__chart-line-legend-label">{dataset.label}</span>
@@ -118,13 +118,13 @@ function LineChart({
         </div>
         {data.datasets && data.datasets.map((dataset, datasetIndex) => {
           // 计算折线的点
-          const points = data.labels && data.labels.map((label, index) => {
+          const points = data.labels && data.labels.map((_, index) => {
             const value = dataset.data && dataset.data[index] !== undefined ? dataset.data[index] : 0;
             const x = (index / (data.labels.length - 1)) * 100;
             const y = 100 - (value * 0.8);
             return { x, y };
           });
-          
+
           // 创建SVG路径
           let pathD = '';
           if (points && points.length > 0) {
@@ -133,33 +133,33 @@ function LineChart({
               pathD += ` L ${points[i].x} ${points[i].y}`;
             }
           }
-          
+
           return (
             <div key={datasetIndex} className="component__chart-line-dataset">
               <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path 
+                <path
                   d={pathD}
                   fill="none"
                   stroke={dataset.borderColor || 'rgba(75, 192, 192, 1)'}
                   strokeWidth="1"
                 />
                 {points && points.map((point, index) => (
-                      <circle 
-                        key={index}
-                        cx={point.x}
-                        cy={point.y}
-                        r="1"
-                        fill={dataset.borderColor || 'rgba(75, 192, 192, 1)'}
-                      />
-                    ))}
+                  <circle
+                    key={index}
+                    cx={point.x}
+                    cy={point.y}
+                    r="1"
+                    fill={dataset.borderColor || 'rgba(75, 192, 192, 1)'}
+                  />
+                ))}
               </svg>
             </div>
           );
         })}
         <div className="component__chart-line-labels">
           {data.labels && data.labels.map((label, index) => (
-            <span 
-              key={index} 
+            <span
+              key={index}
               className="component__chart-line-label"
               style={{
                 left: `${(index / (data.labels.length - 1)) * 100}%`

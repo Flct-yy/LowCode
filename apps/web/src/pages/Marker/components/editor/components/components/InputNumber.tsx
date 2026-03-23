@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Select } from "antd";
 import { InputNumberConfigItem } from "@wect/type";
-import { ConfigItemFieldEnum } from "@wect/type";
 
 const InputNumber = ({
   configItem,
@@ -13,9 +12,7 @@ const InputNumber = ({
   setCurrentUnit: (unit: string) => void;
 }) => {
   const {
-    field,
     label,
-    uiType,
     min,
     max,
     step,
@@ -23,7 +20,6 @@ const InputNumber = ({
     currentValue,
     currentUnit,
     units,
-    unit,
     maxs,
     mins,
   } = configItem;
@@ -88,9 +84,9 @@ const InputNumber = ({
   }
   const fieldName = configItem.field.replace(/^[a-zA-Z]+\./, '');
   const handleAuto = () => {
-    if(currentValue !== 'auto') {
+    if (currentValue !== 'auto') {
       setCurrentValue('auto');
-    }else{
+    } else {
       handleChange(defaultValue.toString());
     }
   }

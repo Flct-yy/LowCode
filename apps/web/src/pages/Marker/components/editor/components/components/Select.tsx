@@ -11,12 +11,9 @@ const Select = ({
   setCurrentValue: (value: string) => void;
 }) => {
   const {
-    field,
     label,
-    uiType,
     placeholder,
     options,
-    defaultValue,
     currentValue,
   } = configItem;
 

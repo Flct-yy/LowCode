@@ -1,5 +1,4 @@
 import { GroupConfigItem } from "@wect/type";
-import React from "react";
 
 const Group = ({ configItem,
   setCurrentValue, }: {
@@ -7,13 +6,8 @@ const Group = ({ configItem,
     setCurrentValue: (value: string) => void;
   }) => {
   const {
-    field,
     label,
-    uiType,
-    placeholder,
-    defaultValue,
     currentValue,
-    options,
   } = configItem;
   return (
     <div className="config-item">
@@ -21,7 +15,7 @@ const Group = ({ configItem,
       <div className="config-item__group">
         {configItem.options.map((item) => (
           <div className={`border padding no-select config-item__ui config-item__group__item ${currentValue === item.value ? 'active' : ''}`} key={item.value}
-          onClick={() => setCurrentValue(item.value)}>
+            onClick={() => setCurrentValue(item.value)}>
             {item.label}
           </div>
         ))}

@@ -1,11 +1,10 @@
-import React from 'react';
-import { ImageUploadConfigItem, UiTypeEnum } from '@wect/type';
+import { ImageUploadConfigItem } from '@wect/type';
 
 const ImageUpload = ({ configItem, setCurrentValue }: {
   configItem: ImageUploadConfigItem,
   setCurrentValue: (value: string) => void;
 }) => {
-  const { field, label, defaultValue, currentValue } = configItem;
+  const { label, currentValue } = configItem;
   return (
     <div className="config-item">
       <label className="config-item__label">{label}</label>

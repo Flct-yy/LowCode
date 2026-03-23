@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ColorPickerConfigItem } from "@wect/type";
 
 interface ColorPickerProps {
@@ -11,10 +11,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   setCurrentValue
 }) => {
   const {
-    field,
     label,
-    uiType,
-    placeholder,
     defaultValue,
     currentValue,
   } = configItem;

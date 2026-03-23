@@ -6,7 +6,7 @@ import type { TreeProps } from 'antd';
 import { ComTree } from '@wect/type';
 
 
-const ComTreeControl = ({ selectedComponentId, comTree, onSelect, onDragDrop }: { selectedComponentId: number, comTree: ComTree, onSelect: (compActiveIndex: number) => void, onDragDrop: (sourceId: number, targetParentId: number, childrenIndex: number) => void }) => {
+const ComTreeControl = ({ comTree, onSelect, onDragDrop }: { selectedComponentId: number, comTree: ComTree, onSelect: (compActiveIndex: number) => void, onDragDrop: (sourceId: number, targetParentId: number, childrenIndex: number) => void }) => {
   const TreeData = generateComTree(comTree.getRoot());
   const handleSelect = (selectedKeys: React.Key[], info: any) => {
     if (info.selected) {

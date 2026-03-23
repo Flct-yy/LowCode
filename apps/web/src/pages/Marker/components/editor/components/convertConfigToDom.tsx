@@ -22,7 +22,7 @@ interface ConvertConfigToDomProps {
  * 将配置项转换为对应的React组件
  */
 export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configItem, areaName }) => {
-  const { field, label, uiType, currentValue, placeholder } = configItem;
+  const { label, uiType } = configItem;
   const { actions } = useWebsContext();
 
   const handleChangeValue = (field: ConfigItemFieldEnum, value: any) => {
@@ -106,7 +106,7 @@ export const ConvertConfigToDom: React.FC<ConvertConfigToDomProps> = ({ configIt
           </div>
         </div>
       );
-      
+
     case UiTypeEnum.IMAGE_UPLOAD:
       return (
         <ImageUpload

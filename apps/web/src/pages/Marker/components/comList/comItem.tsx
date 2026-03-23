@@ -5,11 +5,11 @@ import { DnDTypes } from '@/type/DnDTypes';
 import './comItem.scss';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
 
-const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componentId, componentName, componentType, category, tags, version, description, icon, itemWidth }) => {
+const ComItem: React.FC<ComponentMetadata & { itemWidth: number }> = ({ componentId, componentName, componentType, itemWidth }) => {
 
   const { actions } = useWebsContext()
 
-  const [{ isDragging }, drag]: any = useDrag(
+  const [{ }, drag]: any = useDrag(
     {
       item: { type: DnDTypes.COMMETA, comMeta: { id: componentId } },
       type: DnDTypes.COMMETA,

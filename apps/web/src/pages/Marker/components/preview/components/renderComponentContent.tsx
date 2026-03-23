@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ComponentSchema, ComponentTypeEnum } from "@wect/type";
-import { useDrop, useDrag, DropTargetMonitor, DragSourceMonitor } from "react-dnd";
+import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
 import { message } from "antd";
 import { DnDTypes } from "@type/DnDTypes";
 import useWebsContext from "@context/WebsContext/useWebsContext";
@@ -233,7 +233,7 @@ const RenderComponentContent: React.FC<{
         commetaID: component.metadata.componentId
       }
     }), [component.comSchemaId, component.metadata.componentId]),
-    end: useCallback((item: any, monitor: DragSourceMonitor) => {
+    end: useCallback(() => {
       if (comTree?.findNode(ComTree.PREVIEW_NODE_ID)) {
         actions.remove_preview_node();
       }

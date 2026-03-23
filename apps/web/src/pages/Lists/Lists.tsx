@@ -123,7 +123,7 @@ const Lists: React.FC = () => {
     try {
       // 使用时间戳确保标题唯一性
       const uniqueTitle = `新页面_${Date.now()}`;
-      const newPage = await pageApi.createPage({
+      await pageApi.createPage({
         title: uniqueTitle,
         description: '这是一个新创建的页面',
         keywords: ['新页面'],

@@ -209,8 +209,8 @@ function WebsReducer(state: PageModel, action: {
 
 export default function WebsProvider({ pageId, children }: { pageId: number, children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState<boolean>(true);
+  const [, setError] = useState<string | null>(null);
 
   const defaultPageState: PageModel = {
     metadata: {

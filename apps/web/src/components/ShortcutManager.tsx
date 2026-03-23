@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useWebsContext from '@context/WebsContext/useWebsContext';
 import { AspectRatioEnum } from '@/type/pageModel';
 import renderCopyComNewID from '@/utils/renderCopyComNewID';
@@ -60,7 +60,7 @@ const ShortcutManager = () => {
           // 有选中文本，让浏览器默认处理复制操作
           return;
         }
-        
+
         e.preventDefault();
         // 这里调用你的复制逻辑
         try {
@@ -92,7 +92,7 @@ const ShortcutManager = () => {
           // 在输入框或可编辑区域中，让浏览器默认处理粘贴操作
           return;
         }
-        
+
         e.preventDefault();
         // 这里调用你的粘贴逻辑
         try {
