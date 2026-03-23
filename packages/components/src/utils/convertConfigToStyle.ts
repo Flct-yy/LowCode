@@ -1,5 +1,5 @@
-import { ComponentSchema, ComTree } from "@wect/type";
-import { updateComponentStyle, generateComponentClasses, removeComponentStyle } from "./dynamicStyleManager";
+import { ComponentSchema } from "@wect/type";
+import { updateComponentStyle, generateComponentClasses } from "./dynamicStyleManager";
 
 // 将组件配置转换为React样式对象
 // 现在主要返回位置相关的内联样式，其他样式通过动态CSS类处理

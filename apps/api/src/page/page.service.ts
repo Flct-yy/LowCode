@@ -227,7 +227,7 @@ export class PageService {
     // 转换为包含com_count的格式，过滤掉不需要的字段
     const pages = await Promise.all((metadataList || []).map(async (metadata) => {
       // 根据model_id获取页面模型
-      const { data: model, error: modelError } = await this.supabase
+      const { data: model } = await this.supabase
         .from('page_model')
         .select('com_count')
         .eq('id', metadata.model_id)

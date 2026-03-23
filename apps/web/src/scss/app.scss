@@ -1,5 +1,5 @@
 // 引入全局CSS变量
-@import './variables.scss';
+@use './variables.scss';
 
 .container {
   position: absolute;

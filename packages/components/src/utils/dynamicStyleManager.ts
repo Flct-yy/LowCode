@@ -163,7 +163,6 @@ class DynamicStyleManager {
   // 生成组件CSS类
   private generateComponentCSS(component: ComponentSchema): string {
     const componentId = component.comSchemaId.toString();
-    const componentType = component.metadata.componentType;
     const cssVariables = this.generateComponentVariables(component);
 
     let css = `.component-instance-${componentId} {\n`;
