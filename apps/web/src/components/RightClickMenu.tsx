@@ -74,6 +74,7 @@ const RightClickMenu: React.FC<{ exLeft?: number, exTop?: number, children?: Rea
         switch (menuItem.id) {
           case 'copy':
             try {
+              if (!comTree) return;
               if (selectedComponentId === comTree.getRoot().comSchemaId) {
                 message.error('不能复制根组件');
                 return;
@@ -109,6 +110,7 @@ const RightClickMenu: React.FC<{ exLeft?: number, exTop?: number, children?: Rea
             break;
           case 'delete':
             try {
+              if (!comTree || !state.comTree) return;
               if (selectedComponentId !== -1) {
                 if (selectedComponentId === comTree.getRoot().comSchemaId) {
                   message.error('不能删除根组件');

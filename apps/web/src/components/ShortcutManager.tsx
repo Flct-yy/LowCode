@@ -30,6 +30,7 @@ const ShortcutManager = () => {
         e.preventDefault();
         // 这里调用你的删除逻辑
         try {
+          if (!comTree || !state.comTree) return;
           if (selectedComponentId !== -1) {
             if (selectedComponentId === comTree.getRoot().comSchemaId) {
               message.error('不能删除根组件');
@@ -63,6 +64,7 @@ const ShortcutManager = () => {
         e.preventDefault();
         // 这里调用你的复制逻辑
         try {
+          if (!comTree || !state.comTree) return;
           if (selectedComponentId === comTree.getRoot().comSchemaId) {
             message.error('不能复制根组件');
             return;
