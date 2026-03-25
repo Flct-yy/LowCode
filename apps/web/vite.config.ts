@@ -17,6 +17,24 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: true,
+    // 防止 React 重复打包的关键配置
+    rollupOptions: {
+      external: [],
+      output: {
+        // 确保 React 不会被打包多次
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['antd', '@ant-design/icons'],
+          'vendor-dnd': ['react-dnd', 'react-dnd-html5-backend'],
+        },
+        // 防止全局变量冲突
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
   },
   resolve: {
     // 修复路径映射，使用resolve函数确保正确解析

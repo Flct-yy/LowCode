@@ -36,13 +36,18 @@ class ComTree {
   constructor(comTree?: ComponentSchema, comCount?: number) {
     // 根节点（默认根节点 id 为 0，可根据需求调整）
     if (!comTree) {
-      this.root = defaultRoot;
+      // 为默认根节点生成唯一ID
+      const defaultRootWithUniqueId = {
+        ...defaultRoot,
+        comSchemaId: new Date().getTime()
+      };
+      this.root = defaultRootWithUniqueId;
     } else {
       this.root = comTree;
     }
-    ComTree.instance = this;
     this.autoID = new AutoID(this.root.comSchemaId, comCount);
     this.nodeMap = new Map<number, ComponentSchema>();
+    ComTree.instance = this;
     this.buildNodeMap(); // 构建节点缓存
   }
   // 公共静态方法获取唯一实例

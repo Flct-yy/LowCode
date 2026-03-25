@@ -2,6 +2,10 @@
   "name": "@wect/web",
   "version": "1.0.0",
   "packageManager": "yarn@4.9.1",
+  "resolutions": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -28,9 +32,9 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@ant-design/icons": "6.x",
+    "@ant-design/icons": "^6.1.0",
     "@wect/components": "workspace:*",
-    "@wect/type": "workspace:*",
+    "@wect/type": "workspace:^",
     "@wect/utils": "workspace:*",
     "antd": "^6.0.0",
     "axios": "^1.13.2",
