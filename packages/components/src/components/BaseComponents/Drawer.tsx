@@ -18,11 +18,12 @@ function Drawer({
   handleComponentSelect?: (e: React.MouseEvent) => void;
   children?: React.ReactNode;
 }) {
-  const divRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   // 处理拖拽 - 移到useEffect中避免渲染期间状态更新
   useEffect(() => {
+    if (!divRef.current) return;
     handleDnD?.(divRef);
   }, [handleDnD]);
 

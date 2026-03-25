@@ -14,7 +14,7 @@ function Slider({
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
-  const divRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
 
   // 从配置中获取 Slider 组件的属性
   const min = getConfigValue<number>(component.config, 'min') ?? 0;
@@ -27,6 +27,7 @@ function Slider({
 
   // 处理拖拽 - 移到useEffect中避免渲染期间状态更新
   useEffect(() => {
+    if (!divRef.current) return;
     handleDnD?.(divRef);
   }, [handleDnD]);
 

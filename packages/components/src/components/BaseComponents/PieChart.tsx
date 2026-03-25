@@ -15,7 +15,7 @@ function PieChart({
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
-  const divRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
   
   // 从配置中获取图表标签
   const chartLabels = getConfigValue<string | any>(component.config, 'labels');
@@ -83,6 +83,7 @@ function PieChart({
   
   // 处理拖拽
   useEffect(() => {
+    if (!divRef.current) return;
     handleDnD?.(divRef);
   }, [handleDnD]);
 

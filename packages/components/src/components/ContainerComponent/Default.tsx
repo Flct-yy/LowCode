@@ -17,13 +17,14 @@ function Default({
   handleDnD?: (ref: React.RefObject<HTMLDivElement | null>) => void;
   handleComponentSelect?: (e: React.MouseEvent) => void;
 }) {
-  const divRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
 
   // 获得组件文本
   const text = getConfigText(component.config, 'text');
 
   // 处理拖拽，使用useEffect确保在渲染完成后调用
   useEffect(() => {
+    if (!divRef.current) return;
     handleDnD?.(divRef);
   }, [handleDnD]);
 
