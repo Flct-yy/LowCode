@@ -83,7 +83,12 @@ const renderComponent = (component: ComponentSchema): string => {
   }
   
   try {
-    // 渲染 React 组件为 HTML 字符串
+    // 检查是否在浏览器环境中
+    if (typeof window !== 'undefined') {
+      // 在客户端环境中，返回一个简单的占位符
+      return `<div class="component-preview__default component__${metadata.componentType.toLowerCase()}">${metadata.componentType}</div>`;
+    }
+    // 只在服务器端环境中使用renderToString
     const element = React.createElement(Component, {
       component,
       componentDep: {

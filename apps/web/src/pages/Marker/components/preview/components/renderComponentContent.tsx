@@ -52,7 +52,6 @@ const RenderComponentContent: React.FC<{
       if (!monitor.isOver({ shallow: true }) || !monitor.canDrop() || monitor.didDrop() === true) {
         return;
       }
-
       if (component.comSchemaId === ComTree.PREVIEW_NODE_ID) {
         const curCom = comTree?.findNode(component.comSchemaId);
         const goalID = curCom?.parentId;
@@ -82,11 +81,13 @@ const RenderComponentContent: React.FC<{
         }
         let { goalID, parChIndex } = calculateDropPosition(componentRef, curCom, clientOffset);
         if (item.type === DnDTypes.COMMETA) {
+
           const comMeta = item as { type: string, comMeta: { id: number } };
           // 生成组件Schema
           const compSchema = generateComSchema(comMeta.comMeta.id, goalID);
           // 拖拽组件到画布时，更新选中组件
           actions.add_component(compSchema, compSchema.parentId, parChIndex);
+
         } else if (item.type === DnDTypes.COMSCHEMA) {
           const comSchema = item as { type: string, comMeta: { comSchemaId: number, commetaID: number } };
           // 拖拽组件到组件上时，更新选中组件
@@ -126,6 +127,7 @@ const RenderComponentContent: React.FC<{
           message.error('非布局组件不能接收拖拽组件');
         }
       }
+
     }, [actions, comTree, component.comSchemaId, metadata.componentType]),
     hover: useCallback((item: any, monitor: DropTargetMonitor) => {
       if (component.comSchemaId === ComTree.PREVIEW_NODE_ID) {
@@ -252,6 +254,7 @@ const RenderComponentContent: React.FC<{
     if (isSelected && onSetSelectedComponentRef) {
       onSetSelectedComponentRef(component, ref.current);
     }
+
   }, [isSelected, component, onSetSelectedComponentRef]);
 
   // 当选中状态变化时，传递或清除ref
@@ -277,16 +280,15 @@ const RenderComponentContent: React.FC<{
 
       // 遍历子组件
       children.forEach((child, index) => {
-        const childId = child.comSchemaId;
-
         // 确保子组件有必要的属性
-        if (!child || !childId || !child.metadata || !child.metadata.componentName) {
+        if (!child || !child.comSchemaId || !child.metadata || !child.metadata.componentName) {
           console.error('无效子组件:', {
             childId: child?.comSchemaId,
             index
           });
           return;
         }
+        const childId = child.comSchemaId;
 
         try {
           const renderedChild = (

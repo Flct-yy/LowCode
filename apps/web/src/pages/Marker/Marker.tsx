@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Splitter, Layout, Divider } from 'antd';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import WebsProvider from '@context/WebsContext/WebsProvider';
 import TopBar from "./components/topBar/topBar";
 import ComList from "./components/comList/comList";
@@ -10,11 +10,17 @@ const { Header, Content } = Layout;
 
 const Marker: React.FC = () => {
   // 在组件内部
-  const location = useLocation();
-  const { pageId } = location.state || {};
+  // const location = useLocation();
+  // const { pageId } = location.state || {};
+  /**-------------------TODO------------------- */
+  // 从localStorage获取页面属性
+
+  /**-------------------TODO------------------- */
 
   return (
-    <WebsProvider pageId={pageId}>
+    <WebsProvider
+    // pageId={pageId}
+    >
       <Layout>
         <Header style={{ height: 'auto', padding: '0', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
           <TopBar />

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { type PageMetadata } from "@wect/type";
-import { Input, Tag,message } from 'antd';
+import { Input, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import pageApi from '@/api/pageApi';
+import useWebsContext from "@/context/WebsContext/useWebsContext";
+//TODO
+// import pageApi from '@/api/pageApi';
 
 const PageConfig: React.FC<{ metadata?: PageMetadata }> = ({ metadata }) => {
   const [title, setTitle] = useState(metadata?.title || '');
@@ -13,14 +15,17 @@ const PageConfig: React.FC<{ metadata?: PageMetadata }> = ({ metadata }) => {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<any>(null);
 
+  const { actions } = useWebsContext();
+
   // 处理标题输入变化
   const handleTitleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    if(metadata?.id){
+    if (metadata?.id) {
       try {
-        await pageApi.updatePage(metadata.id,{
-          title: e.target.value,
-        });
+        // await pageApi.updatePage(metadata.id,{
+        //   title: e.target.value,
+        // });
+        actions.edit_title(e.target.value);
       } catch (error) {
         message.error('更新页面标题失败');
       }
@@ -29,11 +34,12 @@ const PageConfig: React.FC<{ metadata?: PageMetadata }> = ({ metadata }) => {
   // 处理描述输入变化
   const handleDescriptionChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
-    if(metadata?.id){
+    if (metadata?.id) {
       try {
-        await pageApi.updatePage(metadata.id,{
-          description: e.target.value,
-        });
+        // await pageApi.updatePage(metadata.id,{
+        //   description: e.target.value,
+        // });
+        actions.edit_description(e.target.value);
       } catch (error) {
         message.error('更新页面描述失败');
       }
@@ -49,11 +55,12 @@ const PageConfig: React.FC<{ metadata?: PageMetadata }> = ({ metadata }) => {
   const handleClose = async (removedTag: string) => {
     const newTags = tags.filter((tag) => tag !== removedTag);
     setTags(newTags);
-    if(metadata?.id){
+    if (metadata?.id) {
       try {
-        await pageApi.updatePage(metadata.id,{
-          keywords: newTags,
-        });
+        // await pageApi.updatePage(metadata.id,{
+        //   keywords: newTags,
+        // });
+        actions.edit_keywords(newTags);
       } catch (error) {
         message.error('更新页面标签失败');
       }
@@ -74,11 +81,12 @@ const PageConfig: React.FC<{ metadata?: PageMetadata }> = ({ metadata }) => {
     }
     setInputVisible(false);
     setInputValue('');
-    if(metadata?.id){
+    if (metadata?.id) {
       try {
-        await pageApi.updatePage(metadata.id,{
-          keywords: [...tags, inputValue],
-        });
+        // await pageApi.updatePage(metadata.id,{
+        //   keywords: [...tags, inputValue],
+        // });
+        actions.edit_keywords([...tags, inputValue]);
       } catch (error) {
         message.error('更新页面标签失败');
       }

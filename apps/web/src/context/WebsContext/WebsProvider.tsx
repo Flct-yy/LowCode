@@ -1,12 +1,12 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import WebsContext, { WebsContextType } from './WebsContext';
 import { PageModel, AspectRatioEnum } from '@type/pageModel';
-import { type ComponentSchema } from '@wect/type';
+import { ComTree, type ComponentSchema } from '@wect/type';
 import { ConfigAreaEnum, ConfigItemFieldEnum } from '@wect/type';
 import { useNavigate } from 'react-router-dom';
-import pageApi from '@/api/pageApi';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
-import { ComTree } from '@wect/type';
+//TODO
+// import pageApi from '@/api/pageApi';
 
 export interface PageData extends Pick<PageModel, 'comTree' | 'metadata' | 'aspectRatio'> { }
 
@@ -207,7 +207,11 @@ function WebsReducer(state: PageModel, action: {
   }
 }
 
-export default function WebsProvider({ pageId, children }: { pageId: number, children: React.ReactNode }) {
+export default function WebsProvider({ children }: {
+  //TODO
+  // pageId: number,
+  children: React.ReactNode
+}) {
   const navigate = useNavigate();
   const [, setLoading] = useState<boolean>(true);
   const [, setError] = useState<string | null>(null);
@@ -233,7 +237,7 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
   }
   // 使用useReducer管理状态，初始状态为initialPageState
   const [state, dispatch] = useReducer(WebsReducer, defaultPageState);
-
+  
   // 使用useMemo缓存actions对象，防止每次渲染都重新创建
   const actions = React.useMemo(() => ({
     set_page: (PageData: PageData) => {
@@ -329,46 +333,69 @@ export default function WebsProvider({ pageId, children }: { pageId: number, chi
     // 重置状态
     setLoading(true);
     setError(null);
+    //TODO
     // 验证pageId
-    if (!pageId || typeof pageId !== 'number') {
-      setError('pageId 为空或类型不正确');
-      setLoading(false);
-      navigate('/');
-      return;
+    // if (!pageId || typeof pageId !== 'number') {
+    //   setError('pageId 为空或类型不正确');
+    //   setLoading(false);
+    //   navigate('/');
+    //   return;
+    // }
+    /**-------------------TODO------------------- */
+    // 从localStorage获取页面属性
+    const res: any = JSON.parse(localStorage.getItem('pages') || '{}');
+
+    if (res.metadata && res.comTree) {
+      const transformedData: PageData = {
+        metadata: {
+          ...res.metadata,
+          // 确保日期字段是Date对象
+          createdAt: new Date(res.metadata.createdAt),
+          updatedAt: new Date(res.metadata.updatedAt),
+        },
+        // 使用localStorage中的comTree数据创建ComTree实例
+        comTree: new ComTree(res.comTree, res.comCount),
+        aspectRatio: stringToAspectRatioEnum(res.aspectRatio),
+      };
+      actions.set_page(transformedData);
     }
+
+    /**-------------------TODO------------------- */
     // 调用API获取页面详情
-    pageApi.getPageById(pageId)
-      .then((res) => {
-        if (!res || !res.pageMetadata || !res.com_tree) {
-          throw new Error('API返回数据格式不正确');
-        }
-        // 数据转换
-        const transformedData: PageData = {
-          metadata: {
-            ...res.pageMetadata,
-            // 确保日期字段是Date对象
-            createdAt: new Date(res.pageMetadata.createdAt),
-            updatedAt: new Date(res.pageMetadata.updatedAt),
-          },
-          // 使用API返回的com_tree数据创建ComTree实例
-          comTree: new ComTree(res.com_tree, res.com_count),
-          aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
-        };
-        // 调用set_page设置页面数据
-        actions.set_page(transformedData);
-      })
-      .catch((error) => {
-        // 处理API调用错误
-        const errorMessage = error instanceof Error ? error.message : '获取页面详情失败';
-        console.error('获取页面详情失败:', error);
-        setError(errorMessage);
-        // 跳转到列表页
-        navigate('/');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [pageId, navigate, actions]);
+    // pageApi.getPageById(pageId)
+    //   .then((res) => {
+    //     if (!res || !res.pageMetadata || !res.com_tree) {
+    //       throw new Error('API返回数据格式不正确');
+    //     }
+    //     // 数据转换
+    //     const transformedData: PageData = {
+    //       metadata: {
+    //         ...res.pageMetadata,
+    //         // 确保日期字段是Date对象
+    //         createdAt: new Date(res.pageMetadata.createdAt),
+    //         updatedAt: new Date(res.pageMetadata.updatedAt),
+    //       },
+    //       // 使用API返回的com_tree数据创建ComTree实例
+    //       comTree: new ComTree(res.com_tree, res.com_count),
+    //       aspectRatio: stringToAspectRatioEnum(res.aspect_ratio),
+    //     };
+    //     // 调用set_page设置页面数据
+    //     actions.set_page(transformedData);
+    //   })
+    //   .catch((error) => {
+    //     // 处理API调用错误
+    //     const errorMessage = error instanceof Error ? error.message : '获取页面详情失败';
+    //     console.error('获取页面详情失败:', error);
+    //     setError(errorMessage);
+    //     // 跳转到列表页
+    //     navigate('/');
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+  }, [
+    // pageId, 
+    navigate, actions]);
 
   const contextValue: WebsContextType = {
     state,

@@ -54,7 +54,10 @@ const ComponentPreview: React.FC<{
       isOverShallow: monitor.isOver({ shallow: true })
     })
   });
-  dropComItem(previewRef.current);
+  // 确保previewRef.current不为null时才调用dropComItem
+  if (previewRef.current) {
+    dropComItem(previewRef.current);
+  }
   // 使用 react-dnd 实现画布拖拽
   const [, drag] = useDrag({
     type: DnDTypes.PAGEMOVE,

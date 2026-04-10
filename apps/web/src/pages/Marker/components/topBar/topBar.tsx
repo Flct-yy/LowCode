@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Flex, message, Dropdown, MenuProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useWebsContext from '@/context/WebsContext/useWebsContext';
-import pageApi from '@/api/pageApi';
-import { ComTree, ComponentSchema, PageMetadata } from '@wect/type';
+// import pageApi from '@/api/pageApi';
+import { ComTree, ComponentSchema, PageMetadata, defaultRoot } from '@wect/type';
 import { PageData } from '@/context/WebsContext/WebsProvider';
 import { stringToAspectRatioEnum } from '@/utils/stringToAspectRatioEnum';
 import { wholeHtml } from '@/utils/componentToHtml';
@@ -27,23 +27,60 @@ const TopBar: React.FC = () => {
     // 先保存当前页面配置
     handleSave();
     // 处理预览逻辑
-    navigate(`/preview/${metadata.id}`);
+    navigate(`/preview`);
   };
 
   // 保存页面配置和组件树
   const handleSave = async () => {
     // 处理保存逻辑
     try {
-
-      await pageApi.updatePage(metadata.id, {
+      // 1. 保存到localStorage
+      const pageProperties = {
+        metadata: {
+          ...state.metadata,
+          updatedAt: Date.now().toString(),
+        },
         comTree: comTree?.getRoot(),
-        aspectRatio: `${state.aspectRatio}`,
-        comCount: (comTree?.getCount() || 0),
-      });
+        comCount: comTree?.getCount(),
+        aspectRatio: state.aspectRatio,
+      };
+
+      localStorage.setItem('pages', JSON.stringify(pageProperties));
+      /**----------TODO-------------- */
+      // await pageApi.updatePage(metadata.id, {
+      //   comTree: comTree?.getRoot(),
+      //   aspectRatio: `${state.aspectRatio}`,
+      //   comCount: (comTree?.getCount() || 0),
+      // });
       message.success('保存成功');
     } catch (error) {
       message.error('保存失败');
     }
+  };
+
+  // 新建页面
+  const handleNewPage = () => {
+    // 生成新的页面属性
+    const data = Date.now();
+    const newPageProperties = {
+      metadata: {
+        id: data,
+        title: `新页面_${data}`,
+        description: '这是一个新创建的页面',
+        keywords: ['新页面'],
+        createdAt: data.toString(),
+        updatedAt: data.toString(),
+      },
+      comTree: defaultRoot,
+      comCount: 1,
+      aspectRatio: '16/9',
+    };
+
+    // 保存到localStorage
+    localStorage.setItem('pages', JSON.stringify(newPageProperties));
+
+    // 刷新页面以加载新页面
+    window.location.reload();
   };
 
   // 导入页面配置和组件树
@@ -225,8 +262,10 @@ const TopBar: React.FC = () => {
         height: '100%',
         padding: '10px 20px',
       }} justify={'space-between'} align={'center'}>
-        <Button type="text" onClick={() => navigate(-1)}>返回</Button>
+        <div></div>
+        {/* <Button type="text" onClick={() => navigate(-1)}>返回</Button> */}
         <Flex justify={'space-between'} align={'center'} gap={10}>
+          <Button onClick={handleNewPage}>新建页面</Button>
           <Button onClick={handlePreview}>预览</Button>
           <Button onClick={handleSave}>保存</Button>
           <Button type="primary" onClick={handleImport}>导入</Button>

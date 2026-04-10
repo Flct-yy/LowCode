@@ -11,10 +11,12 @@ const PreIframe: React.FC = () => {
   }
 
   const previewUrl = useMemo(() => {
-    if (!pageId) {
-      navigate('/lists');
-    }
-    return `http://localhost:5174/preview/${pageId}`;
+    //TODO
+    // if (!pageId) {
+    //   navigate('/lists');
+    // }
+    // ${import.meta.env.VITE_PREVIEW_URL}${pageId}
+    return `${import.meta.env.VITE_PREVIEW_URL}`;
   }, [pageId]);
   return (
     <div className='preIframe-container'>

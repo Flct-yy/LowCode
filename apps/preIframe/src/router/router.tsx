@@ -10,7 +10,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/preview/:pageId', 
+    //TODO :pageId
+    path: '/pre_iframe/', 
     element: <Preview />, // 匹配路径后渲染 Preview 组件
   },
 ]);
